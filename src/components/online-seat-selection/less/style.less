@@ -1,0 +1,121 @@
+@import url('../../../less/base.less');
+.online-seat-selection{
+  background: #fff;
+  margin-top: 10px;
+  >.cell{
+    height: 40px;
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+    line-height: 40px;
+    justify-content: space-between;
+    >.left{
+
+    }
+    >.right{
+      span{
+        font-size: 13px;
+        color: #999;
+      }
+    }
+  }
+  >.cell.round-trip-cell{
+    height: 80px;
+    .right{
+      span.go, span.return{
+        font-size: 12px;
+        display: block;
+        text-align: left;
+      }
+    }
+  }
+  .select-seat-popup{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    .seat-collection{
+      background: #fff;
+      position: absolute;
+      width: 90%;
+      left: 5%;
+      top: 30%;
+      border-radius: 5px;
+      padding-bottom: 20px;
+      padding-top: 30px;
+      >.header{
+        >h2{
+          font-size: 17px;
+          color: #2A2A2A;
+          line-height: 17px;
+          margin: 0;
+          span{
+            color: @theme-color;
+            margin: 0 6px;
+          }
+        }
+        >span{
+          color: #999999;
+          font-size: 12px;
+          margin-top: 10px;
+          display: block;
+        }
+      }
+      >.body{
+        display: flex;
+        justify-content: space-around;
+        padding: 13px 0;
+        .aisle{
+          font-size: 13px;
+          color: #bbb;
+           word-wrap: break-word;
+           width: 13px;
+           line-height: 20px;
+           span{
+            display: block;
+            margin-top: 7px;
+           }
+        }
+        >.left,>.right{
+          >div{
+            margin: 7px 0;
+          }
+          span{
+            margin: 0 5px;
+          }
+        }
+      }
+      >.bottom{
+        >span{
+          color: #999999;
+          font-size: 12px;
+          // margin-top: 10px;
+          line-height: 30px;
+          display: block;
+        }
+        .mint-button{
+          width: 90%;
+        }
+        button.unactive{
+          background: #ccc;
+        }
+      }
+    }
+    .seat-collection-round-trip{
+      top: 20%;
+      .header{
+        h2{
+          font-size: 17px;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}
+.online-seat-selection.stick-to-the-top{
+  .select-seat-popup{
+    z-index: 3333 !important;
+  }
+  .v-modal{
+    z-index: 3332 !important;
+  }
+}

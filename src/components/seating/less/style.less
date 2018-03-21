@@ -1,0 +1,32 @@
+@import url('../../../less/base.less');
+.seating-list{
+  background: #fff;
+  margin: 10px 0;
+  .list{
+    display: flex;
+    justify-content: space-around;
+    height:44px;
+    line-height:44px;
+    span{
+      width:25%;
+      color: #4A4A4A;
+    }
+    span.price{
+      color: @price-color;
+    }
+    span.order-button{
+      button{
+        background:@theme-color;
+        outline: none;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        padding:7px 18px;
+        border-radius:3px;
+      }
+      button.disable{
+        background: #ccc;
+      }
+    }
+  }
+}

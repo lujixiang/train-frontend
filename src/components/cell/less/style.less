@@ -1,0 +1,25 @@
+@import url('../../../less/base.less');
+.ykb-cell{
+  height: 48px;
+  border-bottom: 1px solid @cell-border-color;
+  display: flex;
+  line-height:48px;
+  div.left,div.gather{
+    text-align: left;
+  }
+  div.right{
+    text-align: right;
+  }
+  div.left,div.right,div.gather{
+    width: 50%;
+    span.title{
+      color: #2A2A2A;
+      font-size: 20px;
+    }
+    label{
+      margin-left:5px;
+      color: #A9A9A9;
+      font-size: 15px;
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>selected</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="10" cy="10" r="10"></circle>
+    </defs>
+    <g id="火车票" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="app" transform="translate(-54.000000, -406.000000)">
+            <g id="Group" transform="translate(54.000000, 406.000000)">
+                <g id="Oval-7">
+                    <use fill="#17ABCB" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <circle stroke="#17ABCB" stroke-width="2" cx="10" cy="10" r="9"></circle>
+                </g>
+                <path d="M4.73107038,10.7177207 L4.73107038,10.7177207 L4.73107038,10.7177207 C4.32962267,11.09691 4.31157865,11.7297413 4.69076793,12.131189 C4.6920818,12.13258 4.69339966,12.1339672 4.69472149,12.1353506 L7.58718505,15.1625969 L7.58718505,15.1625969 C7.96871882,15.5619093 8.60171975,15.5763218 9.00103219,15.194788 C9.03631794,15.1610733 9.06908827,15.1248207 9.09908047,15.0863209 L15.3816314,7.02165734 L15.3816314,7.02165734 C15.7212514,6.58570054 15.643155,5.95697134 15.2071982,5.61735137 C15.2057337,5.61621049 15.204266,5.61507368 15.2027952,5.61394097 L15.2027952,5.61394097 L15.2027952,5.61394097 C14.7617952,5.27431939 14.1292926,5.35467251 13.7872218,5.7937754 L8.23143415,12.9255214 L6.15686225,10.7542788 L6.15686225,10.7542788 C5.7725347,10.3520424 5.13550653,10.3357087 4.73107038,10.7177207 Z" id="Path-13-Copy-3" fill="#FFFFFF" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

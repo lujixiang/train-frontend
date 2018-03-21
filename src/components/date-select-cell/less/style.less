@@ -1,0 +1,69 @@
+@import url('../../../less/base.less');
+.date-select-cell-wrap{
+  .date-select-cell{
+    width: 90%;
+    margin: 0 auto;
+    .ykb-cell{
+      min-height: 46px;
+      border-left: none;
+      border-right: none;
+      display: flex;
+      .cell-icon{
+        width: 20px;
+        height: 20px;
+        display: flex;
+        margin-top: 20px;
+        margin-left: 4px;
+      }
+      .check-date{
+        display: flex;
+        position: relative;
+        -webkit-box-flex:1;
+        flex:1;
+        .checkin-text,.checkout-text{
+          font-size: 12px;
+          margin: 10px 0 0 0;
+          padding: 0;
+          text-align: left;
+          color: #999999;
+        }
+        .checkin-date,.checkout-date{
+          margin-top: 5px;
+          color: #333;
+        }
+        .checkin-date>small,.checkout-date>small{
+          font-size: 11px;
+        }
+        .check-in{
+          margin: 0 15px;
+        }
+        .to{
+          width: 30px;
+        }
+        .to:after{
+          content: "";
+          display: block;
+          width: 20px;
+          background-color: #666;
+          height: 1px;
+          margin-top: 30px;
+        }
+        .check-out{
+          margin: 0 15px;
+        }
+      }
+      .arrow-icon{
+        display: flex;
+        margin-top: 20px;
+        .total-night{
+          font-size: 12px;
+          margin-top: 4px;
+          color: #ccc;
+        }
+        .entrance{
+
+        }
+      }
+    }
+  }
+}

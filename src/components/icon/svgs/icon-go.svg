@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="19px" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-go</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="9.5" cy="9.5" r="9.5"></circle>
+    </defs>
+    <g id="火车票" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="app" transform="translate(-102.000000, -342.000000)">
+            <g id="icon/go" transform="translate(102.000000, 342.000000)">
+                <g id="Oval-10">
+                    <use fill="#17ABCB" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <circle stroke="#17ABCB" stroke-width="1" cx="9.5" cy="9.5" r="9"></circle>
+                </g>
+                <polygon id="去" fill="#FFFFFF" fill-rule="evenodd" points="12.296875 13.515625 11.546875 11.2832031 13.5273438 11.2832031 14.7519531 14.9335938 12.7773438 14.9335938 12.4550781 13.9902344 11.9804688 14.8925781 4.40429688 14.8925781 4.40429688 13.3222656 6.57226562 10.2519531 4 10.2519531 4 8.82226562 8.29492188 8.82226562 8.29492188 6.57226562 4.2109375 6.57226562 4.2109375 5.18945312 8.29492188 5.18945312 8.29492188 4 10.2460938 4 10.2460938 5.18945312 14.4414062 5.18945312 13.8671875 6.57226562 10.2460938 6.57226562 10.2460938 8.82226562 14.7636719 8.82226562 14.1953125 10.2519531 8.89257812 10.2519531 6.5546875 13.515625"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

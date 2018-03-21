@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="7px" height="12px" viewBox="0 0 7 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>disclosure-indicator</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="火车票" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="app" transform="translate(-158.000000, -79.000000)" fill="#9A9A9A">
+            <path d="M163.939221,90.9849971 L158.015082,85.1710549 C157.995193,85.0647649 157.994754,84.9362228 158.015082,84.8290583 L163.939221,79.0151161 C163.984945,78.9955723 164.113775,78.9943594 164.2877,79.0151161 L164.984658,79.6991093 C165.004511,79.8777292 165.005458,80.0065632 164.984658,80.0411059 L160.105955,84.8290583 C160.035973,84.9349493 160.034582,85.0642236 160.105955,85.1710549 L164.984658,89.9590073 C165.004067,89.9926098 165.006135,90.1212125 164.984658,90.3010039 L164.2877,90.9849971 C164.115399,91.0045823 163.985384,91.0054153 163.939221,90.9849971 Z" id="Rectangle-" transform="translate(161.500000, 85.000000) scale(-1, 1) translate(-161.500000, -85.000000) "></path>
+        </g>
+    </g>
+</svg>

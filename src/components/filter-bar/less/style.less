@@ -1,0 +1,151 @@
+@import url('../../../less/base.less');
+.ykb-filter-bar{
+  .mint-tabbar{
+    background:@theme-color;
+    .mint-tab-item, .mint-tab-item.is-selected{
+      position: relative;
+      background: @theme-color;
+      .mint-tab-item-label{
+        span{
+          color: #fff;
+        }
+      }
+      .mint-tab-item-icon{
+        img{
+          width: 90%;
+          height: 90%;
+        }
+      }
+    }
+    .mint-tab-item.is-selected:after{
+      content: '';
+      position: absolute;
+      width:6px;
+      height: 6px;
+      border-radius:50%;
+      background: #FF9800;
+      right:15px;
+      top: 5px;
+    }
+  }
+  .mint-popup-bottom{
+    width: 100%;
+    .popup-filter{
+      overflow: auto;
+      over-flow: auto;     /* winphone8和android4+ */
+      -webkit-overflow-scrolling: touch;    /* ios5+ */
+      z-index:1;
+      height: 100%;
+      .header{
+        width: 100%;
+        height: 35px;
+        background: #4A4A4A;
+        color:#fff;
+        line-height: 35px;
+        text-align: center;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        right: 0;
+        font-size: 13px;
+        .back-icon{
+          float: left;
+          margin-left: 10px;
+          img{
+            vertical-align: middle;
+          }
+        }
+        .confirm{
+          float: right;
+          margin-right:10px;
+        }
+      }
+      .body{
+        .container{
+          width: 100%;
+          margin-top: 50px;
+          .type{
+            .mint-cell-text{
+              color: #A2A2A2;
+            }
+          }
+          .filter-item{
+            .title{
+              span.text{
+                position: relative;
+                display:inline-block;
+                width: 100%;
+                font-size: 13px;
+                color: #7F7F7F;
+              }
+              span.text:before{
+                content: "";
+                position: absolute;
+                width: 25%;
+                border-bottom: 1px solid #E4E4E4;
+                left: 5%;
+                top: 10px;
+              }
+              span.text:after{
+                content: "";
+                position: absolute;
+                width: 25%;
+                border-bottom: 1px solid #E4E4E4;
+                right: 5%;
+                top: 10px;
+              }
+            }
+            .filter-content{
+              ul {
+                width: 100%;
+                overflow: hidden;
+                li{
+                  width: 46%;
+                  float: left;
+                  margin:2%;
+                  span.icon{
+                    float: left;
+                    display:inline-block;
+                    width:24px;
+                    height: 24px;
+                    background: url('../images/checkbox-unchecked.png') center center no-repeat;
+                    background-size:90%;
+                  }
+                  span.text{
+                    float: left;
+                    margin-left: 5px;
+                    margin-top:3px;
+                  }
+                  overflow: hidden;
+                }
+                li.active{
+                  span.icon{
+                    background: url('../images/checkbox-checked.png') center center no-repeat;
+                    background-size:90%;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .footer{
+        background: #FCFCFC;
+        padding-top: 5px;
+        position: fixed;
+        z-index: 1;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        height: 50px;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        .mint-button{
+          width: 45%;
+        }
+      }
+    }
+  }
+}

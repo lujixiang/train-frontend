@@ -1,0 +1,131 @@
+@import url('../../../../less/base.less');
+.train-list-container{
+  width: 100%;
+  // position: absolute;
+  // top: 66px;
+  height: 100%;
+  .train-list-box{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    over-flow: auto;     /* winphone8和android4+ */
+    -webkit-overflow-scrolling: touch;    /* ios5+ */
+    z-index:1;
+    article{
+      background: #fff;
+      ul{
+        padding-bottom: 40px;
+        margin:0;
+        li{
+          background: #fff;
+          width: 96%;
+          margin: 0 auto;
+          border-bottom: 1px solid @cell-border-color;
+          padding: 11px 0;
+          color: #404040;
+          position: relative;
+          div.container{
+            display: flex;
+            .from{
+              width: 25%;
+              .station-name{
+                display: block;
+                color: #2A2A2A;
+                margin-top:5px;
+              }
+              .from-time{
+                font-size: 20px;
+                font-weight: 600;
+                display: inline-block;
+                color: @theme-color;
+              }
+            }
+            .train-number{
+              width: 25%;
+              padding-top: 7px;
+              .total-time{
+                font-size: 12px;
+                margin-bottom: 1px;
+                color: #666;
+              }
+              .arrow{
+                width: 80%;
+                margin:2px auto;
+                height: 9px;
+                position: relative;
+                img{
+                  vertical-align: top;
+                  width:100%;
+                }
+              }
+              .number{
+                font-size: 12px;
+                color: #666;
+              }
+            }
+            .to{
+              width: 25%;
+              .station-name{
+                display: block;
+                color: #2A2A2A;
+                margin-top: 5px;
+              }
+              .to-time{
+                font-size: 20px;
+                display: inline-block;
+              }
+            }
+            .price{
+              width: 25%;
+              height: 25px;
+              line-height: 25px;
+              overflow: hidden;
+              em{
+                font-style: normal;
+                font-weight: 600;
+                color: #FF9800;
+                font-size: 16px;
+                margin-left: -2px;
+              }
+              small{
+                font-size: 10px;
+                color: #888;
+              }
+              small.small{
+                color:#FF9800;
+                font-size: 14px;
+              }
+              .sold-out{
+                font-size: 13px;
+              }
+            }
+          }
+          .seat-left{
+            padding: 5px 0;
+            display: flex;
+            .zw{
+              width: 25%;
+              span{
+                font-size: 11px;
+              }
+            }
+            .zw.disable{
+              color: #ccc;
+            }
+          }
+        }
+        // li:first-child{
+        //   margin-top: 5px;
+        // }
+        li.disable{
+          *{
+            color: #ccc !important;
+          }
+        }
+      }
+      .ykb-bottom{
+        background: #E6EAF1;
+      }
+    }
+  }
+}

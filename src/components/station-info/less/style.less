@@ -1,0 +1,70 @@
+@import url('../../../less/base.less');
+.station-info-container{
+  display: flex;
+  justify-content: space-around;
+  background: @theme-color;
+  color: #fff;
+  width: 94%;
+  padding: 3%;
+  min-height: 95px;
+  .start,.end,.train{
+    height:30px;
+    line-height:30px;
+  }
+  .start,.end{
+    width: 30%;
+    .station{
+
+    }
+    .time{
+      font-size: 22px;
+    }
+    .date{
+      font-size: 15px;
+    }
+  }
+  .train{
+    width: 35%;
+    .time{
+      font-size: 14px;
+    }
+    .list{
+      border: 1px solid #73CCDF;
+      position: relative;
+      border-radius:5px;
+      font-size: 12px;
+      display: inline;
+      padding: 2px 5px;
+    }
+    .list:before{
+      content: '';
+      width: 15px;
+      border-bottom: 1px solid #73CCDF;
+      position: absolute;
+      left:-15px;
+      top: 10px;
+    }
+    .list:after{
+      content: '';
+      color: #fff;
+      position: absolute;
+      border-bottom: 1px solid #73CCDF;
+      width: 15px;
+      right: -15px;
+      top: 10px;
+    }
+    .no{
+      font-size: 12px;
+    }
+  }
+  .start{
+    div{
+      text-align: left;
+    }
+  }
+  .end{
+    div{
+      text-align: right;
+    }
+  }
+}

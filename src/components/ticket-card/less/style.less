@@ -1,0 +1,172 @@
+@import url('../../../less/base.less');
+.ticket-card-container{
+  .single{
+    width: 95%;
+    margin: 0 auto;
+    height: 160px;
+    border-radius: 10px;
+    background: #2BA9CC;
+    padding: 10px 0;
+    .title{
+      height: 40px;
+      line-height: 40px;
+      text-align: left;
+      span{
+        margin-left: 10px;
+        color: #DFF2F7;
+      }
+    }
+    .line-through{
+      width: 90%;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+      margin: 0 auto;
+      position: relative;
+      height: 0;
+    }
+    .line-through:before{
+      position: absolute;
+      content: '';
+      width: 13px;
+      height: 18px;
+      border-radius: 50%;
+      background: #F2F2F2;
+      left: -24px;
+      top: -8px;
+    }
+    .line-through:after{
+      position: absolute;
+      content: '';
+      width: 13px;
+      height: 18px;
+      border-radius: 50%;
+      background: #F2F2F2;
+      right: -24px;
+      top: -8px;
+    }
+    .body{
+      display: flex;
+      color: #fff;
+      margin-top: 15px;
+      .from-station,.to-station{
+        width: 35%;
+        strong{
+          display: block;
+          height: 40px;
+          line-height: 40px;
+          font-size: 21px;
+          text-align: left;
+          margin-left: 10px;
+          font-weight: normal;
+        }
+        time{
+          text-align: left;
+          margin-left: 10px;
+          display: block;
+          height: 30px;
+          line-height: 30px;
+          font-size: 22px;
+          margin-bottom: 10px;
+        }
+        span{
+          display: block;
+          text-align: left;
+          margin-left: 10px;
+          color: #92CDF7;
+        }
+        span.price{
+          font-size: 19px;
+        }
+      }
+      .to{
+        width: 30%;
+        .train-no{
+          height: 40px;
+          line-height: 40px;
+          background: url('../images/arrow.png') bottom center no-repeat;
+          background-size: 80%;
+        }
+        .time{
+          margin-top: 5px;
+          >span{
+            font-size: 12px;
+            vertical-align: top;
+            display: inline-block;
+            width: 100%;
+            img,span{
+              vertical-align: middle;
+              font-size: 11px;
+            }
+          }
+        }
+      }
+      .to-station{
+        strong{
+          text-align: right;
+          margin-right: 10px;
+        }
+        time{
+          text-align: right;
+          margin-right: 10px;
+        }
+        span{
+          text-align: right;
+          margin-right: 10px;
+          color: #fff;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  .double{
+    height: 192px;
+    background-image: linear-gradient(-180deg, #2BA9CC 0%, #BFE3EF 100%);
+    .trip-box{
+      height: 152px;
+      width: 90%;
+      margin: 0 auto;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+      top: 20px;
+      .go, .return{
+        height: 56px;
+        padding: 10px;
+        .top{
+          height: 26px;
+          text-align: left;
+          span{
+            font-size: 13px;
+            color: @4a;
+            img{
+              vertical-align: middle;
+            }
+          }
+        }
+        .bottom{
+          height: 30px;
+          line-height: 30px;
+          text-align: left;
+          font-size: 15px;
+          b{
+            color: @2a;
+            font-weight: normal;
+          }
+          .seat-type{
+            color: @888;
+            float: right;
+          }
+        }
+      }
+      .go{
+      }
+      .line-through{
+        border-bottom: 1px dotted #BBBBBB;
+        width: 95%;
+        margin: 0 auto;
+      }
+      .return{
+      }
+    }
+  }
+}

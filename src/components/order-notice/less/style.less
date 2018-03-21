@@ -1,0 +1,35 @@
+.order-notice{
+  .order-notice-popup{
+    z-index: 3333 !important;
+    width: 100%;
+    height: 100%;
+    article{
+      height: 90%;
+      overflow-y: auto;
+      over-flow: auto;     /* winphone8和android4+ */
+      -webkit-overflow-scrolling: touch;    /* ios5+ */
+      z-index:1;
+      font-size: 14px;
+      color: #5B5B5B;
+      line-height: 25px;
+      padding: 0px 20px;
+      p{
+        text-align: left;
+      }
+      p.title{
+        font-size: 16px;
+        color: #2A2A2A;
+        font-weight: bold;
+      }
+    }
+    .bottom-close{
+      height: 40px;
+      width: 100%;
+      text-align: center;
+      .close-button{
+        display: inline-block;
+        margin-top: 15px;
+      }
+    }
+  }
+}

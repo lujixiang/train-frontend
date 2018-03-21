@@ -1,0 +1,220 @@
+html{
+  background: #F2F2F2;
+}
+#app {
+  font-family:'-apple-system' , 'BlinkMacSystemFont' , 'Segoe UI' , 'Roboto' , 'Segoe UI' , 'Helvetica Neue', 'PingFang SC', 'Noto Sans' , 'Noto Sans CJK SC' , 'Microsoft YaHei' , '微软雅黑' , sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
+#container{
+  position: absolute;
+  top: 44px;
+}
+hr{
+  border: 1px solid #fff;
+}
+ul{
+  list-style-type: none;
+  padding: 0;
+}
+/*
+  header
+*/
+@header-height:44px;
+@font-size:12px;
+@theme-color:#17abcb;
+// 企业微信的主题色
+// @theme-color:#5176AB;
+@price-color:#F9A100;
+/*
+  button style
+*/
+@button-border-radius:2px;
+@button-padding:5px 25px;
+@button-height:30px;
+/*
+  cell border-color
+*/
+@cell-border-color:#E4E4E4;
+@4a: #4A4A4A;
+@F2: #F2F2F2;
+@2a: #2A2A2A;
+@888: #888888;
+
+.text-left{
+  text-align: left;
+}
+.pl10{
+  padding-left: 10px;
+}
+.ml10{
+  margin-left: 10px;
+}
+.inline-block{display: inline-block;}
+.hide{
+  display: none !important;
+}
+// 修改animated.css
+.animated{
+  -webkit-animation-duration: 0.2s;
+  animation-duration: 0.2s;
+}
+// 闪烁
+@keyframes blink {
+    0%, 100% {
+        color: @theme-color;
+    }
+    50% {
+        color: #fff;
+    }
+}
+.blink{
+  animation: blink 1s infinite steps(1, start);
+}
+
+// 清除mint-ui 默认的样式
+// 修改返回按钮的大小
+.mintui{
+  font-size: 20px;
+}
+// 清除cell的默认边框背景
+.mint-cell-wrapper{
+  background-image: none;
+  // border-top: 1px solid #ccc;
+  border-bottom: 1px solid @cell-border-color;
+  padding: 0;
+}
+// 修改index list的背景颜色
+.mint-indexsection-index{
+  background-color: #F5F5F5;
+  text-align: left;
+  color: #666;
+}
+.mint-indexlist-navitem{
+  color: #999;
+}
+// 修改switch的默认颜色
+.mint-switch-input:checked + .mint-switch-core{
+  // background-color: @theme-color;
+  background:#A2DDEA;
+  border-color: #A2DDEA;
+}
+.mint-switch-input:checked + .mint-switch-core:after{
+  background: @theme-color;
+}
+// 修改button样式
+.mint-button--primary{
+  background: @theme-color;
+}
+// 修改switch的默认样式
+.mint-switch{
+  .mint-switch-core{
+    height: 14px;
+    position: relative;
+    width:45px;
+  }
+  .mint-switch-core:before{
+    height:12px;
+    width:41px;
+    background: #E4E4E4;
+  }
+  .mint-switch-core:after{
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    top:-7px;
+    left: -1px;
+    background: #D8D8D8;
+  }
+}
+// 设置indicator的层级 ，如果不设置header区域的层级高于indicator
+.mint-indicator-mask{z-index: 99}
+// 修改全局的gif加载
+.mint-indicator{
+  .mint-indicator-wrapper{
+    z-index: 99999;
+    span{
+      display: none;
+    }
+    width: 70px;
+    height: 70px;
+    background: url('../assets/logo.gif') center center no-repeat;
+    background-color: #fff;
+    box-shadow: 1px 1px 2px #ccc;
+    background-size: 70%;
+  }
+}
+// 修改Message-box默认样式
+.mint-msgbox-input input{
+  background: #f2f2f2;
+  height: 30px;
+  border: none !important;
+  color: #4A4A4A;
+  -user-select: text;
+}
+.mint-msgbox{
+  border-radius: 12px;
+}
+.mint-msgbox-confirm {
+  color:@theme-color;
+  font-size: 16px;
+}
+.mint-msgbox-content{
+  border-color:#E4E4E4;
+}
+.mint-msgbox-cancel{
+  border-color:#E4E4E4;
+  color:#4A4A4A;
+  font-size: 16px;
+}
+.mint-msgbox-title{
+  font-size: 18px;
+  color: #2A2A2A;
+}
+.mint-msgbox-message{
+  font-size: 15px;
+  color: #4A4A4A;
+  text-align: center;
+  line-height: 21px;
+}
+// 修改mint默认header区域标题字体的大小
+.mint-header-title{
+  font-size: 16px;
+}
+// 修改toast的层级显示
+.mint-toast{
+  z-index: 10000;
+}
+// 页面出入场动画
+.router-view {
+  width: 100%;
+  background: #F2F2F2;
+}
+.ykb-out-enter-active,
+.ykb-out-leave-active,
+.ykb-in-enter-active,
+.ykb-in-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+.ykb-out-enter {
+  opacity: 0;
+  transform: translate3d(-70%, 0, 0);
+}
+.ykb-out-leave-active {
+  opacity: 0;
+  transform: translate3d(70%, 0, 0);
+}
+.ykb-in-enter {
+  opacity: 0;
+  transform: translate3d(70%, 0, 0);
+}
+.ykb-in-leave-active {
+  opacity: 0;
+  transform: translate3d(-70%, 0, 0);
+}
