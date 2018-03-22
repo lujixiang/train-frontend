@@ -2,6 +2,8 @@
   <div>
     <div class="index-content">
       <banner></banner>
+      <nav-bar v-on:tabSwitch="handleOnTabSwitch"></nav-bar>
+      <div class="empty-block"></div>
       <city-select :departureCode="fromStation" :departure="fromCity" :arrivalCode="toStation" :arrival="toCity" v-on:onCityChange="onCityChange"></city-select>
       <date-selectCell v-on:onDateChange="onDateChange" model="single"></date-selectCell>
       <div @click.stop="switchPassenger">
@@ -220,6 +222,9 @@ export default {
         }
         this.getTraveler({callback, errcallback})
       })
+    },
+    handleOnTabSwitch (e) {
+      console.log(e)
     }
   },
   created () {

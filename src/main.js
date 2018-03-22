@@ -98,6 +98,8 @@ import textAlert from './components/text-alert'
 Vue.use(textAlert)
 import tripCard from './components/trip-card'
 Vue.use(tripCard)
+import navBar from './components/nav-bar'
+Vue.use(navBar)
 // 为iOS添加返回事件，防止出现空白页
 
 Vue.prototype.IOSonBack = _ => {
