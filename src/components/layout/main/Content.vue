@@ -5,7 +5,7 @@
       <nav-bar v-on:tabSwitch="handleOnTabSwitch"></nav-bar>
       <div class="empty-block"></div>
       <city-select :departureCode="fromStation" :departure="fromCity" :arrivalCode="toStation" :arrival="toCity" v-on:onCityChange="onCityChange"></city-select>
-      <date-selectCell v-on:onDateChange="onDateChange" model="single"></date-selectCell>
+      <date-selectCell v-on:onDateChange="onDateChange" :model="tripModel"></date-selectCell>
       <div @click.stop="switchPassenger">
         <mt-cell title="出行人" class="passenger-cell text-left">
           <span class="traveller">{{traveller}}</span>
@@ -48,6 +48,7 @@ export default {
   data () {
     return {
       isHighSpeedTrainOnly: false,
+      tripModel: 'single',
       traintyps: {O: '其他', G: '高铁', D: '动车'},
       fromCity: '出发地', // 设置默认的出发城市
       toCity: '目的地', // 设置默认的到达城市
@@ -224,7 +225,11 @@ export default {
       })
     },
     handleOnTabSwitch (e) {
-      console.log(e)
+      if (e.key === 'double') {
+        this.tripModel = 'multi'
+      } else if (e.key === 'single') {
+        this.tripModel = 'single'
+      }
     }
   },
   created () {

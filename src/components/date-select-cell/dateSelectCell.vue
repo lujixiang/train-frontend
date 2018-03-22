@@ -4,34 +4,24 @@
       <template v-if="model === 'single'">
         <ykb-cell :title="[startDate, '']" :label="[startWeek, '']"></ykb-cell>
       </template>
-      <template v-else>
-        <div class="ykb-cell">
+      <template v-else-if="model === 'multi'">
+        <div class="ykb-cell ykb-cell-without-bottom-border">
           <div class="check-date">
-            <div class="cell-icon">
-              <img width="20" height="20" :src="dateIcon" alt="日期icon">
-            </div>
             <div class="check-in">
-              <p class="checkin-text">入住</p>
-              <p class="checkin-date"><span>{{startDate}}</span><small>{{startWeek}}</small></p>
+              <p v-if="startDate === '' && startWeek === ''" class="checkin-text">出发日期</p>
+              <p v-else class="checkin-date"><span>{{startDate}}</span><small>{{startWeek}}</small></p>
             </div>
-            <div class="to"></div>
             <div class="check-out">
-              <p class="checkout-text">离店</p>
-              <p class="checkout-date"><span>{{endDate}}</span><small>{{endWeek}}</small></p>
+              <p v-if="endDate === '' && endWeek === ''" class="checkout-text">返程日期</p>
+              <p v-else class="checkout-date"><span>{{endDate}}</span><small>{{endWeek}}</small></p>
             </div>
-          </div>
-          <div class="arrow-icon">
-            <span class="total-night">{{diff}}晚</span>
-            <span>
-              <img :src="entranceIcon" width="20" height="20" alt="进入的icon">
-            </span>
           </div>
         </div>
       </template>
       <div>
       </div>
     </div>
-    <calendar :defaultStartDate="defaultStartDate" :isShowNotice="true" notice="当前车票预售期为30天" model="single" v-on:onClickBackButton="showCalendar" v-on:onDateChange="setDate" :isActive="popupVisible"></calendar>
+    <calendar :defaultStartDate="defaultStartDate" :isShowNotice="true" notice="当前车票预售期为30天" :model="model" v-on:onClickBackButton="showCalendar" v-on:onDateChange="setDate" :isActive="popupVisible"></calendar>
   </div>
 </template>
 
@@ -62,6 +52,9 @@
       model: {
         type: String,
         require: false,
+        validator: (e) => {
+          return e === 'single' || e === 'multi'
+        },
         default: 'single'
       }
     },

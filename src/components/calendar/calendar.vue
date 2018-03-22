@@ -6,7 +6,7 @@
           <mt-header :fixed="false" title="选择日期">
             <mt-button slot="left" icon="back" @click="onClose">返回</mt-button>
           </mt-header>
-          <template v-if="$props.isShowNotice">
+          <template v-if="isShowNotice">
             <div class="notice">
               {{notice}}
             </div>
@@ -26,8 +26,8 @@
             <section class="monthly">
               <h2>{{date[8].moment.format('YYYY年MM月')}}</h2>
               <template v-for="(day, index) in date">
-                <span v-if="!day.moment"></span>
-                <span v-else v-on:click.stop="handleClickDate(day.key, $event)" :_key="day.key" :weekDay="day.weekDay" :date="day.moment.format('YYYY-MM-DD')" :class="day.className">{{day.dateMark}}</span>
+                <span :key="day.key" v-if="!day.moment"></span>
+                <span v-else v-on:click.stop="handleClickDate(day.key, $event)" :key="day.key" :weekDay="day.weekDay" :date="day.moment.format('YYYY-MM-DD')" :class="day.className">{{day.dateMark}}</span>
               </template>
             </section>
           </template>
@@ -53,7 +53,8 @@
         durationDates: [],
         startDate: '',
         endDate: '',
-        backIcon: backIcon
+        backIcon: backIcon,
+        dateTitle: '选择日期'
       }
     },
     props: {
@@ -65,6 +66,9 @@
       model: {
         type: String,
         default: 'single', // single , multi,这个参数是控制显示多选日期（multi）和单选日期（single）
+        validator: (e) => {
+          return e === 'single' || e === 'multi'
+        },
         require: false
       },
       defaultStartDate: {
@@ -303,7 +307,7 @@
                     this.endDate = val
                   }
                   if (val.moment.format('YYYY-MM-DD') !== theOtherDay && val.moment.format('YYYY-MM-DD') !== today) {
-                    val.className = ''
+                    // val.className = ''
                   }
                 }
               })
