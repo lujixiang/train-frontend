@@ -3,7 +3,7 @@
     <mt-popup v-model="isActive" position="bottom" :closeOnClickModal="false">
       <div class="calendar-container" v-on:click.stop="">
         <div class="header-box">
-          <mt-header :fixed="false" title="选择日期">
+          <mt-header :fixed="false" :title="dateTitle">
             <mt-button slot="left" icon="back" @click="onClose">返回</mt-button>
           </mt-header>
           <template v-if="isShowNotice">
@@ -53,7 +53,7 @@
         durationDates: [],
         startDate: '',
         endDate: '',
-        backIcon: backIcon,
+        backIcon,
         dateTitle: '选择日期'
       }
     },
@@ -105,7 +105,14 @@
     },
     watch: {
       isActive: function (cV, oV) {
+        if (cV) {
+          this.highLightDefaultDate()
+        }
         this.handleRouter(cV)
+      },
+      model: function (cV, oV) {
+        // 当切换tab的时候重新创建日期组件，防止上一次的样式影响当前样式
+        this.createMonth()
       }
     },
     methods: {
@@ -173,13 +180,12 @@
         })
         return node
       },
-      addClassForDurationNode () {
-        let startDate = this.startDate.moment
-        let endDate = this.endDate.moment
+      addClassForDurationNode (args) {
+        let { fromDate, toDate } = args
         _.forEach(this.dates, lineArr => {
           _.forEach(lineArr, val => {
             if (val.date) {
-              if (val.moment.isBetween(startDate, endDate)) {
+              if (val.moment.isBetween(fromDate, toDate)) {
                 this.durationDates.push(val)
                 val.className = 'active-during'
               }
@@ -232,6 +238,7 @@
               // 如果是同一个元素，则清除当前元素的active，并且清除date里面的startDate
               node.className = node.oldClassName
               this.startDate = ''
+              this.dateTitle = '选择去程日期'
             } else {
               // 如果点击的不是同一个元素，则给当前元素添加active，同时更新endDate，保存当前class的值
               node.oldClassName = node.className
@@ -245,25 +252,25 @@
               this.startDate.className = 'active startdate'
               this.endDate.className = 'active enddate'
               // 获取两次点击的node节点，然后把两个node时间节点之间的节点添加duration
-              this.addClassForDurationNode()
               let {startDate, endDate} = this
+              this.addClassForDurationNode({fromDate: startDate.moment.format('YYYY-MM-DD'), toDate: endDate.moment.format('YYYY-MM-DD')})
               this.sendMessageToParent({type: 'multi', startDate: startDate, endDate: endDate})
               this.onClose()
+              this.dateTitle = '选择日期'
             }
           } else {
             this.startDate = node
             node.oldClassName = node.oldClassName
             node.className = 'active'
+            this.dateTitle = '选择返程日期'
           }
         }
       },
       highLightDefaultDate () {
         // 如果是单日期模式，则默认高亮显示当天；如果是多日期模式，则默认高亮显示当天和第二天
-        // let today = moment().format('YYYY-MM-DD')
-        // let theOtherDay = moment().add(1, 'day').format('YYYY-MM-DD')
         let today = this.$props.defaultStartDate.format('YYYY-MM-DD')
         let theOtherDay = this.$props.defaultEndDate.format('YYYY-MM-DD')
-        if (!this.$props.model || this.$props.model === 'single') {
+        if (this.$props.model === 'single') {
           if (this.startDate === '') {
             _.forEach(this.dates, lineArr => {
               _.forEach(lineArr, val => {
@@ -276,25 +283,23 @@
               })
             })
           } else {
-            if (today !== this.startDate.moment.format('YYYY-MM-DD')) {
-              _.forEach(this.dates, lineArr => {
-                _.forEach(lineArr, val => {
-                  if (val.date) {
-                    if (val.moment.format('YYYY-MM-DD') === today) {
-                      val.className = 'active single'
-                      this.startDate = val
-                    } else {
-                      if (fun.hasClass(val.className, 'active')) {
-                        val.className = ''
-                      }
+            _.forEach(this.dates, lineArr => {
+              _.forEach(lineArr, val => {
+                if (val.date) {
+                  if (val.moment.format('YYYY-MM-DD') === today) {
+                    val.className = 'active single'
+                    this.startDate = val
+                  } else {
+                    if (fun.hasClass(val.className, 'active')) {
+                      val.className = ''
                     }
                   }
-                })
+                }
               })
-            }
+            })
           }
         } else if (this.$props.model === 'multi') {
-          if (this.startDate === '' && this.endDate === '') {
+          if (this.startDate === '' || this.endDate === '') {
             _.forEach(this.dates, lineArr => {
               _.forEach(lineArr, val => {
                 if (val.date) {
@@ -312,7 +317,23 @@
                 }
               })
             })
+          } else {
+            _.forEach(this.dates, lineArr => {
+              _.forEach(lineArr, val => {
+                if (val.date) {
+                  if (val.moment.format('YYYY-MM-DD') === this.startDate.moment.format('YYYY-MM-DD')) {
+                    val.className = 'active startdate'
+                    this.startDate = val
+                  }
+                  if (val.moment.format('YYYY-MM-DD') === this.endDate.moment.format('YYYY-MM-DD')) {
+                    val.className = 'active enddate'
+                    this.endDate = val
+                  }
+                }
+              })
+            })
           }
+          this.addClassForDurationNode({fromDate: this.defaultStartDate.format('YYYY-MM-DD'), toDate: this.defaultEndDate.format('YYYY-MM-DD')})
         }
       },
       handleRouter (isActive) {
@@ -322,10 +343,6 @@
     },
     mounted () {
       this.createMonth()
-      this.highLightDefaultDate()
-    },
-    beforeUpdate () {
-      // 当props更新的时候，会执行这个方法
       this.highLightDefaultDate()
     }
   }
