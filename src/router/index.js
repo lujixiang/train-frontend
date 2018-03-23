@@ -4,6 +4,7 @@ import Router from 'vue-router'
 // const test = r => require.ensure([], () => r(require('@/components/layout/__test__')['default']), '__test__')
 const Content = r => require.ensure([], () => r(require('@/components/layout/main')['default']), 'content')
 const TrainList = r => require.ensure([], () => r(require('@/components/layout/train-list')['default']), 'trainlist')
+const TrainListBack = r => require.ensure([], () => r(require('@/components/layout/train-list-back')['default']), 'trainlistback')
 const TrainDetail = r => require.ensure([], () => r(require('@/components/layout/train-detail')['default']), 'traindetail')
 const TrainDetailRoundTrip = r => require.ensure([], () => r(require('@/components/layout/train-detail-round-trip')['default']), 'traindetailroundtrip')
 const trainOrder = r => require.ensure([], () => r(require('@/components/layout/train-order')['default']), 'trainorder')
@@ -39,6 +40,12 @@ export default new Router({
       name: 'TrainList',
       component: TrainList,
       meta: {title: '车次列表'}
+    },
+    {
+      path: '/backtrainlist',
+      name: 'BackTrainList',
+      component: TrainListBack,
+      meta: {title: '请选择返程'}
     },
     {
       path: '/traindetail',

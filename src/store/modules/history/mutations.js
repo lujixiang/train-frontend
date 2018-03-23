@@ -29,6 +29,16 @@ const mutations = {
       errcallback(res)
     }
   },
+  [key.RECORD_ROUND_TRIP_INFO] (state, payload) {
+    let { go, back, callback } = payload
+    if (go !== '') {
+      state.roundTripForGo = go
+    }
+    if (back !== '') {
+      state.roundTripForBack = back
+    }
+    callback()
+  },
   [key.GET_WECHAT_JSSIGN] (state, payload) {
     let { res, callback, errcallback } = payload
     if (res.flagcode === '200') {

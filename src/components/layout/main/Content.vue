@@ -42,7 +42,7 @@
 <script>
 import { mapActions } from 'vuex'
 import './less/style.less'
-// const moment = require('moment')
+const moment = require('moment')
 export default {
   name: 'content',
   data () {
@@ -112,7 +112,9 @@ export default {
       let trainType = this.isHighSpeedTrainOnly ? 1 : 0
       this.record = {fromCity: this.fromCity, toCity: this.toCity, fromStation: this.fromStation, toStation: this.toStation}
       this.recordSearchHistory(this.record)
-      this.$router.push({name: 'TrainList', query: {fromCity: this.fromCity, toCity: this.toCity, date: this.fromDate, trainType, fromStation: this.fromStation, toStation: this.toStation}})
+      let roundTrip = this.tripModel
+      let trip = this.tripModel === 'multi' ? 'go' : ''
+      this.$router.push({name: 'TrainList', query: {fromCity: this.fromCity, toCity: this.toCity, date: this.fromDate, trainType, fromStation: this.fromStation, toStation: this.toStation, backDate: this.toDate, roundTrip, trip}})
     },
     handleOnSearching (e) {
       let value = e.value.trim().toUpperCase()
@@ -270,6 +272,7 @@ export default {
       this.toCity = toCity
       this.record = this.$route.query
       this.fromDate = date
+      this.toDate = moment(date).add(1, 'day').format('YYYY-MM-DD')
     } else {
       // 如果已经存在历史记录，则每次返回到首页的时候按照最后一次的历史记录进行展示
       this.getSearchHistory(_ => {

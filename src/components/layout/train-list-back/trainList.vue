@@ -3,9 +3,9 @@
     <div class="train-list-container">
       <datePickerPreviousNext v-on:onDateClicked="handleOnDateClicked" v-on:onChangeDate="handleOnChangeDate"></datePickerPreviousNext>
       <div class="train-list-box">
-        <!-- <template v-if="this.$store.state.history.roundTripForGo !== ''">
+        <template v-if="this.$store.state.history.roundTripForGo !== ''">
           <trip-tip :info="this.$store.state.history.roundTripForGo"></trip-tip>
-        </template> -->
+        </template>
         <article>
           <template v-if="this.$store.state.train.trainlist.length > 0">
             <ul>
@@ -107,7 +107,7 @@
   const G = require('@/definition/g')
   const seats = G.seats
   export default {
-    name: 'trainList',
+    name: 'backTrainList',
     data () {
       return {
         searchingDate: '',
@@ -145,25 +145,15 @@
         }
       },
       jumpIntoDetail (el, item) {
-        let { fromCity, toCity, date, roundTrip } = this.$route.query
+        let { fromCity, toCity, date } = this.$route.query
         if (this.searchingDate !== '') {
           date = this.searchingDate
         }
         item['date'] = date + ' ' + item.start_time // 在每个车次上添加日期
-        if (roundTrip === 'single') {
-          // 单程
-          const callback = _ => {
-            this.$router.push({name: 'TrainDetail', query: {date: date, from_station: item.from_station_code, to_station: item.to_station_code, train_no: item.train_no, train_code: item.train_code, from_city: fromCity, to_city: toCity}})
-          }
-          this.recordTrainIonfo({info: item, callback})
-        } else if (roundTrip === 'multi') {
-          // 往返
-          const callback = _ => {
-            let { fromCity, toCity, backDate, trainType, fromStation, toStation, roundTrip } = this.$route.query
-            this.$router.push({name: 'BackTrainList', query: {fromCity: toCity, toCity: fromCity, fromStation: toStation, toStation: fromStation, date: backDate, backDate, roundTrip, trip: 'back', trainType}})
-          }
-          this.recordRoundTripInfo({go: item, back: '', callback})
+        const callback = _ => {
+          this.$router.push({name: 'TrainDetailRoundTrip', query: {date: date, from_station: item.from_station_code, to_station: item.to_station_code, train_no: item.train_no, train_code: item.train_code, from_city: fromCity, to_city: toCity}})
         }
+        this.recordRoundTripInfo({go: '', back: item, callback})
       },
       onFiltering (args) {
         let { isStandard, value } = args
@@ -179,7 +169,7 @@
         let date = args.date.format('YYYY-MM-DD')
         this.searchingDate = date
         // 切换日期查询火车票需要修改对应路由上的日期参数
-        this.$router.replace({name: 'TrainList', query: {...query, date}})
+        this.$router.replace({name: 'BackTrainList', query: {...query, date}})
         this.requestTrainList(args)
       },
       handleOnDateClicked (date) {

@@ -4,6 +4,8 @@ import * as getters from './getters'
 
 const state = {
   historyRecord: [],
+  roundTripForGo: '',
+  roundTripForBack: '',
   selctedCityRecord: [],
   currentLocation: ''
 }
