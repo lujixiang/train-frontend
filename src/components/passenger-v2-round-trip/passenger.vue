@@ -2,6 +2,7 @@
   <div class="passenger-content">
     <template v-for="item in this.passengers">
       <div class="passengers">
+        <!-- {{item.UserKey}} -->
         <div class="person-info">
           <div class="info">
             <div class="user">
@@ -26,12 +27,14 @@
             </div>
           </template>
         </div>
-        <template v-if="!travelStandard.isStandard">
-          <div class="is-out-of-standard">
+        <template v-for="(item, i) in travelStandard">
+          <div v-if="!item.isStandard" class="is-out-of-standard">
             <ykb-icon type="iconWarn" :width="14" :height="14"></ykb-icon>
-            <span class="standard-text">{{travelStandard.detail}}</span>
+            <span class="standard-text">{{item.detail}}</span>
+            <span class="label">{{i === 0 ? '去程' : '返程'}}</span>
           </div>
         </template>
+        <trip-picker :user="item"></trip-picker>
       </div>
     </template>
     <template v-if="action !== 'endorse' && action !== 'rebooking'">
@@ -67,10 +70,15 @@
         default: 5,
         require: false
       },
-      seat: {
+      goSeat: {
         type: String,
         default: '',
-        require: true
+        require: false
+      },
+      backSeat: {
+        type: String,
+        default: '',
+        require: false
       },
       ticket: {
         type: Object,
@@ -95,7 +103,7 @@
         isSearch: false,
         popupVisible: false,
         addPassengerPopupVisible: false,
-        travelStandard: {},
+        travelStandard: [],
         currentEditUserKey: ''
       }
     },
@@ -138,6 +146,7 @@
           user['idtypeid'] = args.id
           user['idcardno'] = args.idno
           user['UserKey'] = 'test_user'
+          user['trip'] = 'all'
           this.passengers.push(user)
           this.onPassengerChange()
         }
@@ -169,6 +178,7 @@
                 user['IdNo'] = ''
                 user['idcardno'] = ''
               }
+              user['trip'] = 'all'
               this.passengers.push(user)
             }
           }
@@ -241,7 +251,7 @@
               idcardno = fun.encryptIDNo(res.user_passportseno)
               IdNo = res.user_passportseno
             }
-            this.currentUser = {Name: res.user_name, idcardno, IdNo, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true}
+            this.currentUser = {Name: res.user_name, idcardno, IdNo, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'}
             // 按照需求，获取当前用户以后要默认选择
             if (this.$props.action !== 'endorse' && this.$props.action !== 'rebooking') {
               this.addMeAsPassenger()
@@ -272,15 +282,25 @@
           this.getTraveler({callback, errcallback})
         })
       },
-      handleIsStandard () {
+      handleIsStandard (args) {
         return new Promise((resolve, reject) => {
           const callback = res => {
             resolve(res)
           }
-          let { train_type } = this.$props.ticket.info
-          let { seat } = this.$props
-          this.isStandardSeat({label: seat, trainType: train_type, callback})
+          let trainType = ''
+          let seat = ''
+          if (args === 'go') {
+            trainType = this.$props.ticket.go.info
+            seat = this.$props.goSeat
+          } else if (args === 'back') {
+            trainType = this.$props.ticket.back.info
+            seat = this.$props.backSeat
+          }
+          this.isStandardSeat({label: seat, trainType, callback})
         })
+      },
+      handleRoundTripStandard () {
+        return Promise.all([this.handleIsStandard('go'), this.handleIsStandard('back')])
       },
       getOrderDetail (action = '') {
         let callback = res => {
@@ -328,7 +348,7 @@
         this.requestCurrentUser()
         .then(res => {
           // 判断是否超标
-          return this.handleIsStandard()
+          return this.handleRoundTripStandard()
         })
         .then(res => {
           this.travelStandard = res
@@ -349,12 +369,12 @@
             idcardno = fun.encryptIDNo(res.user_passportseno)
             IdNo = res.user_passportseno
           }
-          this.passengers.push({Name: res.user_name, idcardno, IdNo, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true})
+          this.passengers.push({Name: res.user_name, idcardno, IdNo, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'})
           this.onPassengerChange()
           return res
         })
         .then(res => {
-          return this.handleIsStandard()
+          return this.handleRoundTripStandard()
         })
         .then(res => {
           this.travelStandard = res
@@ -364,7 +384,7 @@
           this.requestCurrentUser()
           .then(res => {
             // 判断是否超标
-            return this.handleIsStandard()
+            return this.handleRoundTripStandard()
           })
           .then(res => {
             this.travelStandard = res

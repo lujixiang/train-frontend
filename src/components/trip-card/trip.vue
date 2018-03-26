@@ -29,7 +29,8 @@
     <div class="seats">
       <template v-for="item in seats">
         <template v-if="info.info[item.left] !== '--'">
-          <div :key="item.price" @click="selectSeat(item)" class="seat-box" :class="item.price === selectedSeatLabel ? 'active' : ''">
+          <div :key="item.price" @click="selectSeat({price: info.info[item.price], left: info.info[item.left], label: item.label, code: item.code, trainType: info.info['train_type']})" class="seat-box" :class="item.label === selectedSeatLabel ? 'active' : ''">
+            <!-- {{info.info[item.left]}} -->
             <span class="selected">
               <img :src="selectedIcon">
             </span>
@@ -192,7 +193,7 @@
         return isStandard
       },
       selectSeat (seat) {
-        this.selectedSeatLabel = seat.price
+        this.selectedSeatLabel = seat.label
         const backorgo = this.backorgo
         this.$emit('selected', {seat, backorgo})
         console.log(seat)

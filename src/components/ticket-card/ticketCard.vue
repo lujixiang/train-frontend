@@ -38,14 +38,14 @@
               <span>
                 <img :src="goIcon">
               </span>
-              <span>8月15日</span>
-              <span>06:12</span>
+              <span>{{ticket.go.from_date}}</span>
+              <span>{{ticket.go.arrive_time}}</span>
               <span>去程</span>
-              <span>D636</span>
+              <span>{{ticket.go.train_code}}</span>
             </div>
             <div class="bottom">
-              <b>武汉 - 上海虹桥</b>
-              <span class="seat-type">一等座 &yen; 262</span>
+              <b>{{ticket.go.from_station_name + ' - ' + ticket.go.to_station_name}}</b>
+              <span class="seat-type">{{seatObj.go}} &yen; {{priceObj.go}}</span>
             </div>
           </div>
           <div class="line-through"></div>
@@ -54,14 +54,14 @@
               <span>
                 <img :src="goIcon">
               </span>
-              <span>8月15日</span>
-              <span>06:12</span>
+              <span>{{ticket.back.from_date}}</span>
+              <span>{{ticket.back.arrive_time}}</span>
               <span>去程</span>
-              <span>D636</span>
+              <span>{{ticket.back.train_code}}</span>
             </div>
             <div class="bottom">
-              <b>上海虹桥 - 武汉</b>
-              <span class="seat-type">一等座 &yen; 262</span>
+              <b>{{ticket.back.from_station_name + ' - ' + ticket.back.to_station_name}}</b>
+              <span class="seat-type">{{seatObj.back}} &yen; {{priceObj.back}}</span>
             </div>
           </div>
         </div>
@@ -87,10 +87,20 @@
         default: '',
         require: true
       },
+      seatObj: {
+        type: Object,
+        default: {},
+        require: false
+      },
       price: {
         type: Number,
-        default: '',
+        default: 0,
         require: true
+      },
+      priceObj: {
+        type: Object,
+        default: {},
+        require: false
       },
       trips: {
         type: String,

@@ -18,15 +18,17 @@
     name: 'trainDetail',
     data () {
       return {
-        go: '',
-        back: '',
-        goInfo: {},
-        backInfo: {}
+        goInfo: '',
+        backInfo: '',
+        goSeat: '',
+        backSeat: '',
+        bookingDate: ''
       }
     },
     methods: {
       ...mapActions('history', [
-        'getRoundTripInfo'
+        'getRoundTripInfo',
+        'recordRoundTripSeat'
       ]),
       requestTrainInfo () {
         let callback = res => {
@@ -37,13 +39,14 @@
       },
       handleOnSelectSeat (args) {
         if (args.backorgo === '去程') {
-          this.go = args.backorgo
+          this.goSeat = args.seat
         } else if (args.backorgo === '返程') {
-          this.back = args.backorgo
+          this.backSeat = args.seat
         }
       },
       OnNextStep () {
-        if (this.go === '') {
+        let { goSeat, backSeat } = this
+        if (goSeat === '') {
           this.Toast({
             message: '请选择去程坐席',
             duration: 2000,
@@ -51,7 +54,7 @@
           })
           return false
         }
-        if (this.back === '') {
+        if (backSeat === '') {
           this.Toast({
             message: '请选择返程坐席',
             duration: 2000,
@@ -59,10 +62,21 @@
           })
           return false
         }
+        // 缓存用户选择的往返坐席
+        this.recordRoundTripSeat({goSeat, backSeat})
+        let {
+          from_station,
+          to_station,
+          train_code,
+          train_no
+        } = this.$route.query
+        let { from_station_name, to_station_name } = this.goInfo
+        this.$router.push({name: 'trainOrderRoundTrip', query: {from_station, from_city: from_station_name, to_station, to_city: to_station_name, train_code, train_no, date: this.bookingDate}})
       }
     },
     created () {
       this.requestTrainInfo()
+      this.bookingDate = this.$route.query.date
     }
   }
 </script>

@@ -1,0 +1,26 @@
+@import url('../../../less/base.less');
+.trip-picker-box{
+  .go-and-back{
+    text-align: right;
+    .go-trip,.back-trip{
+      width: 56px;
+      display: inline-block;
+      margin: 0 5px;
+      >span{
+        display: block;
+        width: 54px;
+        height: 22px;
+        color: @cell-border-color;
+        border: 1px solid @cell-border-color;
+        font-size: 12px;
+        text-align: center;
+        line-height: 22px;
+        border-radius: 36px;
+      }
+      >span.active{
+        color: @theme-color;
+        border-color: @theme-color;
+      }
+    }
+  }
+}

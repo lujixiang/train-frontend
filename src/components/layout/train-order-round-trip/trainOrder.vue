@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="train-order-content">
-      <ticketCard :ticket="ticket" :seat="seatLevel" :price="ticketPrice" trips="double"></ticketCard>
+    <div class="train-round-trip-order-content">
+      <ticketCard :ticket="ticket" :seatObj="seatLevel" :priceObj="ticketPrice" trips="double"></ticketCard>
       <notice-bar rule="1234" title="购票须知"></notice-bar>
-      <passenger-v2 :ticket="ticket" :seat="seatLevel" v-on:passengerChange="handleOnPassengerChange" :action="action"></passenger-v2>
-      <template v-if="seatLevel === '商务座' || seatLevel === '一等座' || seatLevel === '二等座'">
-        <online-seat-selection trips="double" :backType="seatLevel" :goType="seatLevel" :goCountSeats="5" :backCountSeats="3" v-on:selectedSeats="handleOnSelectedSeats"></online-seat-selection>
+      <passenger-round-trip :ticket="ticket" :goSeat="seatLevel.go" :backSeat="seatLevel.back" v-on:passengerChange="handleOnPassengerChange" :action="action"></passenger-round-trip>
+      <template v-if="isAllowOnlineSeatSelect">
+        <online-seat-selection trips="double" :backType="seatLevel.back" :goType="seatLevel.go" :goCountSeats="5" :backCountSeats="3" v-on:selectedSeats="handleOnSelectedSeats"></online-seat-selection>
       </template>
       <div class="service-fee">
         <mt-cell title="服务费">
@@ -30,8 +30,12 @@
       <mt-popup v-model="isPopupActive" class="fee" position="bottom">
         <div class="seat-detail">
           <div class="seat-cell">
-            <span>{{seatLevel}}</span>
-            <span>&yen; {{ticketPrice}} &times; {{passengers.length}}</span>
+            <span>{{seatLevel.go}}</span>
+            <span>&yen; {{ticketPrice.go}} &times; {{passengers.length}}</span>
+          </div>
+          <div class="seat-cell">
+            <span>{{seatLevel.back}}</span>
+            <span>&yen; {{ticketPrice.back}} &times; {{passengers.length}}</span>
           </div>
           <div class="seat-cell">
             <span>服务费</span>
@@ -83,6 +87,16 @@
       },
       submitButtonText () {
         return this.action === 'endorse' ? '改签' : '提交'
+      },
+      isAllowOnlineSeatSelect () {
+        // 是不是允许在线选座
+        let isAllow = false
+        _.forEach(['商务座', '一等座', '二等座'], e => {
+          if (e === this.seatLevel.go || e === this.seatLevel.back) {
+            isAllow = true
+          }
+        })
+        return isAllow
       }
     },
     methods: {
@@ -91,9 +105,11 @@
         'handleIsMidnight'
       ]),
       ...mapActions('train', [
-        'getTrainInfo',
-        'getSeatInfo',
         'bookingNow'
+      ]),
+      ...mapActions('history', [
+        'getRoundTripInfo',
+        'getRoundTripSeat'
       ]),
       ...mapActions('company', [
         'getCompanySettings',
@@ -294,15 +310,15 @@
       requestTrainInfo () {
         let { date } = this.$route.query
         let callback = res => {
+          console.log(res)
           this.startTime = res.start_time
           res['bookingDate'] = moment(date).format('YYYY年MM月DD日')
           this.ticket = res
         }
-        this.getTrainInfo({callback, args: {}})
+        this.getRoundTripInfo({callback, args: {}})
       },
       handleCancelOrderId () {
         let callback = (res) => {
-          console.log(res)
           this.Toast({
             message: '订单已取消',
             position: 'bottom'
@@ -310,7 +326,6 @@
         }
         let errcallback = (err) => {
           // 取消失败
-          console.log(err)
           this.Toast({
             message: err.flagmsg,
             position: 'bottom'
@@ -321,16 +336,17 @@
       },
       getSelectedSeatInfo () {
         let callback = res => {
-          this.zwcode = res.code
-          this.zwname = res.label
-          this.ticketPrice = res.price
-          this.seatLevel = res.label
+          console.log(res)
+          this.zwcode = {go: res.goSeat.code, back: res.backSeat.code}
+          this.zwname = {go: res.goSeat.label, back: res.backSeat.label}
+          this.ticketPrice = {go: res.goSeat.price, back: res.backSeat.price}
+          this.seatLevel = {go: res.goSeat.label, back: res.backSeat.label}
         }
-        this.getSeatInfo({callback, args: {}})
+        this.getRoundTripSeat({callback, args: {}})
       },
       handleOnPassengerChange (passengers) {
         // this.totalPrice = passengers.length * (this.ticketPrice + 5)
-        this.totalPrice = Big(this.ticketPrice).plus(5).times(passengers.length).valueOf()
+        this.totalPrice = Big(this.ticketPrice.go).plus(this.ticketPrice.back).plus(5 * 2).times(passengers.length).valueOf()
         this.passengers = passengers
       }
     },
