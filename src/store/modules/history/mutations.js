@@ -1,6 +1,9 @@
 const key = require('./mutation-types')
 // const history = require('@/lib/history')
+const store = require('@/lib/localStorage')['default']
 const history2 = require('@/lib/history-v2')
+const _ = require('lodash')
+const moment = require('moment')
 const mutations = {
   [key.RECORD_SEARCH_HISTORY] (state, payload) {
     let k = payload['fromStation'] + payload['toStation']
@@ -33,11 +36,52 @@ const mutations = {
     let { go, back, callback } = payload
     if (go !== '') {
       state.roundTripForGo = go
+      store.set('train-info-go', go)
     }
     if (back !== '') {
       state.roundTripForBack = back
+      store.set('train-info-back', back)
     }
     callback()
+  },
+  [key.GET_ROUND_TRIP_INFO] (state, payload) {
+    let { callback } = payload
+    let result = {}
+    _.forEach(['go', 'back'], e => {
+      let info = JSON.parse(store.get('train-info-' + e))
+      let {
+        from_station_name,
+        to_station_name,
+        start_time,
+        arrive_time,
+        train_code,
+        run_time_text,
+        run_time,
+        date
+      } = info
+      let hm = run_time.split(':')
+      let fromDate = moment(date).format('MM月DD日')
+      let toDate = moment(date).add(hm[0], 'hour').add(hm[1], 'minute')
+      let fromWeek = moment(date).format('dddd')
+      let toWeek = toDate.format('dddd')
+      toDate = toDate.format('MM月DD日')
+      let r = {
+        from_station_name,
+        to_station_name,
+        start_time,
+        arrive_time,
+        train_code,
+        run_time_text,
+        date,
+        to_date: toDate,
+        from_date: fromDate,
+        from_week: fromWeek,
+        to_week: toWeek,
+        info: info
+      }
+      result[e] = r
+    })
+    callback(result)
   },
   [key.GET_WECHAT_JSSIGN] (state, payload) {
     let { res, callback, errcallback } = payload
