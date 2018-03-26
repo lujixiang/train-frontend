@@ -336,7 +336,6 @@
       },
       getSelectedSeatInfo () {
         let callback = res => {
-          console.log(res)
           this.zwcode = {go: res.goSeat.code, back: res.backSeat.code}
           this.zwname = {go: res.goSeat.label, back: res.backSeat.label}
           this.ticketPrice = {go: res.goSeat.price, back: res.backSeat.price}
@@ -346,7 +345,23 @@
       },
       handleOnPassengerChange (passengers) {
         // this.totalPrice = passengers.length * (this.ticketPrice + 5)
-        this.totalPrice = Big(this.ticketPrice.go).plus(this.ticketPrice.back).plus(5 * 2).times(passengers.length).valueOf()
+        let goPrice = 0
+        let backPrice = 0
+        let count = {go: [], back: []}
+        _.forEach(passengers, e => {
+          if (e.trip === 'all') {
+            count.go.push(e)
+            count.back.push(e)
+          } else if (e.trip === 'go') {
+            count.go.push(e)
+          } else if (e.trip === 'back') {
+            count.back.push(e)
+          }
+        })
+        goPrice = Big(this.ticketPrice.go).plus(5).times(count.go.length).valueOf()
+        backPrice = Big(this.ticketPrice.back).plus(5).times(count.back.length).valueOf()
+        // this.totalPrice = Big(this.ticketPrice.go).plus(this.ticketPrice.back).plus(5 * 2).times(passengers.length).valueOf()
+        this.totalPrice = Big(goPrice).plus(backPrice).valueOf()
         this.passengers = passengers
       }
     },

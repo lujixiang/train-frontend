@@ -66,8 +66,8 @@ import passengerV2 from './components/passenger-v2'
 Vue.use(passengerV2)
 import addPassenger from './components/add-passenger'
 Vue.use(addPassenger)
-// import passengerV3 from './components/passenger-v3'
-// Vue.use(passengerV3)
+import passengerRoundTrip from './components/passenger-v2-round-trip'
+Vue.use(passengerRoundTrip)
 import ticketCard from './components/ticket-card'
 Vue.use(ticketCard)
 import orderNotice from '@/components/order-notice'
@@ -102,6 +102,8 @@ import navBar from './components/nav-bar'
 Vue.use(navBar)
 import tripTip from './components/trip-tips'
 Vue.use(tripTip)
+import tripPicker from './components/trip-picker'
+Vue.use(tripPicker)
 // 为iOS添加返回事件，防止出现空白页
 
 Vue.prototype.IOSonBack = _ => {

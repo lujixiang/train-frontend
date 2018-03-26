@@ -24,6 +24,12 @@ export const recordRoundTripInfo = ({ commit }, args) => {
 export const getRoundTripInfo = ({ commit }, args) => {
   commit(key.GET_ROUND_TRIP_INFO, args)
 }
+export const recordRoundTripSeat = ({ commit }, args) => {
+  commit(key.RECORD_ROUND_TRIP_SEAT, args)
+}
+export const getRoundTripSeat = ({ commit }, args) => {
+  commit(key.GET_ROUND_TRIP_SEAT, args)
+}
 export const getWechatJSSign = ({ commit }, args) => {
   let { params, callback, errcallback } = args
   return http.post(api.getWechatJSSign, params).then(res => {

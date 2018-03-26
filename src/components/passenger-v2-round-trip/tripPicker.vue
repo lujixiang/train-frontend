@@ -70,7 +70,12 @@
           }
         } else if (this.selected === 'go') {
           if (trip === 'go') {
-            this.selected = ''
+            this.Toast({
+              message: '去程和返程必选一程',
+              position: 'bottom'
+            })
+            return false
+            // this.selected = ''
           } else if (trip === 'back') {
             this.selected = 'all'
           }
@@ -78,13 +83,18 @@
           if (trip === 'go') {
             this.selected = 'all'
           } else if (trip === 'back') {
-            this.selected = ''
+            this.Toast({
+              message: '去程和返程必选一程',
+              position: 'bottom'
+            })
+            return false
+            // this.selected = ''
           }
         } else if (this.selected === '') {
           this.selected = trip
         }
         user['trip'] = this.selected
-        // this.$emit('pickTrip', user)
+        this.$emit('pickTrip', user)
       }
     }
   }

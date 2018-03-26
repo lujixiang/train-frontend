@@ -44,6 +44,15 @@ const mutations = {
     }
     callback()
   },
+  [key.RECORD_ROUND_TRIP_SEAT] (state, payload) {
+    console.log(payload)
+    store.set('selected-seat-round-trip', payload)
+  },
+  [key.GET_ROUND_TRIP_SEAT] (state, payload) {
+    let result = JSON.parse(store.get('selected-seat-round-trip'))
+    let { callback } = payload
+    callback(result)
+  },
   [key.GET_ROUND_TRIP_INFO] (state, payload) {
     let { callback } = payload
     let result = {}

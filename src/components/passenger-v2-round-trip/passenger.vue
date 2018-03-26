@@ -34,7 +34,7 @@
             <span class="label">{{i === 0 ? '去程' : '返程'}}</span>
           </div>
         </template>
-        <trip-picker :user="item"></trip-picker>
+        <trip-picker :user="item" v-on:pickTrip="onPassengerChange"></trip-picker>
       </div>
     </template>
     <template v-if="action !== 'endorse' && action !== 'rebooking'">
