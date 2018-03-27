@@ -251,6 +251,14 @@ const mutations = {
     } else {
       errcallback(res)
     }
+  },
+  [key.BOOKING_TICKET_FOR_ROUND_TRIP] (state, payload) {
+    let { callback, errcallback, res } = payload
+    if (res.flagcode === '200') {
+      callback(res)
+    } else {
+      errcallback(res)
+    }
   }
 }
 export default mutations

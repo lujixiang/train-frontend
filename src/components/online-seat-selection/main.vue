@@ -1,13 +1,17 @@
 <template>
   <div class="online-seat-selection" :class="isPopupActive ? 'stick-to-the-top' : ''">
-    <div class="cell" :class="trips === 'double' ? 'round-trip-cell' : ''" @click="openPopup">
+    <div class="cell" :class="trips === 'double' && goCountSeats !== 0 && backCountSeats !== 0 ? 'round-trip-cell' : ''" @click="openPopup">
       <div class="left">
         <span>在线选座</span>
       </div>
       <div class="right">
         <span>{{seatsText}}</span>
-        <span class="go">去程：{{seatsGoText}}</span>
-        <span class="return">返程：{{seatsBackText}}</span>
+        <template v-if="goCountSeats !== 0">
+          <span class="go">去程：{{seatsGoText}}</span>
+        </template>
+        <template v-if="backCountSeats !== 0">
+          <span class="return">返程：{{seatsBackText}}</span>
+        </template>
       </div>
       <ykb-icon :width="12" :height="12" className="entrance" type="disclosureIndicator"></ykb-icon>
     </div>
@@ -60,72 +64,76 @@
       </template>
       <template v-else-if="trips === 'double'">
         <div class="seat-collection seat-collection-round-trip">
-          <section class="header">
-            <template v-if="goCountSeats - this.selectedGoSeats.length === 0">
-              <h2>去程席位已选好</h2>
-            </template>
-            <template v-else>
-              <h2>请选择去程<span>{{goCountSeats - this.selectedGoSeats.length}}</span>个席位</h2>
-            </template>
-          </section>
-          <section class="body">
-            <div class="aisle">
-              <span>窗户</span>
-            </div>
-            <div class="left" v-if="!isCancel">
-              <div v-for="i in (goCountSeats > 1) ? 2 : 1">
-                <template v-for="item in seats[goType]['left']">
-                  <online-seat mark="go" :count="goCountSeats" :row="i" v-on:seatClick="handleOnChooseSeat" :isOverflow="goOutOfRange" :type="item"></online-seat>
-                </template>
+          <template v-if="goCountSeats !== 0">
+            <section class="header">
+              <template v-if="goCountSeats - this.selectedGoSeats.length === 0">
+                <h2>去程席位已选好</h2>
+              </template>
+              <template v-else>
+                <h2>请选择去程<span>{{goCountSeats - this.selectedGoSeats.length}}</span>个席位</h2>
+              </template>
+            </section>
+            <section class="body">
+              <div class="aisle">
+                <span>窗户</span>
               </div>
-            </div>
-            <div class="aisle">
-              <span>过道</span>
-            </div>
-            <div class="right" v-if="!isCancel">
-              <div v-for="i in (goCountSeats > 1) ? 2 : 1">
-                <template v-for="item in seats[goType]['right']">
-                  <online-seat mark="go" :count="goCountSeats" :row="i" v-on:seatClick="handleOnChooseSeat" :isOverflow="goOutOfRange" :type="item"></online-seat>
-                </template>
+              <div class="left" v-if="!isCancel">
+                <div v-for="i in (goCountSeats > 1) ? 2 : 1">
+                  <template v-for="item in seats[goType]['left']">
+                    <online-seat mark="go" :count="goCountSeats" :row="i" v-on:seatClick="handleOnChooseSeat" :isOverflow="goOutOfRange" :type="item"></online-seat>
+                  </template>
+                </div>
               </div>
-            </div>
-            <div class="aisle">
-              <span>窗户</span>
-            </div>
-          </section>
-          <section class="header">
-            <template v-if="backCountSeats - this.selectedBackSeats.length === 0">
-              <h2>返程席位已选好</h2>
-            </template>
-            <template v-else>
-              <h2>请选择返程<span>{{backCountSeats - this.selectedBackSeats.length}}</span>个席位</h2>
-            </template>
-          </section>
-          <section class="body">
-            <div class="aisle">
-              <span>窗户</span>
-            </div>
-            <div class="left" v-if="!isCancel">
-              <div v-for="i in (backCountSeats > 1) ? 2 : 1">
-                <template v-for="item in seats[backType]['left']">
-                  <online-seat mark="back" :count="backCountSeats" :row="i" v-on:seatClick="handleOnChooseSeat" :isOverflow="backOutOfRange" :type="item"></online-seat>
-                </template>
+              <div class="aisle">
+                <span>过道</span>
               </div>
-            </div>
-            <div class="aisle">
-              <span>过道</span>
-            </div>
-            <div class="right" v-if="!isCancel">
-              <div v-for="i in (backCountSeats > 1) ? 2 : 1">
-                <template v-for="item in seats[backType]['right']">
-                  <online-seat mark="back" :count="backCountSeats" :row="i" v-on:seatClick="handleOnChooseSeat" :isOverflow="backOutOfRange" :type="item"></online-seat>
-                </template>
+              <div class="right" v-if="!isCancel">
+                <div v-for="i in (goCountSeats > 1) ? 2 : 1">
+                  <template v-for="item in seats[goType]['right']">
+                    <online-seat mark="go" :count="goCountSeats" :row="i" v-on:seatClick="handleOnChooseSeat" :isOverflow="goOutOfRange" :type="item"></online-seat>
+                  </template>
+                </div>
               </div>
-            </div>
-            <div class="aisle">
-              <span>窗户</span>
-            </div>
-          </section>
+              <div class="aisle">
+                <span>窗户</span>
+              </div>
+            </section>
+          </template>
+          <template v-if="backCountSeats !== 0">
+            <section class="header">
+              <template v-if="backCountSeats - this.selectedBackSeats.length === 0">
+                <h2>返程席位已选好</h2>
+              </template>
+              <template v-else>
+                <h2>请选择返程<span>{{backCountSeats - this.selectedBackSeats.length}}</span>个席位</h2>
+              </template>
+            </section>
+            <section class="body">
+              <div class="aisle">
+                <span>窗户</span>
+              </div>
+              <div class="left" v-if="!isCancel">
+                <div v-for="i in (backCountSeats > 1) ? 2 : 1">
+                  <template v-for="item in seats[backType]['left']">
+                    <online-seat mark="back" :count="backCountSeats" :row="i" v-on:seatClick="handleOnChooseSeat" :isOverflow="backOutOfRange" :type="item"></online-seat>
+                  </template>
+                </div>
+              </div>
+              <div class="aisle">
+                <span>过道</span>
+              </div>
+              <div class="right" v-if="!isCancel">
+                <div v-for="i in (backCountSeats > 1) ? 2 : 1">
+                  <template v-for="item in seats[backType]['right']">
+                    <online-seat mark="back" :count="backCountSeats" :row="i" v-on:seatClick="handleOnChooseSeat" :isOverflow="backOutOfRange" :type="item"></online-seat>
+                  </template>
+                </div>
+              </div>
+              <div class="aisle">
+                <span>窗户</span>
+              </div>
+            </section>
+          </template>
           <section class="bottom">
             <span>若剩余车票不能满足需求，系统将为您自动分配席位</span>
             <template v-if="outOfRange || goOutOfRange && backOutOfRange">
@@ -173,18 +181,12 @@
       goType: {
         type: String,
         default: '二等座',
-        require: false,
-        validator: (e) => {
-          return e === '二等座' || e === '商务座' || e === '一等座'
-        }
+        require: false
       },
       backType: {
         type: String,
         default: '二等座',
-        require: false,
-        validator: (e) => {
-          return e === '二等座' || e === '商务座' || e === '一等座'
-        }
+        require: false
       },
       trips: {
         type: String,

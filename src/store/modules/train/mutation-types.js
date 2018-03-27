@@ -11,6 +11,7 @@ const mt = {
   GET_SEAT_INFO: `${key}/GET_SEAT_INFO`, // 获取所选座位信息
   CLEAR_SEAT_INFO: `${key}/CLEAR_SEAT_INFO`, // 清除所选座位信息
   BOOKING_NOW: `${key}/BOOKING_NOW`, // 火车票预订
+  BOOKING_TICKET_FOR_ROUND_TRIP: `${key}/BOOKING_TICKET_FOR_ROUND_TRIP`, // 创建往返火车票订单
   GET_STANDARD_TRAIN_LIST: `${key}/GET_STANDARD_TRAIN`, // 获取符合差旅标准的车次
   GET_ALL_TRAIN_LIST: `${key}/GET_ALL_TRAIN_LIST` // 获取所有的车次
 }

@@ -53,3 +53,11 @@ export const bookingNow = ({ commit }, args) => {
     commit(key.BOOKING_NOW, {...args, res})
   })
 }
+// 创建火车票往返订单
+export const bookingRoundTrip = ({ commit }, args) => {
+  let { params } = args
+  return http.post(api.createTrainOrderForRoundTrip, params)
+  .then(res => {
+    commit(key.BOOKING_TICKET_FOR_ROUND_TRIP, {...args, res})
+  })
+}

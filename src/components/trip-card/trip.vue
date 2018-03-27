@@ -46,45 +46,6 @@
           </div>
         </template>
       </template>
-      <!-- <div class="seat-box">
-        <span class="seat-level">二等座</span>
-        <span class="price">&yen; 262</span>
-        <span class="left">3 张</span>
-        <span class="standard">
-          <ykb-icon type="iconWarn" :width="14" :height="14"></ykb-icon>
-          <span>超标</span>
-        </span>
-      </div>
-      <div class="seat-box">
-        <span class="seat-level">二等座</span>
-        <span class="price">&yen; 262</span>
-        <span class="left">3 张</span>
-        <span class="standard">
-          <ykb-icon type="iconWarn" :width="14" :height="14"></ykb-icon>
-          <span>超标</span>
-        </span>
-      </div>
-      <div class="seat-box">
-        <span class="seat-level">二等座</span>
-        <span class="price">&yen; 262</span>
-        <span class="left">3 张</span>
-        <span class="standard">
-          <ykb-icon type="iconWarn" :width="14" :height="14"></ykb-icon>
-          <span>超标</span>
-        </span>
-      </div>
-      <div class="seat-box active">
-        <span class="selected">
-          <img :src="selectedIcon">
-        </span>
-        <span class="seat-level">二等座</span>
-        <span class="price">&yen; 262</span>
-        <span class="left">3 张</span>
-        <span class="standard">
-          <ykb-icon type="iconWarn" :width="12" :height="12"></ykb-icon>
-          <span>超标</span>
-        </span>
-      </div> -->
     </div>
   </div>
 </template>

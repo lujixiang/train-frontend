@@ -52,11 +52,11 @@
           <div class="return">
             <div class="top">
               <span>
-                <img :src="goIcon">
+                <img :src="returnIcon">
               </span>
               <span>{{ticket.back.from_date}}</span>
               <span>{{ticket.back.arrive_time}}</span>
-              <span>去程</span>
+              <span>返程</span>
               <span>{{ticket.back.train_code}}</span>
             </div>
             <div class="bottom">

@@ -5,7 +5,7 @@
       <notice-bar rule="1234" title="购票须知"></notice-bar>
       <passenger-round-trip :ticket="ticket" :goSeat="seatLevel.go" :backSeat="seatLevel.back" v-on:passengerChange="handleOnPassengerChange" :action="action"></passenger-round-trip>
       <template v-if="isAllowOnlineSeatSelect">
-        <online-seat-selection trips="double" :backType="seatLevel.back" :goType="seatLevel.go" :goCountSeats="5" :backCountSeats="3" v-on:selectedSeats="handleOnSelectedSeats"></online-seat-selection>
+        <online-seat-selection trips="double" :backType="seatLevel.back" :goType="seatLevel.go" :goCountSeats="goCountSeats" :backCountSeats="backCountSeats" v-on:selectedSeats="handleOnSelectedSeats"></online-seat-selection>
       </template>
       <div class="service-fee">
         <mt-cell title="服务费">
@@ -23,7 +23,7 @@
         </span>
         <span class="booking">
            <button @click="beforeBooking">
-             {{submitButtonText}}
+             提交
            </button>
         </span>
       </div>
@@ -31,15 +31,15 @@
         <div class="seat-detail">
           <div class="seat-cell">
             <span>{{seatLevel.go}}</span>
-            <span>&yen; {{ticketPrice.go}} &times; {{passengers.length}}</span>
+            <span>&yen; {{ticketPrice.go}} &times; {{goTicketsCount}}</span>
           </div>
           <div class="seat-cell">
             <span>{{seatLevel.back}}</span>
-            <span>&yen; {{ticketPrice.back}} &times; {{passengers.length}}</span>
+            <span>&yen; {{ticketPrice.back}} &times; {{backTicketsCount}}</span>
           </div>
           <div class="seat-cell">
             <span>服务费</span>
-            <span>&yen; 5 &times; {{passengers.length}}</span>
+            <span>&yen; 5 &times; {{goTicketsCount + backTicketsCount}}</span>
           </div>
         </div>
       </mt-popup>
@@ -69,8 +69,8 @@
         passengers: [],
         isPopupActive: false,
         companySettings: {},
-        selectedSeats: {},
-        originalOrderId: ''
+        selectedSeats: {choose_seats: {}},
+        avaliableSeat: ['商务座', '一等座', '二等座']
       }
     },
     computed: {
@@ -85,18 +85,31 @@
       upOrDownIcon () {
         return require(`./images/icon-${this.isPopupActive ? 'down' : 'up'}.png`)
       },
-      submitButtonText () {
-        return this.action === 'endorse' ? '改签' : '提交'
-      },
       isAllowOnlineSeatSelect () {
         // 是不是允许在线选座
         let isAllow = false
-        _.forEach(['商务座', '一等座', '二等座'], e => {
+        _.forEach(this.avaliableSeat, e => {
           if (e === this.seatLevel.go || e === this.seatLevel.back) {
             isAllow = true
           }
         })
         return isAllow
+      },
+      goCountSeats () {
+        return this.avaliableSeat.indexOf(this.seatLevel.go) < 0 ? 0 : this.goTicketsCount
+      },
+      backCountSeats () {
+        return this.avaliableSeat.indexOf(this.seatLevel.back) < 0 ? 0 : this.backTicketsCount
+      },
+      goTicketsCount () {
+        return _.filter(this.passengers, e => {
+          return e.trip === 'all' || e.trip === 'go'
+        }).length
+      },
+      backTicketsCount () {
+        return _.filter(this.passengers, e => {
+          return e.trip === 'all' || e.trip === 'back'
+        }).length
       }
     },
     methods: {
@@ -105,7 +118,7 @@
         'handleIsMidnight'
       ]),
       ...mapActions('train', [
-        'bookingNow'
+        'bookingRoundTrip'
       ]),
       ...mapActions('history', [
         'getRoundTripInfo',
@@ -114,9 +127,6 @@
       ...mapActions('company', [
         'getCompanySettings',
         'clearDataFromLocalStorage'
-      ]),
-      ...mapActions('order', [
-        'cancelOrderByOrderId'
       ]),
       doNotShowAgain () {
         this.handleMidnightNoticeStatus({isActive: true})
@@ -128,6 +138,7 @@
         }
       },
       handleOnSelectedSeats (e) {
+        console.log(e)
         this.selectedSeats = e
       },
       beforeBooking () {
@@ -137,8 +148,7 @@
         this.handleIsMidnight({callback})
       },
       booking () {
-        let { from_station, from_city, to_station, to_city, train_no, train_code, date } = this.$route.query
-        let passengers = []
+        let passengers = {go: [], back: []}
         let isTestedThrough = true
         if (this.passengers.length === 0) {
           this.Toast({
@@ -154,29 +164,62 @@
           }
           if (item.isOuter) {
             // 外部人员可以添加其它证件
-            passengers.push({
-              passengersename: item.Name,
-              recipientphone: item.CellPhone,
-              passportseno: item.IdNo,
-              piaotype: '1',
-              piaotypename: '成人票',
-              passporttypeseid: item.idtypeid,
-              passporttypeseidname: item.idname,
-              userkey: item.UserKey,
-              isOuter: true
-            })
+            if (item.trip === 'all' || item.trip === 'go') {
+              passengers.go.push({
+                passengersename: item.Name,
+                recipientphone: item.CellPhone,
+                passportseno: item.IdNo,
+                piaotype: '1',
+                piaotypename: '成人票',
+                passporttypeseid: item.idtypeid,
+                passporttypeseidname: item.idname,
+                userkey: item.UserKey,
+                isOuter: true,
+                trip: item.trip
+              })
+            }
+            if (item.trip === 'all' || item.trip === 'back') {
+              passengers.back.push({
+                passengersename: item.Name,
+                recipientphone: item.CellPhone,
+                passportseno: item.IdNo,
+                piaotype: '1',
+                piaotypename: '成人票',
+                passporttypeseid: item.idtypeid,
+                passporttypeseidname: item.idname,
+                userkey: item.UserKey,
+                isOuter: true,
+                trip: item.trip
+              })
+            }
           } else {
             // 内部默认全部为身份证类型
-            passengers.push({
-              passengersename: item.Name,
-              passportseno: item.IdNo,
-              passporttypeseid: '1',
-              passporttypeseidname: '二代身份证',
-              piaotype: '1',
-              piaotypename: '成人票',
-              recipientphone: item.CellPhone,
-              userkey: item.UserKey
-            })
+            if (item.trip === 'all' || item.trip === 'go') {
+              passengers.go.push({
+                passengersename: item.Name,
+                passportseno: item.IdNo,
+                passporttypeseid: '1',
+                passporttypeseidname: '二代身份证',
+                piaotype: '1',
+                piaotypename: '成人票',
+                recipientphone: item.CellPhone,
+                userkey: item.UserKey,
+                trip: item.trip
+              })
+            }
+            if (item.trip === 'all' || item.trip === 'back') {
+              passengers.back.push({
+                passengersename: item.Name,
+                passportseno: item.IdNo,
+                passporttypeseid: '1',
+                passporttypeseidname: '二代身份证',
+                piaotype: '1',
+                piaotypename: '成人票',
+                recipientphone: item.CellPhone,
+                userkey: item.UserKey,
+                trip: item.trip
+              })
+            }
           }
         })
         if (!isTestedThrough) {
@@ -188,100 +231,70 @@
           return false
         }
         // create（创建普通订单）\createChange（创建改签订单）
-        let createType
-        let orderid
-        let ticketChangeInfo = []
-        if (this.action === 'endorse') {
-          // 改签
-          createType = 'createChange'
-          orderid = this.$store.state.company.companySettings.orderId
-          _.forEach(this.$store.state.order.orderDetail.train_passenger, p => {
-            if (p.endorse) {
-              ticketChangeInfo.push(p)
-            }
-          })
-        } else if (this.action === 'rebooking') {
-          orderid = this.$store.state.company.companySettings.orderId
-          createType = 'rebooking'
-        } else {
-          createType = 'create'
-        }
-        let selectedSeats = this.selectedSeats
+        let { selectedSeats, ticket } = this
         let params = {
-          train_date: date,
-          train_no,
-          train_code,
-          traintime: date + ' ' + this.startTime,
-          from_station_code: from_station,
-          from_station_name: from_city,
-          to_station_code: to_station,
-          to_station_name: to_city,
-          zwcode: this.zwcode,
-          zwname: this.zwname,
-          price: this.ticketPrice,
-          orderamount: this.totalPrice,
-          isneedinsure: false,
-          serviceprovider_flag: 'HTHY',
-          passengers: JSON.stringify(passengers),
-          ticket: JSON.stringify(this.ticket),
-          createType,
-          orderid,
-          ticket_change_info: JSON.stringify(ticketChangeInfo),
-          is_choose_seats: false,
-          choose_seats: '',
-          ...selectedSeats
+          go: JSON.stringify({
+            train_date: moment(this.ticket.go.date).format('YYYY-MM-DD'),
+            train_no: ticket.go.info.train_no,
+            train_code: ticket.go.info.train_code,
+            traintime: ticket.go.date,
+            from_station_code: ticket.go.info.from_station_code,
+            from_station_name: ticket.go.info.from_station_name,
+            to_station_code: ticket.go.info.to_station_code,
+            to_station_name: ticket.go.info.to_station_name,
+            zwcode: this.zwcode.go,
+            zwname: this.zwname.go,
+            price: this.ticketPrice.go,
+            orderamount: this.totalPrice,
+            isneedinsure: false,
+            serviceprovider_flag: 'HTHY',
+            passengers: passengers.go,
+            ticket: ticket.go,
+            createType: 'create',
+            is_choose_seats: false,
+            choose_seats: selectedSeats.choose_seats.gchooseSeats || ''
+          }),
+          return: JSON.stringify({
+            train_date: moment(ticket.back.date).format('YYYY-MM-DD'),
+            train_no: ticket.back.info.train_no,
+            train_code: ticket.back.info.train_code,
+            traintime: ticket.back.date,
+            from_station_code: ticket.back.info.from_station_code,
+            from_station_name: ticket.back.info.from_station_name,
+            to_station_code: ticket.back.info.to_station_code,
+            to_station_name: ticket.back.info.to_station_name,
+            zwcode: this.zwcode.back,
+            zwname: this.zwname.back,
+            price: this.ticketPrice.back,
+            orderamount: this.totalPrice,
+            isneedinsure: false,
+            serviceprovider_flag: 'HTHY',
+            passengers: passengers.back,
+            ticket: ticket.back,
+            createType: 'create',
+            is_choose_seats: false,
+            choose_seats: selectedSeats.choose_seats.bchooseSeats || ''
+          })
         }
-        if (this.companySettings.action === '3') {
-          params['order_id'] = this.companySettings.orderId
-        }
+        console.log(params)
         const callback = res => {
           let result = res
           // 创建订单成功
           let applyType = 15
           let { action } = this.companySettings
-          if (action === 'endorse' || action === 'rebooking') {
-            if (result.flagcode === '200') {
-              this.originalOrderId = result.orderid
-              if (result.actionType === '0') {
-                let successText = ''
-                if (action === 'endorse') {
-                  successText = G.ENDORSE_SUCCESS_TEXT
-                } else if (action === 'rebooking') {
-                  successText = G.REBOOKING_SUCCESS_TEXT
-                }
-                // 改签提交成功
-                this.MessageBox.alert(successText, {title: '提示', confirmButtonText: '查看我的订单'})
-                .then(action => {
-                  // 查看我的订单
-                  window.location.href = G.Base64.decode(this.companySettings.returnURL)
-                })
-              } else if (result.actionType === '1') {
-                // 调回出差申请单
-                this.MessageBox.alert(G.NEED_APPROVAL_TEXT, {title: '提示', confirmButtonText: '提交审批', cancelButtonText: '取消订单', showCancelButton: true})
-                .then(action => {
-                  if (action === 'confirm') {
-                    let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
-                    window.location.href = jumpto
-                  } else if (action === 'cancel') {
-                    this.handleCancelOrderId()
-                    return false
-                  }
-                })
-              }
-            }
-          } else {
-            if (action === '1') {
-              applyType = 15
-            } else if (action === '2') {
-              applyType = 14
-            } else if (action === '3') {
-              applyType = 14
-            }
-            // 预订成功后删除traveller,防止下次进来后默认是非当前用户
-            this.clearDataFromLocalStorage(['traveler'])
-            let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
-            window.location.href = jumpto
+          if (action === '1') {
+            applyType = 15
+          } else if (action === '2') {
+            applyType = 14
+          } else if (action === '3') {
+            applyType = 14
           }
+          console.log(applyType, action, G)
+          console.log(result)
+          // 预订成功后删除traveller,防止下次进来后默认是非当前用户
+          // this.clearDataFromLocalStorage(['traveler'])
+          // let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
+          // window.location.href = jumpto
         }
         const errcallback = e => {
           this.Toast({
@@ -289,50 +302,20 @@
             position: 'bottom'
           })
         }
-        if (this.action === 'endorse') {
-          // 改签需要弹框二次确认
-          this.MessageBox.confirm(G.ENDORSE_TEXT, {title: '提示', confirmButtonText: '继续改签', cancelButtonText: '取消改签', showCancelButton: true})
-          .then(action => {
-            console.log('是不是走到这里了')
-            this.bookingNow({params, callback, errcallback})
-            // 继续预订
-          }).catch(e => {
-            // 取消，关闭弹窗
-            return false
-          })
-        } else {
-          this.bookingNow({params, callback, errcallback})
-        }
+        this.bookingRoundTrip({params, callback, errcallback})
       },
       priceDetail () {
         this.isPopupActive = !this.isPopupActive
       },
       requestTrainInfo () {
-        let { date } = this.$route.query
+        // let { date } = this.$route.query
         let callback = res => {
           console.log(res)
-          this.startTime = res.start_time
-          res['bookingDate'] = moment(date).format('YYYY年MM月DD日')
+          // this.startTime = res.start_time
+          // res['bookingDate'] = moment(date).format('YYYY年MM月DD日')
           this.ticket = res
         }
         this.getRoundTripInfo({callback, args: {}})
-      },
-      handleCancelOrderId () {
-        let callback = (res) => {
-          this.Toast({
-            message: '订单已取消',
-            position: 'bottom'
-          })
-        }
-        let errcallback = (err) => {
-          // 取消失败
-          this.Toast({
-            message: err.flagmsg,
-            position: 'bottom'
-          })
-        }
-        let orderid = this.originalOrderId
-        this.cancelOrderByOrderId({callback, errcallback, args: {orderid}})
       },
       getSelectedSeatInfo () {
         let callback = res => {
@@ -360,16 +343,11 @@
         })
         goPrice = Big(this.ticketPrice.go).plus(5).times(count.go.length).valueOf()
         backPrice = Big(this.ticketPrice.back).plus(5).times(count.back.length).valueOf()
-        // this.totalPrice = Big(this.ticketPrice.go).plus(this.ticketPrice.back).plus(5 * 2).times(passengers.length).valueOf()
         this.totalPrice = Big(goPrice).plus(backPrice).valueOf()
         this.passengers = passengers
       }
     },
     created () {
-      if (this.$store.state.company.companySettings && this.$store.state.company.companySettings.action === 'endorse') {
-        // 如果是改签则修改title
-        this.$route.meta.title = '改签'
-      }
       this.getCompanySettings({
         callback: res => {
           this.companySettings = res

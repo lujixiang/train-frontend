@@ -9,6 +9,8 @@ module.exports = {
   getUserInfoByToken: '/ykb_train/get_user_info_by_token',
   // 创建本地订单,改签
   createTrainOrder: '/ykb_train/createdTrainOrder',
+  // 创建往返订单
+  createTrainOrderForRoundTrip: '/ykb_train/createdReturnTrainOrder',
   // 根据token获取公司人员列表
   getCompanyUserList: '/ykb_train/get_company_staffs_by_token',
   // 根据城市名称获取火车站code
