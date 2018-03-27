@@ -6,10 +6,10 @@
       </div>
       <div class="right">
         <span>{{seatsText}}</span>
-        <template v-if="goCountSeats !== 0">
+        <template v-if="goCountSeats !== 0 && seatsGoText !== ''">
           <span class="go">去程：{{seatsGoText}}</span>
         </template>
-        <template v-if="backCountSeats !== 0">
+        <template v-if="backCountSeats !== 0 && seatsBackText !== ''">
           <span class="return">返程：{{seatsBackText}}</span>
         </template>
       </div>

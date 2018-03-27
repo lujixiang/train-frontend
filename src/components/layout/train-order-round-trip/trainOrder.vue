@@ -276,11 +276,7 @@
         this.isPopupActive = !this.isPopupActive
       },
       requestTrainInfo () {
-        // let { date } = this.$route.query
         let callback = res => {
-          console.log(res)
-          // this.startTime = res.start_time
-          // res['bookingDate'] = moment(date).format('YYYY年MM月DD日')
           this.ticket = res
         }
         this.getRoundTripInfo({callback, args: {}})

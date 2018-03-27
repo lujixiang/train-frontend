@@ -157,7 +157,6 @@
         this.selectedSeatLabel = seat.label
         const backorgo = this.backorgo
         this.$emit('selected', {seat, backorgo})
-        console.log(seat)
         // console.log(this.$props.info)
       }
     },

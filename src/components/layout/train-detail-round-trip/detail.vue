@@ -21,8 +21,7 @@
         goInfo: '',
         backInfo: '',
         goSeat: '',
-        backSeat: '',
-        bookingDate: ''
+        backSeat: ''
       }
     },
     methods: {
@@ -64,19 +63,11 @@
         }
         // 缓存用户选择的往返坐席
         this.recordRoundTripSeat({goSeat, backSeat})
-        let {
-          from_station,
-          to_station,
-          train_code,
-          train_no
-        } = this.$route.query
-        let { from_station_name, to_station_name } = this.goInfo
-        this.$router.push({name: 'trainOrderRoundTrip', query: {from_station, from_city: from_station_name, to_station, to_city: to_station_name, train_code, train_no, date: this.bookingDate}})
+        this.$router.push({name: 'trainOrderRoundTrip', query: {}})
       }
     },
     created () {
       this.requestTrainInfo()
-      this.bookingDate = this.$route.query.date
     }
   }
 </script>

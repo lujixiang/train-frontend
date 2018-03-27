@@ -45,7 +45,6 @@ const mutations = {
     callback()
   },
   [key.RECORD_ROUND_TRIP_SEAT] (state, payload) {
-    console.log(payload)
     store.set('selected-seat-round-trip', payload)
   },
   [key.GET_ROUND_TRIP_SEAT] (state, payload) {
