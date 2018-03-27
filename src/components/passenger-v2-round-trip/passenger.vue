@@ -2,7 +2,6 @@
   <div class="passenger-content">
     <template v-for="item in this.passengers">
       <div class="passengers">
-        <!-- {{item.UserKey}} -->
         <div class="person-info">
           <div class="info">
             <div class="user">
@@ -290,10 +289,10 @@
           let trainType = ''
           let seat = ''
           if (args === 'go') {
-            trainType = this.$props.ticket.go.info
+            trainType = this.$props.ticket.go.info.train_type
             seat = this.$props.goSeat
           } else if (args === 'back') {
-            trainType = this.$props.ticket.back.info
+            trainType = this.$props.ticket.back.info.train_type
             seat = this.$props.backSeat
           }
           this.isStandardSeat({label: seat, trainType, callback})

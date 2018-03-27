@@ -64,7 +64,6 @@
         seatLevel: '',
         zwcode: '',
         zwname: '',
-        startTime: '',
         totalPrice: 0,
         passengers: [],
         isPopupActive: false,
@@ -138,7 +137,6 @@
         }
       },
       handleOnSelectedSeats (e) {
-        console.log(e)
         this.selectedSeats = e
       },
       beforeBooking () {
@@ -162,63 +160,33 @@
           if (item.IdNo === '' || !item.IdNo) {
             isTestedThrough = false
           }
+          let passenger = {
+            passengersename: item.Name,
+            recipientphone: item.CellPhone,
+            passportseno: item.IdNo,
+            piaotype: '1',
+            piaotypename: '成人票',
+            passporttypeseid: item.idtypeid,
+            passporttypeseidname: item.idname,
+            userkey: item.UserKey,
+            isOuter: true,
+            trip: item.trip
+          }
           if (item.isOuter) {
             // 外部人员可以添加其它证件
             if (item.trip === 'all' || item.trip === 'go') {
-              passengers.go.push({
-                passengersename: item.Name,
-                recipientphone: item.CellPhone,
-                passportseno: item.IdNo,
-                piaotype: '1',
-                piaotypename: '成人票',
-                passporttypeseid: item.idtypeid,
-                passporttypeseidname: item.idname,
-                userkey: item.UserKey,
-                isOuter: true,
-                trip: item.trip
-              })
+              passengers.go.push(passenger)
             }
             if (item.trip === 'all' || item.trip === 'back') {
-              passengers.back.push({
-                passengersename: item.Name,
-                recipientphone: item.CellPhone,
-                passportseno: item.IdNo,
-                piaotype: '1',
-                piaotypename: '成人票',
-                passporttypeseid: item.idtypeid,
-                passporttypeseidname: item.idname,
-                userkey: item.UserKey,
-                isOuter: true,
-                trip: item.trip
-              })
+              passengers.back.push(passenger)
             }
           } else {
             // 内部默认全部为身份证类型
             if (item.trip === 'all' || item.trip === 'go') {
-              passengers.go.push({
-                passengersename: item.Name,
-                passportseno: item.IdNo,
-                passporttypeseid: '1',
-                passporttypeseidname: '二代身份证',
-                piaotype: '1',
-                piaotypename: '成人票',
-                recipientphone: item.CellPhone,
-                userkey: item.UserKey,
-                trip: item.trip
-              })
+              passengers.go.push({...passenger, passporttypeseidname: '二代身份证', passporttypeseid: '1', piaotypename: '成人票'})
             }
             if (item.trip === 'all' || item.trip === 'back') {
-              passengers.back.push({
-                passengersename: item.Name,
-                passportseno: item.IdNo,
-                passporttypeseid: '1',
-                passporttypeseidname: '二代身份证',
-                piaotype: '1',
-                piaotypename: '成人票',
-                recipientphone: item.CellPhone,
-                userkey: item.UserKey,
-                trip: item.trip
-              })
+              passengers.back.push({...passenger, passporttypeseidname: '二代身份证', passporttypeseid: '1', piaotypename: '成人票'})
             }
           }
         })
@@ -234,7 +202,7 @@
         let { selectedSeats, ticket } = this
         let params = {
           go: JSON.stringify({
-            train_date: moment(this.ticket.go.date).format('YYYY-MM-DD'),
+            train_date: moment(ticket.go.date).format('YYYY-MM-DD'),
             train_no: ticket.go.info.train_no,
             train_code: ticket.go.info.train_code,
             traintime: ticket.go.date,

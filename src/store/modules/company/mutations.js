@@ -145,14 +145,18 @@ const mutations = {
   },
   [key.IS_STANDARD_SEAT] (state, payload) {
     let { trainType, label, callback } = payload
+    let trainTypeLabel
     if (trainType === 'C' || trainType === 'G') {
       // 高铁标准
       trainType = 'G'
+      trainTypeLabel = '高铁'
     } else if (trainType === 'D') {
       // 动车标准
       trainType = 'D'
+      trainTypeLabel = '动车'
     } else {
       // 其他车次标准
+      trainTypeLabel = '其他'
       trainType = 'O'
     }
     let standard = JSON.parse(store.get('travel-standard')) || {list: []}
@@ -169,27 +173,8 @@ const mutations = {
             callback({isStandard: true, detail: g.standardText.SEAT.STANDARD})
           } else {
             // 找到对应的车次，但是没有找到对应车次的座席
-            let detail = ''
-            _.forEach(standard.list, item => {
-              let seattpes = item.seattype
-              // 硬座;软卧;硬卧;
-              // seattpes = seattpes.split(';')
-              if (item.traintype === 'D') {
-                // detail += '不是动车（' + seattpes.join('、') + '）'
-                detail += '不是动车（' + seattpes.replace(/座;/g, '/') + '）'
-              } else if (item.traintype === 'G') {
-                // detail += '不是高铁（' + seattpes.join('、') + '）'
-                detail += '不是高铁（' + seattpes.replace(/座;/g, '/') + '）'
-              } else if (item.traintype === 'O') {
-                // detail += '不是其他（' + seattpes.join('、') + '）'
-                detail += '不是其他（' + seattpes.replace(/座;/g, '/') + '）'
-              }
-            })
-            detail = detail.split('不是')
-            detail.shift()
-            detail = '不是' + detail.join('或')
+            let detail = trainTypeLabel + label + '不符合您的差旅标准'
             callback({isStandard: false, detail})
-            // callback({isStandard: false, detail: g.standardText.SEAT.OUT_OF_STANDARD})
           }
         } else {
           if (item.seattype === '') {
@@ -199,22 +184,8 @@ const mutations = {
             if (seats === label) {
               callback({isStandard: true, detail: g.standardText.SEAT.STANDARD})
             } else {
-              let detail = ''
-              _.forEach(standard.list, item => {
-                let seattype = item.seattype.replace(/座;/g, '/')
-                if (item.traintype === 'D') {
-                  detail += '不是动车（' + seattype + '）'
-                } else if (item.traintype === 'G') {
-                  detail += '不是高铁（' + seattype + '）'
-                } else {
-                  detail += '不是其他（' + seattype + '）'
-                }
-              })
-              detail = detail.split('不是')
-              detail.shift()
-              detail = '不是' + detail.join('或')
+              let detail = trainTypeLabel + label + '不符合您的差旅标准'
               callback({isStandard: false, detail})
-              // callback({isStandard: false, detail: g.standardText.SEAT.OUT_OF_STANDARD})
             }
           }
         }
