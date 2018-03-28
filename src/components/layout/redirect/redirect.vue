@@ -43,11 +43,11 @@
           orderId 原火车票的订单id
           data 时间，格式YYYY-MM-DD
           action 动作，1从云快报默认进入火车票；2从从出差申请单非重选的情况下跳到火车票；3从出差申请单重选跳到火车票；
-                       endorse改签,rebooking再次预订（预订失败，再次预订）
+                       endorse改签,rebooking再次预订（预订失败，再次预订）,roundtrip(往返)
           示例：
             1）其他 ---> 跳转 ---> 火车票
             云快报跳到火车票
-            /#/redirect?token=MDI0NTg0OWZlOTBjZDRjODc5YzgzZDI3YzI0Mzc4ZjM=&fromCity=上海&toCity=苏州&action=2&date=2017-11-28&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0
+            /#/redirect?token=NzE4OWM3YzRiMjljZThmOWJjZGYzM2YyYzY4YWY1NDc=&fromCity=上海&toCity=苏州&action=roundtrip&date=2017-11-28&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0
 
             出差申请单跳到火车票(非重选)
             ..../#/redirect?token=ZWY4NjQ0OTBhZmI0MmFiZDViYTc0MzBlMGU2MmRlMjM=&action=2&date=2017-11-21&returnURL=www.baidu.com&callbackURL=www.baidu.com&fromCity=上海&toCity=苏州&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0

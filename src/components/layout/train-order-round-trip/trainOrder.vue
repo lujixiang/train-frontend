@@ -257,12 +257,10 @@
           } else if (action === '3') {
             applyType = 14
           }
-          console.log(applyType, action, G)
-          console.log(result)
           // 预订成功后删除traveller,防止下次进来后默认是非当前用户
-          // this.clearDataFromLocalStorage(['traveler'])
-          // let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
-          // window.location.href = jumpto
+          this.clearDataFromLocalStorage(['traveler'])
+          let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&goOrderId=' + result.goOrderid + 'returnOrderId=' + result.returnOrderid
+          window.location.href = jumpto
         }
         const errcallback = e => {
           this.Toast({
