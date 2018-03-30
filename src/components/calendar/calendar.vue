@@ -181,6 +181,8 @@
         return node
       },
       addClassForDurationNode (args) {
+        // 防止node越来越多（都是些重复的数据）
+        this.durationDates = []
         let { fromDate, toDate } = args
         _.forEach(this.dates, lineArr => {
           _.forEach(lineArr, val => {
@@ -199,6 +201,23 @@
         })
       },
       onClose () {
+        // 在选择多日期的时候，关闭弹窗之前需要先判断是否已经选择了往返日期，如果只选择一个或者没有选择因该强制让用户选择完
+        if (this.$props.model === 'multi') {
+          if (this.startDate === '') {
+            this.Toast({
+              message: '请选择出发日期',
+              position: 'bottom'
+            })
+            return false
+          }
+          if (this.endDate === '') {
+            this.Toast({
+              message: '请选择返程日期',
+              position: 'bottom'
+            })
+            return false
+          }
+        }
         this.$emit('onClickBackButton')
       },
       handleSingleDateModel (node) {

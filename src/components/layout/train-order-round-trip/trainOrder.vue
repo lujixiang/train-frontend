@@ -259,7 +259,7 @@
           }
           // 预订成功后删除traveller,防止下次进来后默认是非当前用户
           this.clearDataFromLocalStorage(['traveler'])
-          let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&goOrderId=' + result.goOrderid + 'returnOrderId=' + result.returnOrderid
+          let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&goOrderId=' + result.goOrderid + '&returnOrderId=' + result.returnOrderid
           window.location.href = jumpto
         }
         const errcallback = e => {
