@@ -3,9 +3,6 @@
     <div class="train-list-container">
       <datePickerPreviousNext v-on:onDateClicked="handleOnDateClicked" v-on:onChangeDate="handleOnChangeDate"></datePickerPreviousNext>
       <div class="train-list-box">
-        <!-- <template v-if="this.$store.state.history.roundTripForGo !== ''">
-          <trip-tip :info="this.$store.state.history.roundTripForGo"></trip-tip>
-        </template> -->
         <article>
           <template v-if="this.$store.state.train.trainlist.length > 0">
             <ul>
@@ -236,14 +233,14 @@
     },
     beforeCreate () {
       let { fromCity, toCity, trip } = this.$route.query
-      let roundTripText = trip === 'go' ? '去程：' : '返程：'
+      let roundTripText = trip === 'go' ? '去程：' : ''
       this.$route.meta.title = roundTripText + fromCity + ' - ' + toCity
     },
     created () {
       // 获取公司配置
       this.getCompanySettings()
       let { fromCity, toCity, trip } = this.$route.query
-      let roundTripText = trip === 'go' ? '去程：' : '返程：'
+      let roundTripText = trip === 'go' ? '去程：' : ''
       this.$route.meta.title = roundTripText + fromCity + ' - ' + toCity
     },
     mounted () {

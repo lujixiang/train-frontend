@@ -165,7 +165,6 @@ export default {
       this.toStation = args.toStation
     },
     onCityChange (data) {
-      this.isCityChange = true
       if (data.fromOrTo === 'to') {
         this.toCity = data.city[0]
         this.toStation = data.city[4]
@@ -180,7 +179,6 @@ export default {
       }
     },
     onDateChange (data) {
-      this.isCityChange = true
       if (data.type === 'single') {
         this.fromDate = data.startDate.moment.format('YYYY-MM-DD')
       } else if (data.type === 'multi') {
@@ -229,6 +227,9 @@ export default {
     handleOnTabSwitch (e) {
       if (e.key === 'double') {
         this.tripModel = 'multi'
+        if (this.toDate === '') {
+          this.toDate = moment(Date.now()).add(1, 'day').format('YYYY-MM-DD')
+        }
       } else if (e.key === 'single') {
         this.tripModel = 'single'
       }
