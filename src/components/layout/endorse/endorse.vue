@@ -67,7 +67,6 @@ http://www.12306.cn/mormhweb/tlcs/201505/t20150512_16631.html
         let errcallback = err => {
           console.log(err)
         }
-        // let args = { orderid: '201711061719027580' }
         let { userkeys, orderId } = this.$route.query
         let args = {orderid: orderId, userkeys}
         this.getOrderDetailByOrderId({args, callback, errcallback})

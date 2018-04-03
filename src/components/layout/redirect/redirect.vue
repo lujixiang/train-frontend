@@ -35,35 +35,32 @@
       },
       requestUserByToken () {
         /*
-          fromCity 出发城市
-          toCity 到达城市
-          token  用户的token
-          callbackURL  创建完订单返回的地址
-          returnURL 手动返回到出差申请单的地址
-          orderId 原火车票的订单id
-          data 时间，格式YYYY-MM-DD
-          action 动作，1从云快报默认进入火车票；2从从出差申请单非重选的情况下跳到火车票；3从出差申请单重选跳到火车票；
-                       endorse改签,rebooking再次预订（预订失败，再次预订）,roundtrip(往返)
+          fromCity 出发城市（非必传）
+          toCity 到达城市（非必传）
+          token  用户的token（必传）
+          callbackURL  创建完订单返回的地址（必传参数）
+          returnURL 手动返回到出差申请单的地址（必传参数，不然到首页点击返回无法返回）
+          orderId 原火车票的订单id（改签的时候必传参数）
+          date 时间，格式YYYY-MM-DD，出行时间（非必传）
+          version 版本控制参数；v1,默认只是单程；v2支持往返（非必传，默认值只支持单程；对于不同的项目对接，有些支持单程，有些支持往返）
+          userkeys 改签人员的userkey（改签的时候必传）
+          action 动作，endorse改签,rebooking再次预订（预订失败，再次预订）,booking正常流程预订（出差申请单重选，云快报或第三方默认进入火车票）
+          说明：
+              改签走的是单程流程，所以改签的时候version不起作用
+              退票直接在我的订单中心操作，火车票无需考虑
+              出差申请单内火车票重选无论是单程还是往返双程都是直接跳转到首页；跟action为booking的时候一个效果
+              预订失败以后在我的订单中的重新预订则是跳到火车票列表（version参数不起作用【按照默认值v1的情况走流程】，这个地方的重新预订是直接跳到列表页）
+
           示例：
             1）其他 ---> 跳转 ---> 火车票
             云快报跳到火车票
-            /#/redirect?token=NzE4OWM3YzRiMjljZThmOWJjZGYzM2YyYzY4YWY1NDc=&fromCity=上海&toCity=苏州&action=1&date=2017-11-28&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0
+            /#/redirect?token=MjFjNTdhYTgwMjZlMDMwMjRiOGZmOTNhMzFhNTJkZTg=&fromCity=武汉&toCity=苏州&action=booking&date=2017-11-28&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2
 
             出差申请单跳到火车票(非重选)
             ..../#/redirect?token=ZWY4NjQ0OTBhZmI0MmFiZDViYTc0MzBlMGU2MmRlMjM=&action=2&date=2017-11-21&returnURL=www.baidu.com&callbackURL=www.baidu.com&fromCity=上海&toCity=苏州&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0
-            出差申请单跳到火车票(重选)
-            .../#/redirect?token=NGRiNGM1MmY4OWI5NTE3YjAzNzRjMDU4ZTNiMDVhN2M=&action=3&date=2017-09-11&returnURL=XXX&callbackURL=XXX&fromCity=上海&toCity=苏州&orderId=201709051341006251
-
-            2）火车票 ---> 跳转 ---> 出差申请单
-            火车票跳到出差申请单（手动返回）
-            returnURL + 'applyType=6' + '&data=' + {火车票本地创建的订单json数据} + '&type=train'
-            火车票跳到出差申请单（重选和非重选）
-            returnURL + 'applyType=14' + '&data=' + {火车票本地创建的订单json数据} + '&type=train'
-            三种情况：首页火车票下单完成进出差申请单applytype=15；出差申请单选/重选14，火车票返回操作跳到出差申请单6
-
             改签：
             token,action,callbackURL,returnURL,companyId,cooperatorId,orderId,userkeys
-            /#/redirect?token=ZmVlNTk4NTUxMjRkZGJjYWJjMmE4NDliZGY5YWFiODM=&action=endorse&callbackURL=aHR0cDovL2VudHdlY2hhdG1vYi41MXlrYi5jb20vRmVlQmVsb25nL0FwcGx5=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180315103907444552&userkeys=966a2fc6-191e-c7e2-cd5b-08d46436d5f0
+            /#/redirect?token=MjFjNTdhYTgwMjZlMDMwMjRiOGZmOTNhMzFhNTJkZTg=&action=endorse&callbackURL=aHR0cDovL2VudHdlY2hhdG1vYi41MXlrYi5jb20vRmVlQmVsb25nL0FwcGx5=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180315103907444552&userkeys=966a2fc6-191e-c7e2-cd5b-08d46436d5f0
             重新预订
             /#/redirect?token=ZWY3ZTg5ZGI2NDg2ODhlZTU1OTg2OGEwOTFlNzI3Mzc=&action=rebooking&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20171227155810762162&fromCity=上海&toCity=苏州&date=2017-12-29
         */
@@ -119,7 +116,7 @@
         })
       },
       process () {
-        let { fromCity, toCity, action, date, userkeys, orderId } = this.$route.query
+        let { fromCity, toCity, action, date, userkeys, orderId, version } = this.$route.query
         if (moment(date).isBefore(moment())) {
           // 如果传过来的日期是在当前日期之前，则默认赋值为当前日期
           date = moment().format('YYYY-MM-DD')
@@ -131,46 +128,49 @@
           return this.requestTravelStandard({user: res})
         })
         .then(res => {
-          if (action === '1') {
-            // 从云快报app直接进入火车票的时候，进入默认首页
-            this.Indicator.close()
-            this.$router.replace({name: 'Content'})
-          } else if (action === 'endorse') {
+          // 如果是改签就直接不需要进行version判断了，直接进入改签页面
+          if (action === 'endorse') {
             // 从我的订单发起改签操作，处理改签的逻辑
             this.Indicator.close()
             this.$router.replace({name: 'endorse', query: {userkeys, orderId}})
-          } else {
-            return this.getCityCode()
+            return false
           }
+          return this.getCityCode()
         })
         .then(res => {
-          if (action === '2') {
-            this.Indicator.close()
-            // 跳转到首页，并且加上参数
-            this.$router.replace({name: 'Content', query: {fromCity, toCity, date, trainType: 0, fromStation: res.from_station.station_code, toStation: res.to_station.station_code}})
-          } else if (action === '3') {
-            // 跳转到列表页
-            this.Indicator.close()
-            this.$router.replace({name: 'TrainList', query: {fromCity, toCity, date, trainType: 0, fromStation: res.from_station.station_code, toStation: res.to_station.station_code}})
-          } else if (action === 'rebooking') {
+          if (action === 'rebooking') {
             // 再次预订(预订失败，再次预订)
             this.Indicator.close()
             this.$router.replace({name: 'TrainList', query: {fromCity, toCity, date, trainType: 0, fromStation: res.from_station.station_code, toStation: res.to_station.station_code}})
+            return false
+          }
+          if (version === 'v1') {
+            if (action === 'booking') {
+              this.Indicator.close()
+              // 跳转到首页，并且加上参数
+              this.$router.replace({name: 'Content', query: {fromCity, toCity, date, trainType: 0, fromStation: res.from_station.station_code, toStation: res.to_station.station_code}})
+            }
+          } else if (version === 'v2') {
+            if (action === 'booking') {
+              this.Indicator.close()
+              this.$router.replace({name: 'ContenRoundTrip', query: {fromCity, toCity, date, trainType: 0, fromStation: res.from_station.station_code, toStation: res.to_station.station_code}})
+            }
           }
         })
         .catch(err => {
           console && console.log(err)
           // 这个时候不管遇到什么错误我都会跳到首页
           this.Indicator.close()
-          this.$router.replace({name: 'Content'})
+          if (version === 'v2') {
+            this.$router.replace({name: 'ContentRoundTrip'})
+          } else {
+            this.$router.replace({name: 'Content'})
+          }
         })
       }
     },
     created () {
-      this.Indicator.open({
-        text: '用户校验中...',
-        spinnerType: 'fading-circle'
-      })
+      this.Indicator.open()
       this.process()
     }
   }

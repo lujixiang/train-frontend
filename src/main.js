@@ -113,7 +113,7 @@ Vue.prototype.IOSonBack = _ => {
       // 关闭弹窗
       return '_CLOSE_POPUP_LAYER_'
     } else {
-      if (window.VueInstance._route && window.VueInstance._route.path === '/') {
+      if (window.VueInstance._route && (window.VueInstance._route.path === '/' || window.VueInstance._route.path === '/v2')) {
         const companySettings = JSON.parse(sessionStore.get('company-settings')) || {}
         if (companySettings && companySettings.returnURL) {
           window.location.href = G.Base64.decode(companySettings.returnURL)

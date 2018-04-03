@@ -248,18 +248,9 @@
         const callback = res => {
           let result = res
           // 创建订单成功
-          let applyType = 15
-          let { action } = this.companySettings
-          if (action === '1') {
-            applyType = 15
-          } else if (action === '2') {
-            applyType = 14
-          } else if (action === '3') {
-            applyType = 14
-          }
           // 预订成功后删除traveller,防止下次进来后默认是非当前用户
           this.clearDataFromLocalStorage(['traveler'])
-          let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&goOrderId=' + result.goOrderid + '&returnOrderId=' + result.returnOrderid
+          let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '&type=train&goOrderId=' + result.goOrderid + '&returnOrderId=' + result.returnOrderid
           window.location.href = jumpto
         }
         const errcallback = e => {

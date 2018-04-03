@@ -221,7 +221,9 @@
         this.$emit('onClickBackButton')
       },
       handleSingleDateModel (node) {
-        this.startDate.className = ''
+        if (_.isObject(this.startDate)) {
+          this.startDate.className = ''
+        }
         node.className = 'active single'
         this.startDate = node
         this.sendMessageToParent({type: 'single', date: node})

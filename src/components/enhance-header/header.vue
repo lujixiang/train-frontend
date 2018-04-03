@@ -56,8 +56,9 @@ export default {
       if (this._leftOoptions && this._leftOoptions.preventGoBack) {
         this.$emit('clickBack')
       } else {
-        if (this.$route.path === '/') {
+        if (this.$route.path === '/' || this.$route.path === '/v2') {
           // 返回之前首先要判断是不是在微信里面如果是的话需要关闭微信。。。
+          // path 为v2，第二个版本，既有往返又有单程
           if (fun.isWechat()) {
             if (this.$store.state.company && this.$store.state.company.companySettings) {
               let returnUrl = G.Base64.decode(this.$store.state.company.companySettings.returnURL)

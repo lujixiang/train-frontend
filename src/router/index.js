@@ -10,6 +10,8 @@ const TrainDetailRoundTrip = r => require.ensure([], () => r(require('@/componen
 const trainOrder = r => require.ensure([], () => r(require('@/components/layout/train-order')['default']), 'trainorder')
 // 双程下单页
 const trainOrderRoundTrip = r => require.ensure([], () => r(require('@/components/layout/train-order-round-trip')['default']), 'trainorderroundtrip')
+// 双程首页
+const ContenRoundTrip = r => require.ensure([], () => r(require('@/components/layout/main-roundtrip')['default']), 'contentroundtrip')
 const redirect = r => require.ensure([], () => r(require('@/components/layout/redirect')['default']), 'redirect')
 const notFound = r => require.ensure([], () => r(require('@/components/layout/404')['default']), 'notfound')
 const endorse = r => require.ensure([], () => r(require('@/components/layout/endorse')['default']), 'endorse')
@@ -33,6 +35,12 @@ export default new Router({
       path: '/',
       name: 'Content',
       component: Content,
+      meta: {title: '火车票'}
+    },
+    {
+      path: '/v2',
+      name: 'ContenRoundTrip',
+      component: ContenRoundTrip,
       meta: {title: '火车票'}
     },
     {

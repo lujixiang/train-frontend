@@ -2,8 +2,10 @@
   <div>
     <div class="index-content">
       <banner></banner>
+      <nav-bar v-on:tabSwitch="handleOnTabSwitch"></nav-bar>
+      <div class="empty-block"></div>
       <city-select :departureCode="fromStation" :departure="fromCity" :arrivalCode="toStation" :arrival="toCity" v-on:onCityChange="onCityChange"></city-select>
-      <date-selectCell v-on:onDateChange="onDateChange"></date-selectCell>
+      <date-selectCell v-on:onDateChange="onDateChange" :model="tripModel"></date-selectCell>
       <div @click.stop="switchPassenger">
         <mt-cell title="出行人" class="passenger-cell text-left">
           <span class="traveller">{{traveller}}</span>
@@ -29,6 +31,8 @@
         </div>
       </div>
       <search-history :maxSize="3" v-on:onHistroyRecordClick="historyCallback"></search-history>
+      <!-- 去掉bottom -->
+      <!-- <bottom></bottom> -->
     </div>
     <index-list :isSearch="isSearch" v-on:searching="handleOnSearching" v-on:listClick="handleListClick" :active="isShowCompanyUserList" v-on:close="switchPassenger"></index-list>
     <text-alert :active="$store.state.IS_MIDNIGHT && !$store.state.IS_MIDNIGHT_NOTICED" v-on:iknow="doNotShowAgain()"></text-alert>
@@ -38,17 +42,20 @@
 <script>
 import { mapActions } from 'vuex'
 import './less/style.less'
+const moment = require('moment')
 export default {
-  name: 'content',
+  name: 'ContentRoundTrip',
   data () {
     return {
       isHighSpeedTrainOnly: false,
+      tripModel: 'single',
       traintyps: {O: '其他', G: '高铁', D: '动车'},
       fromCity: '出发地', // 设置默认的出发城市
       toCity: '目的地', // 设置默认的到达城市
       fromStation: '',
       toStation: '',
       fromDate: '', // 出发日期
+      toDate: '', // 到达日期
       record: {fromCity: '北京', toCity: '上海', fromStation: 'BJP', toStation: 'SHH'},
       recordList: [],
       traveller: '',
@@ -105,7 +112,9 @@ export default {
       let trainType = this.isHighSpeedTrainOnly ? 1 : 0
       this.record = {fromCity: this.fromCity, toCity: this.toCity, fromStation: this.fromStation, toStation: this.toStation}
       this.recordSearchHistory(this.record)
-      this.$router.push({name: 'TrainList', query: {fromCity: this.fromCity, toCity: this.toCity, date: this.fromDate, trainType, fromStation: this.fromStation, toStation: this.toStation, backDate: this.toDate, roundTrip: 'single', trip: ''}})
+      let roundTrip = this.tripModel
+      let trip = this.tripModel === 'multi' ? 'go' : ''
+      this.$router.push({name: 'TrainList', query: {fromCity: this.fromCity, toCity: this.toCity, date: this.fromDate, trainType, fromStation: this.fromStation, toStation: this.toStation, backDate: this.toDate, roundTrip, trip}})
     },
     handleOnSearching (e) {
       let value = e.value.trim().toUpperCase()
@@ -172,6 +181,9 @@ export default {
     onDateChange (data) {
       if (data.type === 'single') {
         this.fromDate = data.startDate.moment.format('YYYY-MM-DD')
+      } else if (data.type === 'multi') {
+        this.fromDate = data.startDate.moment.format('YYYY-MM-DD')
+        this.toDate = data.endDate.moment.format('YYYY-MM-DD')
       }
     },
     requestUser () {
@@ -211,6 +223,16 @@ export default {
         }
         this.getTraveler({callback, errcallback})
       })
+    },
+    handleOnTabSwitch (e) {
+      if (e.key === 'double') {
+        this.tripModel = 'multi'
+        if (this.toDate === '') {
+          this.toDate = moment(Date.now()).add(1, 'day').format('YYYY-MM-DD')
+        }
+      } else if (e.key === 'single') {
+        this.tripModel = 'single'
+      }
     }
   },
   created () {
@@ -251,6 +273,7 @@ export default {
       this.toCity = toCity
       this.record = this.$route.query
       this.fromDate = date
+      this.toDate = moment(date).add(1, 'day').format('YYYY-MM-DD')
     } else {
       // 如果已经存在历史记录，则每次返回到首页的时候按照最后一次的历史记录进行展示
       this.getSearchHistory(_ => {

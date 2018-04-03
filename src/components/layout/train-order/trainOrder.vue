@@ -221,7 +221,6 @@
         const callback = res => {
           let result = res
           // 创建订单成功
-          let applyType = 15
           let { action } = this.companySettings
           if (action === 'endorse' || action === 'rebooking') {
             if (result.flagcode === '200') {
@@ -244,7 +243,7 @@
                 this.MessageBox.alert(G.NEED_APPROVAL_TEXT, {title: '提示', confirmButtonText: '提交审批', cancelButtonText: '取消订单', showCancelButton: true})
                 .then(action => {
                   if (action === 'confirm') {
-                    let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
+                    let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
                     window.location.href = jumpto
                   } else if (action === 'cancel') {
                     this.handleCancelOrderId()
@@ -254,16 +253,9 @@
               }
             }
           } else {
-            if (action === '1') {
-              applyType = 15
-            } else if (action === '2') {
-              applyType = 14
-            } else if (action === '3') {
-              applyType = 14
-            }
             // 预订成功后删除traveller,防止下次进来后默认是非当前用户
             this.clearDataFromLocalStorage(['traveler'])
-            let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '?applyType=' + applyType + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
+            let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
             window.location.href = jumpto
           }
         }
@@ -277,7 +269,6 @@
           // 改签需要弹框二次确认
           this.MessageBox.confirm(G.ENDORSE_TEXT, {title: '提示', confirmButtonText: '继续改签', cancelButtonText: '取消改签', showCancelButton: true})
           .then(action => {
-            console.log('是不是走到这里了')
             this.bookingNow({params, callback, errcallback})
             // 继续预订
           }).catch(e => {

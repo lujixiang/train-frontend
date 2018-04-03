@@ -79,7 +79,9 @@
     props: {
       ticket: {
         type: Object,
-        default: {},
+        default: _ => {
+          return {}
+        },
         require: true
       },
       seat: {
@@ -89,7 +91,9 @@
       },
       seatObj: {
         type: Object,
-        default: {},
+        default: _ => {
+          return {}
+        },
         require: false
       },
       price: {
@@ -99,7 +103,9 @@
       },
       priceObj: {
         type: Object,
-        default: {},
+        default: _ => {
+          return {}
+        },
         require: false
       },
       trips: {
