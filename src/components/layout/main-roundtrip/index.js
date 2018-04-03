@@ -1,6 +1,6 @@
-import ContenRoundTrip from '../main/ContenRoundTrip.vue'
+import ContentRoundTrip from '../main/ContentRoundTrip.vue'
 
-ContenRoundTrip.install = (Vue) => {
-  Vue.component('ContenRoundTrip', ContenRoundTrip)
+ContentRoundTrip.install = (Vue) => {
+  Vue.component('ContentRoundTrip', ContentRoundTrip)
 }
-export default ContenRoundTrip
+export default ContentRoundTrip

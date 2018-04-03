@@ -39,7 +39,7 @@ export default new Router({
     },
     {
       path: '/v2',
-      name: 'ContenRoundTrip',
+      name: 'ContentRoundTrip',
       component: ContenRoundTrip,
       meta: {title: '火车票'}
     },

@@ -117,6 +117,9 @@
       },
       process () {
         let { fromCity, toCity, action, date, userkeys, orderId, version } = this.$route.query
+        if (!version || version === '') {
+          version = 'v1'
+        }
         if (moment(date).isBefore(moment())) {
           // 如果传过来的日期是在当前日期之前，则默认赋值为当前日期
           date = moment().format('YYYY-MM-DD')
@@ -153,7 +156,7 @@
           } else if (version === 'v2') {
             if (action === 'booking') {
               this.Indicator.close()
-              this.$router.replace({name: 'ContenRoundTrip', query: {fromCity, toCity, date, trainType: 0, fromStation: res.from_station.station_code, toStation: res.to_station.station_code}})
+              this.$router.replace({name: 'ContentRoundTrip', query: {fromCity, toCity, date, trainType: 0, fromStation: res.from_station.station_code, toStation: res.to_station.station_code}})
             }
           }
         })
