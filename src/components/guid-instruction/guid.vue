@@ -1,5 +1,5 @@
 <template>
-  <div class="guid-instruction-content">
+  <div class="guid-instruction-content" v-if="$store.state.train.guidInstruction">
     <mt-popup v-model="$store.state.train.guidInstruction" popup-transition="popup-fade">
       <span @click="dontshowagain">
         <img :src="guidImage">
@@ -24,18 +24,21 @@
       ...mapActions('train', [
         'guidInstruction'
       ]),
+      handleGuidInstruction (type) {
+        const errcallback = (err) => {
+          this.Toast({
+            message: err.flagmsg,
+            position: 'bottom'
+          })
+        }
+        this.guidInstruction({type, guidePage: 'trainOrderRoundTrip', errcallback})
+      },
       dontshowagain () {
-        this.guidInstruction({type: 'insert', guidePage: 'trainOrderRoundTrip'})
+        this.handleGuidInstruction('insert')
       }
     },
     created () {
-      const errcallback = (err) => {
-        this.Toast({
-          message: err.flagmsg,
-          position: 'bottom'
-        })
-      }
-      this.guidInstruction({type: 'get', guidePage: 'trainOrderRoundTrip', errcallback})
+      this.handleGuidInstruction('get')
     }
   }
 </script>
