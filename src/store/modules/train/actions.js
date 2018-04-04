@@ -1,6 +1,7 @@
 const key = require('./mutation-types')
 const http = require('@/lib/http')['default']
 const api = require('@/lib/api')
+const DEFAULT_ARGUMENTS = {callback: _ => {}, errcallback: _ => {}}
 export const getTrainList = ({ commit }, opt) => {
   commit(key.CLEAR_TRAIN_LIST)
   let { args } = opt
@@ -59,5 +60,13 @@ export const bookingRoundTrip = ({ commit }, args) => {
   return http.post(api.createTrainOrderForRoundTrip, params)
   .then(res => {
     commit(key.BOOKING_TICKET_FOR_ROUND_TRIP, {...args, res})
+  })
+}
+// 判断是否展示过引导页
+export const guidInstruction = ({ commit }, args) => {
+  let { type, guidePage } = args
+  let httpPromise = (type === 'insert') ? http.post(api.dontShowGuidInstruction, {guidePage}) : http.post(api.ifShowGuidInstruction, {guidePage})
+  httpPromise.then(res => {
+    commit(key.GUID_INSTRUCTION, {...DEFAULT_ARGUMENTS, ...args, res})
   })
 }

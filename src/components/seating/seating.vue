@@ -26,7 +26,6 @@
   import './less/style.less'
   import { mapActions } from 'vuex'
   const moment = require('moment')
-  // const _ = require('lodash')
   const g = require('@/definition/g')
   const seats = g.seats // _.cloneDeep(g.seats)
   export default {

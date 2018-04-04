@@ -24,5 +24,9 @@ module.exports = {
   // 是否是12306停止服务时间
   isMidnight: '/ykb_train/nightOrder',
   // 获取企业微信js签名
-  getWechatJSSign: '/ykb_train/wxApi'
+  getWechatJSSign: '/ykb_train/wxApi',
+  // 下次不在弹出引导页
+  dontShowGuidInstruction: '/ykb_train/insertTrainUserGuide',
+  // 是否显示过引导页面
+  ifShowGuidInstruction: '/ykb_train/getTrainUserGuide'
 }

@@ -104,6 +104,8 @@ import tripTip from './components/trip-tips'
 Vue.use(tripTip)
 import tripPicker from './components/trip-picker'
 Vue.use(tripPicker)
+import guidInstruction from './components/guid-instruction'
+Vue.use(guidInstruction)
 // 为iOS添加返回事件，防止出现空白页
 
 Vue.prototype.IOSonBack = _ => {

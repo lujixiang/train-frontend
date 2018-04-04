@@ -4,7 +4,8 @@ import * as getters from './getters'
 
 const state = {
   trainlist: {},
-  traintimelist: {}
+  traintimelist: {},
+  guidInstruction: false
 }
 export default {
   namespaced: true,

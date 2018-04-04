@@ -259,6 +259,23 @@ const mutations = {
     } else {
       errcallback(res)
     }
+  },
+  [key.GUID_INSTRUCTION] (state, payload) {
+    let { type, res, callback, errcallback } = payload
+    if (res.flagcode === '200') {
+      if (type === 'insert') {
+        state.guidInstruction = false
+      } else {
+        if (res.trainUserGuide === '') {
+          state.guidInstruction = true
+        } else {
+          state.guidInstruction = false
+        }
+      }
+      callback(res)
+    } else {
+      errcallback(res)
+    }
   }
 }
 export default mutations

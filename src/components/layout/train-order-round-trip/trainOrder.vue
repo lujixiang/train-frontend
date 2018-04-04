@@ -44,6 +44,7 @@
         </div>
       </mt-popup>
     </div>
+    <guid-instruction></guid-instruction>
     <text-alert :active="$store.state.IS_MIDNIGHT && !$store.state.IS_MIDNIGHT_NOTICED" v-on:iknow="doNotShowAgain()"></text-alert>
   </div>
 </template>
