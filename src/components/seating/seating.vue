@@ -5,7 +5,7 @@
         <template v-if="info.info[item.left] !== '--'">
           <div class="list">
             <span class="level">{{item.label}}</span>
-            <span class="price">￥{{info.info[item.price]}}</span>
+            <span class="price">&yen;{{info.info[item.price]}}</span>
             <span class="left">{{info.info[item.left]}}张</span>
             <span class="order-button">
               <template v-if="info.info[item.left] === '0'">

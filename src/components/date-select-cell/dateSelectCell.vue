@@ -107,11 +107,13 @@
     mounted () {
       let { date } = this.$route.query
       if (date) {
-        let d = moment(date)
-        this.defaultStartDate = d
-        if (d.isAfter(moment())) {
-          this.startDate = {date: d.format('MM月DD日'), value: d.format('YYYY-MM-DD')}
-          this.startWeek = d.format('dddd')
+        this.defaultStartDate = moment(date)
+        this.defaultEndDate = moment(date).add(1, 'day')
+        if (moment(date).isAfter(moment(Date.now()))) {
+          this.startDate = {date: moment(date).format('MM月DD日'), value: moment(date).format('YYYY-MM-DD')}
+          this.startWeek = moment(date).format('dddd')
+          this.endDate = {date: moment(date).add(1, 'day').format('MM月DD日'), value: moment(date).add(1, 'day').format('YYYY-MM-DD')}
+          this.endWeek = moment(date).add(1, 'day').format('dddd')
         }
       }
     }

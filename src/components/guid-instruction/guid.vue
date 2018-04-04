@@ -12,12 +12,14 @@
   import './less/style.less'
   import { mapActions } from 'vuex'
   const guidImage = require('./images/guide-return-ticket.svg')
+  const guidImagePng = require('./images/guide-return-ticket.png')
   export default {
     name: 'guidInstruction',
     data () {
       return {
         active: true,
-        guidImage
+        guidImage,
+        guidImagePng
       }
     },
     methods: {

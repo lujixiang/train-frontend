@@ -40,7 +40,7 @@
             <template v-if="!handleIsUnderTravelStandard({trainType: info.info['train_type'], label: item.label})">
               <span class="standard">
                 <ykb-icon type="iconWarn" :width="14" :height="14"></ykb-icon>
-                <span>超标</span>
+                <span class="text">超标</span>
               </span>
             </template>
           </div>
