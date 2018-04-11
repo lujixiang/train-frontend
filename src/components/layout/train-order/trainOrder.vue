@@ -243,7 +243,9 @@
                 this.MessageBox.alert(G.NEED_APPROVAL_TEXT, {title: '提示', confirmButtonText: '提交审批', cancelButtonText: '取消订单', showCancelButton: true})
                 .then(action => {
                   if (action === 'confirm') {
-                    let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
+                    let url = G.Base64.decode(this.companySettings.callbackURL)
+                    url = url.indexOf('?') > -1 ? url : url + '?'
+                    let jumpto = url + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
                     window.location.href = jumpto
                   } else if (action === 'cancel') {
                     this.handleCancelOrderId()
@@ -255,7 +257,9 @@
           } else {
             // 预订成功后删除traveller,防止下次进来后默认是非当前用户
             this.clearDataFromLocalStorage(['traveler'])
-            let jumpto = G.Base64.decode(this.companySettings.callbackURL) + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
+            let url = G.Base64.decode(this.companySettings.callbackURL)
+            url = url.indexOf('?') > -1 ? url : url + '?'
+            let jumpto = url + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
             window.location.href = jumpto
           }
         }

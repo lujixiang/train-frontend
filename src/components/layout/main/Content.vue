@@ -13,7 +13,6 @@
       <mt-cell class="highSpeedTrainOnly text-left" title="只看动车/高铁">
         <mt-switch v-model="isHighSpeedTrainOnly"></mt-switch>
       </mt-cell>
-      </mt-checklist>
       <mt-button size="normal" type="primary" @click="searching" class="search-hotel-button">查询</mt-button>
       <div class="travel-standard">
         <div class="left">

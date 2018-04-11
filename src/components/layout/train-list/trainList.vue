@@ -147,7 +147,7 @@
           date = this.searchingDate
         }
         item['date'] = date + ' ' + item.start_time // 在每个车次上添加日期
-        if (roundTrip === 'single') {
+        if (roundTrip === 'single' || !roundTrip) {
           // 单程
           const callback = _ => {
             this.$router.push({name: 'TrainDetail', query: {date: date, from_station: item.from_station_code, to_station: item.to_station_code, train_no: item.train_no, train_code: item.train_code, from_city: fromCity, to_city: toCity}})
