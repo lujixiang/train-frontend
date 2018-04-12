@@ -305,7 +305,8 @@
                 idcardno: fun.encryptIDNo(item.passportseno),
                 IdNo: item.passportseno,
                 UserKey: item.userkey,
-                visiable: true
+                visiable: true,
+                isOuter: item.isOuter
               })
             })
           }

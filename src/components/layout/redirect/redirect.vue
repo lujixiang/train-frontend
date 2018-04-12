@@ -56,7 +56,7 @@
             云快报跳到火车票
             /#/redirect?token=ODViYjdlYmYzYTI3NGVkMDU2ZWM0MzU1YTZlNTNlMGY=&fromCity=武汉&toCity=苏州&action=booking&date=2018-4-20&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2
 
-            http://test.train.mobile.51ykb.com/#/redirect?token=NWNkNmM1M2VkMjAyMWI4OGRjMmQzMzRiN2M2YzU2ODA=&action=rebooking&callbackURL=aHR0cDovL3Rlc3QubS41MXlrYi5jb20vRmVlQmVsb25nL0FwcGx5&returnURL=aHR0cDovL3Rlc3QucGFzc3BvcnQuNTF5a2IuY29tL21vYmlsZW9yZGVyL215b3JkZXJuZXc/dG9rZW49TldOa05tTTFNMlZrTWpBeU1XSTRPR1JqTW1Rek16UmlOMk0yWXpVMk9EQT0=&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=700dc6f1-204c-415d-b47d-c6ec3851b4f7&orderId=20180411080932286533&fromCity=北京南&toCity=上海&date=2018-04-19
+           http://test.train.mobile.51ykb.com/#/redirect?token=NDUzYmNiNzdiZDc4YzE0NDVmMGVhMzRiMjcxNDA1ZDQ=&action=rebooking&callbackURL=aHR0cDovL3Rlc3QubS41MXlrYi5jb20vRmVlQmVsb25nL0FwcGx5P0FwcGx5VHlwZT0xNQ==&returnURL=aHR0cDovL3Rlc3QucGFzc3BvcnQuNTF5a2IuY29tL21vYmlsZW9yZGVyL215b3JkZXJuZXc/dG9rZW49TkRVelltTmlOemRpWkRjNFl6RTBORFZtTUdWaE16UmlNamN4TkRBMVpEUT0=&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=700dc6f1-204c-415d-b47d-c6ec3851b4f7&orderId=20180412101625520838&fromCity=上海虹桥&toCity=武汉&date=2018-05-01
 
             出差申请单跳到火车票(非重选)
             ..../#/redirect?token=ZWY4NjQ0OTBhZmI0MmFiZDViYTc0MzBlMGU2MmRlMjM=&action=2&date=2017-11-21&returnURL=www.baidu.com&callbackURL=www.baidu.com&fromCity=上海&toCity=苏州&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0
