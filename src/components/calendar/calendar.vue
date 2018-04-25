@@ -257,9 +257,12 @@
             // 判断是不是同一个元素
             if (this.startDate.key === node.key) {
               // 如果是同一个元素，则清除当前元素的active，并且清除date里面的startDate
-              node.className = node.oldClassName
-              this.startDate = ''
-              this.dateTitle = '选择去程日期'
+              // node.className = node.oldClassName
+              // this.startDate = ''
+              // this.dateTitle = '选择去程日期'
+              this.endDate = node
+              this.sendMessageToParent({type: 'multi', startDate: this.startDate, endDate: this.endDate})
+              this.onClose()
             } else {
               // 如果点击的不是同一个元素，则给当前元素添加active，同时更新endDate，保存当前class的值
               node.oldClassName = node.className
