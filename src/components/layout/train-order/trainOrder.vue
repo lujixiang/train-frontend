@@ -215,9 +215,9 @@
           choose_seats: '',
           ...selectedSeats
         }
-        if (this.companySettings.action === '3') {
-          params['order_id'] = this.companySettings.orderId
-        }
+        // if (this.companySettings.action === 'rebooking') {
+        //   params['order_id'] = this.companySettings.orderId
+        // }
         const callback = res => {
           let result = res
           // 创建订单成功
