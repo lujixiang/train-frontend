@@ -191,10 +191,23 @@
             }
           }
         })
+        if (passengers.go.length === 0) {
+          this.Toast({
+            message: '去程至少选择一个乘客',
+            position: 'bottom'
+          })
+          return false
+        }
+        if (passengers.back.length === 0) {
+          this.Toast({
+            message: '返程至少选择一个乘客',
+            position: 'bottom'
+          })
+          return false
+        }
         if (!isTestedThrough) {
           this.Toast({
             message: '乘客身份证不能为空',
-            duration: 5000,
             position: 'bottom'
           })
           return false
@@ -245,7 +258,6 @@
             choose_seats: selectedSeats.choose_seats.bchooseSeats || ''
           })
         }
-        console.log(params)
         const callback = res => {
           let result = res
           // 创建订单成功
