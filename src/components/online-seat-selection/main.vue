@@ -212,6 +212,16 @@
       countSeats (e) {
         // 清除之前选的座位
         this.clearSeats()
+      },
+      goCountSeats () {
+        // 选好座位后，再减去部分去程后清除整个去程已选坐席
+        this.selectedGoSeats = []
+        this.seatsGoText = ''
+      },
+      backCountSeats () {
+        // 选好坐席后，再减去部分返程后清除整个返程已选坐席
+        this.selectedBackSeats = []
+        this.seatsBackText = ''
       }
     },
     data () {
