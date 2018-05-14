@@ -51,6 +51,7 @@
   const moment = require('moment')
   const G = require('@/definition/g')
   const Big = require('big.js')
+
   export default {
     name: 'trainOrder',
     data () {
