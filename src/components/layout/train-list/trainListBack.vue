@@ -86,11 +86,10 @@
                 </template>
               </template>
             </ul>
-            <!-- <bottom></bottom> -->
           </template>
           <template v-else>
             <template v-if="noSearchResult">
-              <NSR></NSR>
+              <NSR v-on:pageRefresh="handleOnPageRefresh"></NSR>
             </template>
           </template>
         </article>
@@ -174,6 +173,9 @@
       },
       handleOnDateClicked (date) {
         this.handleOnChangeDate({date, type: true})
+      },
+      handleOnPageRefresh () {
+        this.requestTrainList()
       },
       requestTrainList (params = {}) {
         this.noSearchResult = false
