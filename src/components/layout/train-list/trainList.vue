@@ -126,8 +126,7 @@
         'getStandardTrailList'
       ]),
       ...mapActions('company', [
-        'getCompanySettings',
-        'getLocalStandard'
+        'getCompanySettings'
       ]),
       ...mapActions('history', [
         'recordRoundTripInfo'

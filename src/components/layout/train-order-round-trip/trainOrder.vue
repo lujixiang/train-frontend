@@ -70,7 +70,8 @@
         isPopupActive: false,
         companySettings: {},
         selectedSeats: {choose_seats: {}},
-        avaliableSeat: ['商务座', '一等座', '二等座']
+        avaliableSeat: ['商务座', '一等座', '二等座'],
+        standard: ''
       }
     },
     computed: {
@@ -126,8 +127,20 @@
       ]),
       ...mapActions('company', [
         'getCompanySettings',
-        'clearDataFromLocalStorage'
+        'clearDataFromLocalStorage',
+        'getLocalStandard'
       ]),
+      handleGetTravelStandard () {
+        let callback = res => {
+          let s = ''
+          _.forEach(res.list, (item, i) => {
+            s += item.traintype + '|' + item.seattype + ','
+          })
+          s = s.replace(/,$/, '')
+          this.standard = s
+        }
+        this.getLocalStandard({callback})
+      },
       doNotShowAgain () {
         this.handleMidnightNoticeStatus({isActive: true})
         this.booking()
@@ -170,7 +183,7 @@
             passporttypeseid: item.idtypeid,
             passporttypeseidname: item.idname,
             userkey: item.UserKey,
-            isOuter: true,
+            isOuter: item['isOuter'],
             trip: item.trip
           }
           if (item.isOuter) {
@@ -234,7 +247,8 @@
             ticket: ticket.go,
             createType: 'create',
             is_choose_seats: false,
-            choose_seats: selectedSeats.choose_seats.gchooseSeats || ''
+            choose_seats: selectedSeats.choose_seats.gchooseSeats || '',
+            travel_standard: this.standard
           }),
           return: JSON.stringify({
             train_date: moment(ticket.back.date).format('YYYY-MM-DD'),
@@ -255,7 +269,8 @@
             ticket: ticket.back,
             createType: 'create',
             is_choose_seats: false,
-            choose_seats: selectedSeats.choose_seats.bchooseSeats || ''
+            choose_seats: selectedSeats.choose_seats.bchooseSeats || '',
+            travel_standard: this.standard
           })
         }
         const callback = res => {
@@ -316,6 +331,7 @@
       }
     },
     created () {
+      this.handleGetTravelStandard()
       this.getCompanySettings({
         callback: res => {
           this.companySettings = res

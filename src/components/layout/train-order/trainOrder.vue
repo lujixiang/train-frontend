@@ -67,7 +67,8 @@
         isPopupActive: false,
         companySettings: {},
         selectedSeats: {},
-        originalOrderId: ''
+        originalOrderId: '',
+        standard: ''
       }
     },
     computed: {
@@ -98,11 +99,23 @@
       ]),
       ...mapActions('company', [
         'getCompanySettings',
-        'clearDataFromLocalStorage'
+        'clearDataFromLocalStorage',
+        'getLocalStandard'
       ]),
       ...mapActions('order', [
         'cancelOrderByOrderId'
       ]),
+      handleGetTravelStandard () {
+        let callback = res => {
+          let s = ''
+          _.forEach(res.list, (item, i) => {
+            s += item.traintype + '|' + item.seattype + ','
+          })
+          s = s.replace(/,$/, '')
+          this.standard = s
+        }
+        this.getLocalStandard({callback})
+      },
       doNotShowAgain () {
         this.handleMidnightNoticeStatus({isActive: true})
         this.booking()
@@ -214,6 +227,7 @@
           ticket_change_info: JSON.stringify(ticketChangeInfo),
           is_choose_seats: false,
           choose_seats: '',
+          travel_standard: this.standard,
           ...selectedSeats
         }
         // if (this.companySettings.action === 'rebooking') {
@@ -331,6 +345,7 @@
       }
     },
     created () {
+      this.handleGetTravelStandard()
       if (this.$store.state.company.companySettings && this.$store.state.company.companySettings.action === 'endorse') {
         // 如果是改签则修改title
         this.$route.meta.title = '改签'
