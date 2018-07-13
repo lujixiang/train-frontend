@@ -2,10 +2,10 @@
   <div>
     <div class="train-list-container">
       <datePickerPreviousNext v-on:onDateClicked="handleOnDateClicked" v-on:onChangeDate="handleOnChangeDate"></datePickerPreviousNext>
-      <div class="train-list-box">
-        <template v-if="this.$store.state.history.roundTripForGo !== ''">
-          <trip-tip :info="this.$store.state.history.roundTripForGo"></trip-tip>
-        </template>
+      <template v-if="this.$store.state.history.roundTripForGo !== ''">
+        <trip-tip :info="this.$store.state.history.roundTripForGo"></trip-tip>
+      </template>
+      <div class="train-list-box" ref="listBox">
         <article>
           <template v-if="this.$store.state.train.trainlist.length > 0">
             <ul>
@@ -114,7 +114,8 @@
         popupVisible: false,
         seats,
         filterData: {},
-        isStandard: true
+        isStandard: true,
+        windowHeight: window.innerHeight
       }
     },
     methods: {
@@ -238,6 +239,7 @@
       this.$route.meta.title = roundTripText + fromCity + ' - ' + toCity
     },
     mounted () {
+      this.$refs.listBox.style.height = this.windowHeight - 112 + 'px'
       this.requestTrainList()
     }
   }

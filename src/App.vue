@@ -21,6 +21,9 @@ export default {
     if (fun.isWechatWork()) {
       this.isWechatWork = true
     }
+  },
+  mounted () {
+    fun.freeStyleLog()
   }
 }
 </script>
