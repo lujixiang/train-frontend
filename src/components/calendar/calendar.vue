@@ -4,7 +4,7 @@
       <div class="calendar-container" v-on:click.stop="">
         <div class="header-box">
           <mt-header :fixed="false" :title="dateTitle">
-            <mt-button slot="left" icon="back" @click="onClose">返回</mt-button>
+            <mt-button slot="left" icon="back" @click="onClose"></mt-button>
           </mt-header>
           <template v-if="isShowNotice">
             <div class="notice">

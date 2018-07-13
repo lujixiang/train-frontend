@@ -6,7 +6,7 @@
           <div class="header">
             <span class="back-icon" v-on:click.stop="onClose">
               <img :src="backIcon" width="16" height="16" alt="">
-              <span>返回</span>
+              <span></span>
             </span>
             <span class="title">选择城市</span>
           </div>

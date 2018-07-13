@@ -1,6 +1,6 @@
 <template>
   <mt-header v-show="!show" class="ykb-header" :fixed="true" :title="headerTitle">
-    <mt-button slot="left" icon="back" @click="onClickBack">返回</mt-button>
+    <mt-button slot="left" icon="back" @click="onClickBack"></mt-button>
     <mt-button class="right-button-text" slot="right" @click="onRightButtonClick">{{rightButtonText}}</mt-button>
   </mt-header>
 </template>

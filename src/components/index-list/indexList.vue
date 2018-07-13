@@ -6,7 +6,7 @@
         <div style="height: 40px">
           <mt-header class="header" :fixed="false" title="选择乘车人">
             <mt-button slot="left" icon="back" @click="onClose">
-              <span>返回</span>
+              <span></span>
             </mt-button>
           </mt-header>
         </div>
