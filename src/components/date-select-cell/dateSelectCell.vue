@@ -42,8 +42,8 @@
         entranceIcon,
         startDate: {date: today.format('MM月DD日'), value: today.format('YYYY-MM-DD')},
         endDate: {date: nextDay.format('MM月DD日'), value: nextDay.format('YYYY-MM-DD')},
-        startWeek: today.format('dddd'),
-        endWeek: nextDay.format('dddd'),
+        startWeek: today.format('ddd'),
+        endWeek: nextDay.format('ddd'),
         defaultStartDate: moment(),
         defaultEndDate: moment().add(1, 'day')
       }
@@ -88,8 +88,8 @@
           let selectedEndDate = e.endDate.moment.format('YYYY-MM-DD')
           this.startDate = {date: moment(selectedStartDate).format('MM月DD日'), value: selectedStartDate}
           this.endDate = {date: moment(selectedEndDate).format('MM月DD日'), value: selectedEndDate}
-          this.startWeek = e.startDate.moment.format('dddd')
-          this.endWeek = e.endDate.moment.format('dddd')
+          this.startWeek = e.startDate.moment.format('ddd')
+          this.endWeek = e.endDate.moment.format('ddd')
           this.transferDateToParent({type: 'multi', startDate: e.startDate, endDate: e.endDate})
         }
       },
@@ -111,9 +111,9 @@
         this.defaultEndDate = moment(date).add(1, 'day')
         if (moment(date).isAfter(moment(Date.now()))) {
           this.startDate = {date: moment(date).format('MM月DD日'), value: moment(date).format('YYYY-MM-DD')}
-          this.startWeek = moment(date).format('dddd')
+          this.startWeek = moment(date).format('ddd')
           this.endDate = {date: moment(date).add(1, 'day').format('MM月DD日'), value: moment(date).add(1, 'day').format('YYYY-MM-DD')}
-          this.endWeek = moment(date).add(1, 'day').format('dddd')
+          this.endWeek = moment(date).add(1, 'day').format('ddd')
         }
       }
     }
