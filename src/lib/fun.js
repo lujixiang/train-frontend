@@ -137,6 +137,23 @@ export const checkMobile = (mobile) => {
 export const isChineseCharacters = (str) => {
   return /^[\u4e00-\u9fa5]+$/i.test(str)
 }
+export const getIOSversion = () => {
+  let agent = navigator.userAgent.toLowerCase()
+  let version = ''
+  if (agent.indexOf('like mac os x') > 0) {
+    let regStr = /os [\d.]*/gi
+    let info = agent.match(regStr)
+    version = (info + '').replace(/[^0-9|_.]/ig, '').replace(/_/ig, '.')
+    let versionStr = version + ''
+    if (versionStr !== 'undefined' && versionStr.length > 0) {
+      return version
+    } else {
+      return 8
+    }
+  } else {
+    return 9
+  }
+}
 export const freeStyleLog = () => {
   console && console.log('%c', 'margin: 30px; padding:30px 120px;background: url("https://www.51ykb.com/Content/themes/default/images/Logon/logo_anti.svg") no-repeat;')
   console && console.log(`%c 云快报出品 %c 小样我就知道你进来偷看人家代码 - Just be free %c`, 'background:#35495e ; font-size: 20px; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff', 'background:#17abcb ; padding: 1px; border-radius: 0 3px 3px 0; font-size: 20px;  color: #fff', 'background:transparent')

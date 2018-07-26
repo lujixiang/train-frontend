@@ -36,7 +36,7 @@
     width: 100%;
     height:100%;
     .body{
-      margin-top: 86px;
+      margin-top: 100px;
       height: 100%;
       width: 100%;
       overflow: scroll;
@@ -44,10 +44,6 @@
       -webkit-overflow-scrolling: touch;    /* ios5+ */
       z-index:1;
       .monthly{
-        display: flex;
-        flex-flow: row wrap;
-        display: -webkit-flex;
-        -webkit-flex-flow: row wrap;
         h2{
           width: 100%;
           font-size: 16px;
@@ -89,8 +85,18 @@
           color: #49f;
         }
       }
-      .empty{
-        height: 100px;
+      .monthly.flex{
+        display: flex;
+        flex-flow: row wrap;
+        display: -webkit-flex;
+        -webkit-flex-flow: row wrap;
+      }
+      .monthly.float{
+        overflow: hidden;
+        clear: both;
+        span{
+          float: left;
+        }
       }
     }
   }

@@ -28,7 +28,7 @@
               <p class="title-box-unactive">
                 <span class="text-left ml10 title">当前城市</span>
               </p>
-              <ul class="city-container">
+              <ul class="city-container" :class="isSupportFlex ? 'flex' : 'float'">
                 <li @click="pickCity($event, $store.state.history.currentLocation)">{{$store.state.history.currentLocation[0]}}</li>
               </ul>
             </section>
@@ -38,55 +38,40 @@
               <p class="title-box">
                 <span class="text-left ml10 title">历史查询</span>
               </p>
-              <div class="city-container">
-                <div class="li" v-for="item in $store.state.history.selctedCityRecord" @click="pickCity($event, item.node)">{{item.node[0]}}</div>
-              </div>
-              <!-- <ul class="city-container">
+              <ul class="city-container" :class="isSupportFlex ? 'flex' : 'float'">
                 <li v-for="item in $store.state.history.selctedCityRecord" @click="pickCity($event, item.node)">
                   {{item.node[0]}}
                 </li>
-              </ul> -->
+              </ul>
             </section>
           </template>
           <section class="dd">
             <p class="title-box">
               <span class="text-left ml10 title">热门城市</span>
             </p>
-            <div class="city-container">
-              <div class="li" v-for="item in cityList.hotList" @click="pickCity($event, item)">{{item[0]}}</div>
-            </div>
-            <!-- <ul class="city-container">
+            <ul class="city-container" :class="isSupportFlex ? 'flex' : 'float'">
               <li v-for="item in cityList.hotList" @click="pickCity($event, item)">
                 {{item[0]}}
               </li>
-            </ul> -->
+            </ul>
           </section>
           <section class="alphabeta">
             <p class="title-box">
               <span class="text-left ml10 title">按字母查询</span>
             </p>
-            <div class="ul">
-              <div class="li" v-for="item in alphabeta" :_key="item.label ? item.label : item" :class="item.className" @click="clickAlphaBeta(item, $event)">
-                {{item.label ? item.label : item}}
-              </div>
-            </div>
-              <!-- <ul>
+              <ul :class="isSupportFlex ? 'flex' : 'float'">
                 <li v-for="item in alphabeta" :_key="item.label ? item.label : item" :class="item.className" @click="clickAlphaBeta(item, $event)">
                   {{item.label ? item.label : item}}
                 </li>
-              </ul> -->
+              </ul>
           </section>
           <section class="dd">
-            <div class="city-container">
-              <div class="li" v-for="item in selectedCitys[currentCharacter]" @click="pickCity($event, item)">{{item[0]}}</div>
-            </div>
-            <!-- <ul class="city-container">
+            <ul class="city-container" :class="isSupportFlex ? 'flex' : 'float'">
               <li v-for="item in selectedCitys[currentCharacter]" @click="pickCity($event, item)">
                 {{item[0]}}
               </li>
-            </ul> -->
+            </ul>
           </section>
-          <!-- <div class="empty"></div> -->
         </div>
       </div>
     </mt-popup>
@@ -100,6 +85,8 @@
   const backIcon = require('./images/back.png')
   const cityList = require('./citydata')
   const fun = require('@/lib/fun')
+  const iosVersion = fun.getIOSversion()
+  console.log(iosVersion)
   export default {
     name: 'cityPicker',
     data () {
@@ -112,7 +99,8 @@
         selectedCitys: [],
         currentCharacter: '',
         lastCityNode: null,
-        isFocus: false
+        isFocus: false,
+        isSupportFlex: iosVersion > 8
       }
     },
     watch: {
@@ -236,10 +224,10 @@
       }
     },
     created () {
-      // this.$emit('onsearching', cityList)
       this.getSelectedCitys()
     },
     mounted () {
+      this.Toast({message: iosVersion})
       let windowHeight = window.innerHeight
       this.$refs.bodyBox.style.height = windowHeight - 100 + 'px'
     }

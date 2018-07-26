@@ -21,9 +21,9 @@
             <span class="weekend">六</span>
           </div>
         </div>
-        <div class="body">
+        <div class="body" ref="bodyBox">
           <template v-for="(date, attr, index) in this.dates">
-            <section class="monthly">
+            <section class="monthly float">
               <h2>{{date[8].moment.format('YYYY年MM月')}}</h2>
               <template v-for="(day, index) in date">
                 <span :key="day.key" v-if="!day.moment"></span>
@@ -31,7 +31,6 @@
               </template>
             </section>
           </template>
-          <div class="empty"></div>
         </div>
       </div>
     </mt-popup>
@@ -366,6 +365,8 @@
       }
     },
     mounted () {
+      let windowHeight = window.innerHeight
+      this.$refs.bodyBox.style.height = windowHeight - 105 + 'px'
       this.createMonth()
       this.highLightDefaultDate()
     }
