@@ -61,6 +61,7 @@
           }
         }
         .city-container{
+          width: 100%;
           padding: 0;
           margin: 0;
           display: flex;
@@ -69,7 +70,8 @@
           display: -webkit-flex;
           -webkit-justify-content: flex-start;
           -webkit-flex-flow: row wrap;
-          li{
+          li, .li{
+            display: block;
             width: 22%;
             height:32px;
             line-height: 30px;
@@ -82,7 +84,7 @@
             margin-left: 2%;
             border-radius: 4px;
           }
-          li.active{
+          li.active, .li.active{
             color: @theme-color;
           }
         }
@@ -116,7 +118,7 @@
           margin: 0 auto;
           text-align: left;
         }
-        ul{
+        div.ul{
           padding: 0;
           margin: 0;
           flex-flow: row wrap;
@@ -125,7 +127,7 @@
           display: -webkit-flex;
           -webkit-justify-content: flex-start;
           -webkit-flex-flow: row wrap;
-          li{
+          div.li{
             width:17.5%;
             height:32px;
             line-height: 30px;
@@ -137,7 +139,7 @@
             background: #fff;
             border-radius: 4px;
           }
-          li.active{
+          div.li.active{
             background:@theme-color;
             color:#fff;
           }
