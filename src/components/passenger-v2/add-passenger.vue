@@ -4,7 +4,7 @@
       <div class="header-wraper">
         <mt-header class="header" :fixed="false" title="添加外部乘车人">
           <mt-button slot="left" icon="back" @click="onClose">
-            <span>返回</span>
+            <span></span>
           </mt-button>
         </mt-header>
       </div>

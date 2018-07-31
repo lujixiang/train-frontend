@@ -13,6 +13,7 @@
         width: 100%;
         height: 46px;
         display: flex;
+        display: -webkit-flex;
         background-color: @theme-color;
         color:#fff;
         line-height: 46px;
@@ -62,9 +63,6 @@
         .city-container{
           padding: 0;
           margin: 0;
-          display: flex;
-          justify-content: flex-start;
-          flex-flow: row wrap;
           li{
             width: 22%;
             height:32px;
@@ -80,6 +78,21 @@
           }
           li.active{
             color: @theme-color;
+          }
+        }
+        .city-container.flex{
+          display: flex;
+          justify-content: flex-start;
+          flex-flow: row wrap;
+          display: -webkit-flex;
+          -webkit-justify-content: flex-start;
+          -webkit-flex-flow: row wrap;
+        }
+        .city-container.float{
+          overflow: hidden;
+          clear: both;
+          li{
+            float: left;
           }
         }
       }
@@ -115,9 +128,6 @@
         ul{
           padding: 0;
           margin: 0;
-          flex-flow: row wrap;
-          display: flex;
-          justify-content: flex-start;
           li{
             width:17.5%;
             height:32px;
@@ -135,9 +145,23 @@
             color:#fff;
           }
         }
-      }
-      >.empty{
-        height: 100px;
+        ul.flex{
+          flex-flow: row wrap;
+          display: flex;
+          justify-content: flex-start;
+          display: -webkit-flex;
+          -webkit-justify-content: flex-start;
+          -webkit-flex-flow: row wrap;
+          li{
+          }
+        }
+        ul.float{
+          overflow: hidden;
+          clear: both;
+          li{
+            float: left;
+          }
+        }
       }
     }
   }

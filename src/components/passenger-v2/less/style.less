@@ -9,6 +9,7 @@
     margin: 0 auto;
     .person-info{
       display: flex;
+      display: -webkit-flex;
       height:44px;
       padding:10px 0;
       .delete{
@@ -49,6 +50,7 @@
     }
     .is-out-of-standard{
       display: flex;
+      display: -webkit-flex;
       span{
         color: #FC815B;
         font-size: 14px;
@@ -63,10 +65,12 @@
     width: 90%;
     margin: 0 auto;
     display: flex;
+    justify-content: space-around;
+    display: -webkit-flex;
+    -webkit-justify-content: space-around;
     position: relative;
     border-bottom: 1px solid #efefef;
     padding: 5px 0;
-    justify-content: space-around;
     .left-btn,.right-btn{
       width: 50%;
       text-align: center;

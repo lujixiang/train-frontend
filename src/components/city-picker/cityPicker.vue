@@ -6,7 +6,7 @@
           <div class="header">
             <span class="back-icon" v-on:click.stop="onClose">
               <img :src="backIcon" width="16" height="16" alt="">
-              <span>返回</span>
+              <span></span>
             </span>
             <span class="title">选择城市</span>
           </div>
@@ -14,7 +14,7 @@
             <search :data="cityList.cityList" maxlength="20" placeholder="请输入车站名称（如北京，bj，beijing）" v-on:onSelectCity="pickCityFromSearch" v-on:focus="handleOnFocus" v-on:blur="handleOnBlur"></search>
           </div>
         </div>
-        <div class="body" :class="this.isFocus ? 'hide' : ''">
+        <div class="body" :class="this.isFocus ? 'hide' : ''" ref="bodyBox">
           <template v-if="$store.state.history.currentLocation === ''">
             <section class="current-city">
               <p class="title-box" @click="getCurrentCity">
@@ -28,7 +28,7 @@
               <p class="title-box-unactive">
                 <span class="text-left ml10 title">当前城市</span>
               </p>
-              <ul class="city-container">
+              <ul class="city-container float">
                 <li @click="pickCity($event, $store.state.history.currentLocation)">{{$store.state.history.currentLocation[0]}}</li>
               </ul>
             </section>
@@ -38,7 +38,7 @@
               <p class="title-box">
                 <span class="text-left ml10 title">历史查询</span>
               </p>
-              <ul class="city-container">
+              <ul class="city-container float">
                 <li v-for="item in $store.state.history.selctedCityRecord" @click="pickCity($event, item.node)">
                   {{item.node[0]}}
                 </li>
@@ -49,7 +49,7 @@
             <p class="title-box">
               <span class="text-left ml10 title">热门城市</span>
             </p>
-            <ul class="city-container">
+            <ul class="city-container float">
               <li v-for="item in cityList.hotList" @click="pickCity($event, item)">
                 {{item[0]}}
               </li>
@@ -59,20 +59,19 @@
             <p class="title-box">
               <span class="text-left ml10 title">按字母查询</span>
             </p>
-              <ul>
+              <ul class="float">
                 <li v-for="item in alphabeta" :_key="item.label ? item.label : item" :class="item.className" @click="clickAlphaBeta(item, $event)">
                   {{item.label ? item.label : item}}
                 </li>
               </ul>
           </section>
           <section class="dd">
-            <ul class="city-container">
+            <ul class="city-container float">
               <li v-for="item in selectedCitys[currentCharacter]" @click="pickCity($event, item)">
                 {{item[0]}}
               </li>
             </ul>
           </section>
-          <div class="empty"></div>
         </div>
       </div>
     </mt-popup>
@@ -86,6 +85,8 @@
   const backIcon = require('./images/back.png')
   const cityList = require('./citydata')
   const fun = require('@/lib/fun')
+  // const iosVersion = fun.getIOSversion()
+  // console.log(iosVersion)
   export default {
     name: 'cityPicker',
     data () {
@@ -99,6 +100,7 @@
         currentCharacter: '',
         lastCityNode: null,
         isFocus: false
+        // isSupportFlex: iosVersion > 8
       }
     },
     watch: {
@@ -161,7 +163,7 @@
           }
         }
         this.lastCityNode = {city: city, el: el}
-        el.target.className = 'active'
+        el.target.className = 'active li'
         let fromOrTo = this.$props.options.fromOrTo
         this.transforCityToParent({city: city, fromOrTo: fromOrTo})
         this.recordSelectedCitys(city)
@@ -222,15 +224,11 @@
       }
     },
     created () {
-      // this.$emit('onsearching', cityList)
       this.getSelectedCitys()
     },
-    beforeUpdate () {
-      // 当props更新的时候，会执行这个方法
-      // let aInput = document.getElementsByClassName('search-input')[0]
-      // let aSearchResultBox = document.getElementsByClassName('search-result')[0]
-      // aSearchResultBox.className = 'search-result hide'
-      // aInput.value = ''
+    mounted () {
+      let windowHeight = window.innerHeight
+      this.$refs.bodyBox.style.height = windowHeight - 100 + 'px'
     }
   }
 </script>
