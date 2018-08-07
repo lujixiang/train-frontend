@@ -88,23 +88,10 @@
       }
     },
     methods: {
-      ...mapActions([
-        'handleMidnightNoticeStatus',
-        'handleIsMidnight'
-      ]),
-      ...mapActions('train', [
-        'getTrainInfo',
-        'getSeatInfo',
-        'bookingNow'
-      ]),
-      ...mapActions('company', [
-        'getCompanySettings',
-        'clearDataFromLocalStorage',
-        'getLocalStandard'
-      ]),
-      ...mapActions('order', [
-        'cancelOrderByOrderId'
-      ]),
+      ...mapActions(['handleMidnightNoticeStatus', 'handleIsMidnight']),
+      ...mapActions('train', ['getTrainInfo', 'getSeatInfo', 'bookingNow']),
+      ...mapActions('company', ['getCompanySettings', 'clearDataFromLocalStorage', 'getLocalStandard']),
+      ...mapActions('order', ['cancelOrderByOrderId']),
       handleGetTravelStandard () {
         let callback = res => {
           let s = ''

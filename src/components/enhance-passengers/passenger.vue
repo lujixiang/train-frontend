@@ -153,16 +153,12 @@
               this.Toast({message: '登录过期', position: 'bottom'})
             })
           })
-          this.getOutUser({cacheFirst: true})
+          this.getOutUser({cacheFirst: false, params: {businessType: '4'}})
           .then(res => {
             this.isLoadingOutPassengers = false
           })
           .catch(e => {
-            this.getOutUser({cacheFirst: false, params: {businessType: '4'}})
-            .then(res => {
-              this.isLoadingOutPassengers = false
-            })
-            .catch({message: '登录过期', position: 'bottom'})
+            this.Toast({message: '登录过期', position: 'bottom'})
           })
         }
       }
@@ -200,10 +196,11 @@
         })
       },
       handleOnAddOutUserSuccess () {
+        console.log('添加成功了吗')
         this.Toast({message: '添加成功', position: 'bottom'})
         this.handleOnCloseWallet()
         this.Indicator.open({text: '正在刷新列表'})
-        this.getOutUser()
+        this.getOutUser({params: {businessType: '4'}})
         .then(res => {
           this.Indicator.close()
         })

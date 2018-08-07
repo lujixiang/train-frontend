@@ -61,7 +61,7 @@
   import { mapActions } from 'vuex'
   import './less/style.less'
   const _ = require('lodash')
-  const moment = require('moment')
+  // const moment = require('moment')
   const fun = require('@/lib/fun')
   const exclamatoryIcon = require('./images/gantanhao.svg')
   const questionIcon = require('./images/questionmark.svg')
@@ -90,7 +90,7 @@
         idCollections: [],
         windowHeight: window.innerHeight,
         guid: 0,
-        pickerVisible: '',
+        // pickerVisible: '',
         isShowAddButton: true
       }
     },
@@ -111,17 +111,18 @@
       handleOnDatePicker () {
         this.$refs.picker.open()
       },
-      handleConfirm (d) {
-        let date = moment(d).format('YYYY-MM-DD')
-        console.log(date)
-      },
+      // handleConfirm (d) {
+      //   let date = moment(d).format('YYYY-MM-DD')
+      //   console.log(date)
+      // },
       addNewOutsideUser (args) {
         let { infoList } = args
         let { currentUser, passengerName, contactNumber } = this
         let params = {
           chineseName: passengerName,
           linkPhone: contactNumber,
-          userId: currentUser.UserId,
+          userId: currentUser.user_sys_key,
+          delIds: '', // 删除的userid
           outUserId: '', // 如果为空则是插入，如果有值则为修改
           infoList: JSON.stringify(infoList) // 暂时不考虑这个字段
         }
@@ -200,11 +201,13 @@
         this.addNewOutsideUser({infoList})
         .then(res => {
           this.Indicator.close()
-          // this.$emit('addedSuccess')
+          this.onClose()
+          console.log('addedSuccess')
+          this.$emit('addedSuccess')
         })
         .catch(e => {
           this.Indicator.close()
-          this.Toast({message: e.msg, position: 'bottom'})
+          this.Toast({message: e.flagmsg, position: 'bottom'})
         })
       },
       addNewId () {

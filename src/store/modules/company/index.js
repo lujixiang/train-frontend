@@ -9,7 +9,8 @@ const state = {
   companySettings: {},
   travelStandard: {},
   travelStandardUnlimited: false,
-  selectedPassengers: []
+  selectedPassengers: [],
+  companyOutsideUserList: []
 }
 export default {
   namespaced: true,

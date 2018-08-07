@@ -53,7 +53,7 @@
       </div>
       <div class="input-item">
         <label>出生日期*</label>
-        <input type="text" name="name" placeholder="请输入" @click="handleBirthday" v-model="userInfo.birthday">
+        <input type="text" name="name" placeholder="例如：19900418" v-model="userInfo.birthday">
         <span class="right-icon">
         </span>
       </div>

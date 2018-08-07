@@ -314,6 +314,7 @@ const mutations = {
       }
       return false
     }
+    console.log('应该没走到这里')
     if (res.flagcode === '200') {
       state.companyOutsideUserList = res.data.outPersonnelList
       sessionStore.set('companyOutsideUserList', res.data.outPersonnelList)
@@ -550,7 +551,7 @@ const mutations = {
   },
   [key.SAVE_OUTSIDE_COMPANY_USER] (state, payload) {
     let { resolve, reject, res } = payload
-    if (res && res.flgcode === '200') {
+    if (res && res.flagcode === '200') {
       resolve(res)
     } else {
       reject(res)
