@@ -14,7 +14,7 @@ const G = require('@/definition/g')
 /*
   ----------------------------------------第三方UI库------------------------------------------
 */
-import { Button, Cell, Checklist, Switch, Popup, Tabbar, TabItem, Header, IndexList, IndexSection, Indicator, Toast, MessageBox, Field, Picker } from 'mint-ui'
+import { Button, Cell, Checklist, Switch, Popup, Tabbar, TabItem, Header, IndexList, IndexSection, Indicator, Toast, MessageBox, Field, Picker, Spinner } from 'mint-ui'
 Vue.component(Cell.name, Cell)
 Vue.component(Button.name, Button)
 Vue.component(Checklist.name, Checklist)
@@ -27,6 +27,7 @@ Vue.component(IndexList.name, IndexList)
 Vue.component(IndexSection.name, IndexSection)
 Vue.component(Field.name, Field)
 Vue.component(Picker.name, Picker)
+Vue.component(Spinner.name, Spinner)
 Vue.prototype.Indicator = Indicator
 Vue.prototype.Toast = Toast
 Vue.prototype.MessageBox = MessageBox
@@ -34,78 +35,93 @@ Vue.prototype.MessageBox = MessageBox
   ---------------------------------------自定义UI库----------------------------------------
 */
 import ykbIcon from './components/icon'
-Vue.use(ykbIcon)
 import filterBar from './components/filter-bar'
-Vue.use(filterBar)
 import calendar from './components/calendar'
-Vue.use(calendar)
 import actionSheetHeader from './components/action-sheet-header'
-Vue.use(actionSheetHeader)
 import datePickerPreviousNext from './components/datepicker-next-previous'
-Vue.use(datePickerPreviousNext)
 import dateSelectCell from './components/date-select-cell'
-Vue.use(dateSelectCell)
 import citySelect from './components/city-station-cell'
-Vue.use(citySelect)
 import searchHistory from './components/search-history'
-Vue.use(searchHistory)
 import bottom from './components/bottom'
-Vue.use(bottom)
 import banner from './components/banner'
-Vue.use(banner)
 // 引入加强版的header
 import enhanceHeader from '@/components/enhance-header'
-Vue.use(enhanceHeader)
 import indexList from '@/components/index-list'
-Vue.use(indexList)
 import NSR from './components/no-search-result'
-Vue.use(NSR)
 import passenger from './components/passenger'
-Vue.use(passenger)
 import passengerV2 from './components/passenger-v2'
-Vue.use(passengerV2)
 import addPassenger from './components/add-passenger'
-Vue.use(addPassenger)
 import passengerRoundTrip from './components/passenger-v2-round-trip'
-Vue.use(passengerRoundTrip)
 import ticketCard from './components/ticket-card'
-Vue.use(ticketCard)
 import orderNotice from '@/components/order-notice'
-Vue.use(orderNotice)
 import timeList from './components/time-list'
-Vue.use(timeList)
 import stationInfo from './components/station-info'
-Vue.use(stationInfo)
 import seating from './components/seating'
-Vue.use(seating)
 import cityPicker from './components/city-picker'
-Vue.use(cityPicker)
 import ykbCell from './components/cell'
-Vue.use(ykbCell)
 import search from './components/search'
-Vue.use(search)
 import noticeBar from './components/notice-bar'
-Vue.use(noticeBar)
 import keyboard from './components/keyboard'
-Vue.use(keyboard)
 import editId from './components/edit-id'
-Vue.use(editId)
 import onlineSeatSelection from './components/online-seat-selection'
-Vue.use(onlineSeatSelection)
 import onlineSeat from './components/online-seat'
-Vue.use(onlineSeat)
 import textAlert from './components/text-alert'
-Vue.use(textAlert)
 import tripCard from './components/trip-card'
-Vue.use(tripCard)
 import navBar from './components/nav-bar'
-Vue.use(navBar)
 import tripTip from './components/trip-tips'
-Vue.use(tripTip)
 import tripPicker from './components/trip-picker'
-Vue.use(tripPicker)
 import guidInstruction from './components/guid-instruction'
-Vue.use(guidInstruction)
+import enhancePassengers from './components/enhance-passengers'
+import idWallet from './components/id-wallet'
+import idCard from './components/id-card'
+import listView from './components/list-view'
+import outerList from './components/outer-list'
+const components = [
+  ykbIcon,
+  filterBar,
+  calendar,
+  actionSheetHeader,
+  datePickerPreviousNext,
+  dateSelectCell,
+  citySelect,
+  searchHistory,
+  bottom,
+  banner,
+  enhanceHeader,
+  indexList,
+  NSR,
+  passenger,
+  passengerV2,
+  addPassenger,
+  passengerRoundTrip,
+  ticketCard,
+  orderNotice,
+  timeList,
+  stationInfo,
+  seating,
+  cityPicker,
+  ykbCell,
+  search,
+  noticeBar,
+  keyboard,
+  editId,
+  onlineSeatSelection,
+  onlineSeat,
+  textAlert,
+  tripCard,
+  navBar,
+  tripTip,
+  tripPicker,
+  guidInstruction,
+  enhancePassengers,
+  idWallet,
+  idCard,
+  listView,
+  outerList
+]
+components.map(_components => {
+  Vue.use(_components)
+})
 // 为iOS添加返回事件，防止出现空白页
 
 Vue.prototype.IOSonBack = _ => {

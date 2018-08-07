@@ -137,6 +137,43 @@ export const checkMobile = (mobile) => {
 export const isChineseCharacters = (str) => {
   return /^[\u4e00-\u9fa5]+$/i.test(str)
 }
+// 判断输入的是否是数字
+export const isNumber = (num) => {
+  num = parseInt(num)
+  return /^\d{1,}$/i.test(num)
+}
+export const deleteNodeFromArray = (arr, node, key) => {
+  arr.forEach((e, i) => {
+    if (e && e.length) {
+      e.forEach((o, j) => {
+        if (o[key] === node[key]) {
+          e.splice(j, 1)
+          if (e.length === 0) {
+            arr.splice(i, 1)
+          }
+        }
+      })
+    } else {
+      // 如果不是数组的情况直接删除
+      if (e[key] === node[key]) {
+        arr.splice(i, 1)
+      }
+    }
+  })
+  return arr
+}
+export const pushNodeToArray = (arr, node, key) => {
+  let exists = false
+  arr.forEach((e, i) => {
+    if (node[key] === e[key]) {
+      exists = true
+    }
+  })
+  if (!exists) {
+    arr.push(node)
+  }
+  return arr
+}
 export const getIOSversion = () => {
   let agent = navigator.userAgent.toLowerCase()
   let version = ''

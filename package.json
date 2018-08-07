@@ -19,6 +19,7 @@
     "axios": "^0.16.2",
     "big.js": "^5.0.2",
     "fastclick": "^1.0.6",
+    "immutable": "^3.8.2",
     "js-base64": "^2.1.9",
     "lodash": "^4.17.4",
     "mint-ui": "^2.2.7",

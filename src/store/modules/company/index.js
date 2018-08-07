@@ -3,12 +3,13 @@ import mutations from './mutations'
 import * as getters from './getters'
 
 const state = {
-  companyuserlist: [],
+  companyuserlist: {},
   USER_LIST: [],
   currentUser: {},
   companySettings: {},
   travelStandard: {},
-  travelStandardUnlimited: false
+  travelStandardUnlimited: false,
+  selectedPassengers: []
 }
 export default {
   namespaced: true,

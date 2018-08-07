@@ -58,24 +58,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'handleMidnightNoticeStatus',
-      'handleIsMidnight'
-    ]),
-    ...mapActions('history', [
-      'recordSearchHistory',
-      'getSearchHistory'
-    ]),
-    ...mapActions('company', [
-      'getCurrentUser',
-      'saveTraveler',
-      'getTraveler',
-      'getTravelStandard',
-      'saveTravelStandard',
-      'getCompanySettings',
-      'onSearchingByName',
-      'clearDataFromLocalStorage'
-    ]),
+    ...mapActions(['handleMidnightNoticeStatus', 'handleIsMidnight']),
+    ...mapActions('history', ['recordSearchHistory', 'getSearchHistory']),
+    ...mapActions('company', ['getCurrentUser', 'saveTraveler', 'getTraveler', 'getTravelStandard', 'saveTravelStandard', 'getCompanySettings', 'onSearchingByName', 'clearDataFromLocalStorage']),
     doNotShowAgain () {
       this.handleMidnightNoticeStatus({isActive: true})
     },
@@ -174,31 +159,10 @@ export default {
       }
     },
     requestUser () {
-      const errcallback = res => {
-        // 如果当前用户登录过期则提示用户登录未登录
-        this.Toast({
-          message: res.flagmsg,
-          position: 'bottom',
-          duration: 5000
-        })
-      }
-      const callback = res => {
-        this.traveller = res.user_name
-        // 获取差旅标准
-        this.requestTravelStandard({user: res})
-        .then(res => {
-          this.saveTravelStandard(res)
-        })
-        .catch(err => {
-          this.clearDataFromLocalStorage(['auth-user'])
-          this.Toast({
-            message: err.flagmsg,
-            position: 'bottom'
-          })
-        })
-      }
       // 首先要判断traveler存在与否，如果不存在则请求，如果存在则直接获取
-      this.getCurrentUser({errcallback, callback})
+      return new Promise((resolve, reject) => {
+        this.getCurrentUser({resolve, reject})
+      })
     },
     requestTraveler () {
       return new Promise((resolve, reject) => {
@@ -239,6 +203,29 @@ export default {
     .catch(_ => {
       // 如果没有获取到traveler，则请求当前用户
       this.requestUser()
+      .then(res => {
+        this.traveller = res.user_name
+        // 获取差旅标准
+        this.requestTravelStandard({user: res})
+        .then(res => {
+          this.saveTravelStandard(res)
+        })
+        .catch(err => {
+          this.clearDataFromLocalStorage(['auth-user'])
+          this.Toast({
+            message: err.flagmsg,
+            position: 'bottom'
+          })
+        })
+      })
+      .catch(err => {
+        // 如果当前用户登录过期则提示用户登录未登录
+        this.Toast({
+          message: err.flagmsg,
+          position: 'bottom',
+          duration: 5000
+        })
+      })
     })
   },
   mounted () {

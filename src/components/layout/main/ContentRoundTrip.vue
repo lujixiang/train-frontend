@@ -30,8 +30,6 @@
         </div>
       </div>
       <search-history :maxSize="3" v-on:onHistroyRecordClick="historyCallback"></search-history>
-      <!-- 去掉bottom -->
-      <!-- <bottom></bottom> -->
     </div>
     <index-list :isSearch="isSearch" v-on:searching="handleOnSearching" v-on:listClick="handleListClick" :active="isShowCompanyUserList" v-on:close="switchPassenger"></index-list>
     <text-alert :active="$store.state.IS_MIDNIGHT && !$store.state.IS_MIDNIGHT_NOTICED" v-on:iknow="doNotShowAgain()"></text-alert>
@@ -65,24 +63,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'handleMidnightNoticeStatus',
-      'handleIsMidnight'
-    ]),
-    ...mapActions('history', [
-      'recordSearchHistory',
-      'getSearchHistory'
-    ]),
-    ...mapActions('company', [
-      'getCurrentUser',
-      'saveTraveler',
-      'getTraveler',
-      'getTravelStandard',
-      'saveTravelStandard',
-      'getCompanySettings',
-      'onSearchingByName',
-      'clearDataFromLocalStorage'
-    ]),
+    ...mapActions(['handleMidnightNoticeStatus', 'handleIsMidnight']),
+    ...mapActions('history', ['recordSearchHistory', 'getSearchHistory']),
+    ...mapActions('company', ['getCurrentUser', 'saveTraveler', 'getTraveler', 'getTravelStandard', 'saveTravelStandard', 'getCompanySettings', 'onSearchingByName', 'clearDataFromLocalStorage']),
     doNotShowAgain () {
       this.handleMidnightNoticeStatus({isActive: true})
     },
@@ -186,31 +169,10 @@ export default {
       }
     },
     requestUser () {
-      const errcallback = res => {
-        // 如果当前用户登录过期则提示用户登录未登录
-        this.Toast({
-          message: res.flagmsg,
-          position: 'bottom',
-          duration: 5000
-        })
-      }
-      const callback = res => {
-        this.traveller = res.user_name
-        // 获取差旅标准
-        this.requestTravelStandard({user: res})
-        .then(res => {
-          this.saveTravelStandard(res)
-        })
-        .catch(err => {
-          this.clearDataFromLocalStorage(['auth-user'])
-          this.Toast({
-            message: err.flagmsg,
-            position: 'bottom'
-          })
-        })
-      }
       // 首先要判断traveler存在与否，如果不存在则请求，如果存在则直接获取
-      this.getCurrentUser({errcallback, callback})
+      return new Promise((resolve, reject) => {
+        this.getCurrentUser({resolve, reject})
+      })
     },
     requestTraveler () {
       return new Promise((resolve, reject) => {
@@ -261,6 +223,28 @@ export default {
     .catch(_ => {
       // 如果没有获取到traveler，则请求当前用户
       this.requestUser()
+      .then(res => {
+        this.traveller = res.user_name
+        // 获取差旅标准
+        this.requestTravelStandard({user: res})
+        .then(res => {
+          this.saveTravelStandard(res)
+        })
+        .catch(err => {
+          this.clearDataFromLocalStorage(['auth-user'])
+          this.Toast({
+            message: err.flagmsg,
+            position: 'bottom'
+          })
+        })
+      })
+      .catch(err => {
+        this.Toast({
+          message: err.flagmsg,
+          position: 'bottom',
+          duration: 5000
+        })
+      })
     })
   },
   mounted () {

@@ -61,3 +61,36 @@ export const isStandardSeat = ({ commit }, args) => {
 export const clearDataFromLocalStorage = ({ commit }, args) => {
   commit(key.CLEAR_DATA_FROM_STORAGE, args)
 }
+// 新版出行人接口对接
+export const getInsideCompanyUserList = ({ commit }, args) => {
+  let { params } = args
+  return http.post(api.traveling.insideCompanyUserList, params)
+  .then(res => {
+    commit(key.GET_INSIDE_COMPANY_USER_LIST, {...args, res})
+  })
+}
+export const getOutsideCompanyUserList = ({ commit }, args) => {
+  let { params } = args
+  return http.post(api.traveling.outsideCompanyUserList, params)
+  .then(res => {
+    commit(key.GET_OUTSIDE_COMPANY_USER_LIST, {...args, res})
+  })
+}
+export const searchPassengersBy = ({ commit }, args) => {
+  commit(key.SEARCH_PASSENGERS_BY, args)
+}
+export const switchPassenger = ({ commit }, args) => {
+  commit(key.SWITCH_PASSENGER, args)
+}
+export const getSelectedPassengers = ({ commit }, args) => {
+  commit(key.GET_SELECTED_PASSENGERS, args)
+}
+export const updateSelectedPassengers = ({ commit }, args) => {
+  commit(key.UPDATE_SELECTED_PASSENGERS, {...DEFAULT_ARGUMENTS, ...args})
+}
+export const updateSelectedOuterPassengers = ({ commit }, args) => {
+  commit(key.UPDATE_SELECTED_OUTER_PASSENGERS, {...DEFAULT_ARGUMENTS, ...args})
+}
+export const deleteSelectedPassenger = ({ commit }, args) => {
+  commit(key.DELETE_SELECTED_PASSENGER, args)
+}

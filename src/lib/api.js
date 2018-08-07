@@ -28,5 +28,18 @@ module.exports = {
   // 下次不在弹出引导页
   dontShowGuidInstruction: '/ykb_train/insertTrainUserGuide',
   // 是否显示过引导页面
-  ifShowGuidInstruction: '/ykb_train/getTrainUserGuide'
+  ifShowGuidInstruction: '/ykb_train/getTrainUserGuide',
+  // 新版出行人的接口
+  traveling: {
+    // 企业内部人员列表
+    insideCompanyUserList: '/ykb_train_forward/getUserList',
+    // 企业外部人员列表
+    outsideCompanyUserList: '/ykb_train_forward/getOutUserList',
+    // 添加外部人员
+    addOutsideUser: '/ykb_train_forward/',
+    // 更新外部人员
+    updateOutsideUser: '/ykb_train_forward/',
+    // 删除外部人员
+    deleteOutsideUser: '/ykb_train_forward/'
+  }
 }

@@ -4,6 +4,7 @@ const sessionStore = require('@/lib/sessionStorage')['default']
 const _ = require('lodash')
 const g = require('@/definition/g')
 const fun = require('@/lib/fun')
+const immutable = require('immutable')
 const mutations = {
   [key.GET_COMPANY_USER_LIST] (state, payload) {
     let { res, callback, errcallback } = payload
@@ -75,21 +76,24 @@ const mutations = {
     }
   },
   [key.GET_CURRENT_USER] (state, payload) {
-    let { errcallback, callback } = payload
+    let { resolve, reject } = payload
     let user = JSON.parse(sessionStore.get('auth-user'))
     if (!user || user && (user['user_name'] === '')) {
-      errcallback({flagmsg: '登录过期，请重新登录'})
+      reject({flagmsg: '登录过期，请重新登录'})
     } else {
-      callback(user)
+      sessionStore.set('selected-passengers', [{userName: user.user_name, userSysId: user.user_sys_key, cellPhone: user.user_phone}])
+      resolve(user)
     }
   },
   [key.GET_TRAVELER] (state, payload) {
-    let { callback, errcallback } = payload
+    let { resolve, reject } = payload
     let user = JSON.parse(store.get('traveler'))
     if (!user || user && (user['user_name'] === '' || user['user_phone'] === '')) {
-      errcallback()
+      reject()
     } else {
-      callback(user)
+      console.log(user)
+      sessionStore.set('selected-passengers', [user])
+      resolve(user)
     }
   },
   [key.GET_USER_BY_TOKEN] (state, payload) {
@@ -199,6 +203,350 @@ const mutations = {
   [key.CLEAR_DATA_FROM_STORAGE] (state, payload) {
     // 清除storage里面的数据
     store.clear(payload, true)
+  },
+  // 新版出行人接口对接
+  [key.GET_INSIDE_COMPANY_USER_LIST] (state, payload) {
+    let { resolve, reject, res, cacheFirst } = payload
+    let dataList = []
+    let selected = JSON.parse(sessionStore.get('selected-passengers'))
+    // 返回已选择出行人的userSystemId
+    selected = _.map(selected, m => {
+      if (!m['isOuter']) {
+        return m.userSysId
+      } else {
+        return ''
+      }
+    })
+    if (cacheFirst) {
+      // 有缓存的情况下直接从缓存取值
+      let companyuserlist = JSON.parse(sessionStore.get('companyuserlist'))
+      let USER_LIST = JSON.parse(sessionStore.get('USER_LIST'))
+      if (companyuserlist && !_.isEmpty(companyuserlist)) {
+        state.companyuserlist = companyuserlist
+        state.USER_LIST = USER_LIST
+        _.forEach(companyuserlist, (value, key) => {
+          _.forEach(value, p => {
+            if (selected.indexOf(p.userSysId) > -1) {
+              // 勾选已经选中的元素
+              p['selected'] = true
+            } else {
+              p['selected'] = false
+            }
+          })
+        })
+        _.forEach(USER_LIST, (value, key) => {
+          if (selected.indexOf(value.userSysId) > -1) {
+            value['selected'] = true
+          } else {
+            value['selected'] = false
+          }
+        })
+        resolve(companyuserlist)
+      } else {
+        reject({msg: '没有缓存数据'})
+      }
+      return false
+    }
+    try {
+      dataList = res
+      if (dataList && dataList.flagcode === '200') {
+        let personnelList = immutable.List(dataList.data.personnelList)
+        let alphabeta = {A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: [], I: [], J: [], K: [], L: [], M: [], N: [], O: [], P: [], Q: [], R: [], S: [], T: [], U: [], V: [], W: [], X: [], Y: [], Z: []}
+        personnelList.map(item => {
+          if (_.isString(item['fullPinYin']) && (item['fullPinYin'] !== '')) {
+            let b = item['fullPinYin'].substring(0, 1).toUpperCase()
+            if (!alphabeta[b]) {
+              alphabeta[b] = []
+            }
+            item['group'] = b
+            item['visiable'] = true
+            item['py'] = item['fullPinYin'].toUpperCase()
+            item['spy'] = item['shortPinYin'].toUpperCase()
+            item['tel'] = fun.encryptPhoneNo(item['cellPhone'])
+            if (selected.indexOf(item['userSysId']) > -1) {
+              item['selected'] = true
+            } else {
+              item['selected'] = false
+            }
+            // item['idcardno'] = fun.encryptIDNo(item['IdNo'])
+            alphabeta[b].push(item)
+          } else {
+            // console.log('常用出行人', item)
+            // alphabeta['常用出行人'].push(item)
+          }
+        })
+        state.companyuserlist = alphabeta
+        state.USER_LIST = personnelList.toJS()
+        sessionStore.set('companyuserlist', alphabeta)
+        sessionStore.set('USER_LIST', personnelList.toJS())
+      } else {
+        reject(dataList)
+      }
+      resolve(dataList)
+    } catch (e) {
+      reject({msg: '登录过期'})
+    }
+  },
+  [key.GET_OUTSIDE_COMPANY_USER_LIST] (state, payload) {
+    let { resolve, reject, res, cacheFirst } = payload
+    let selected = JSON.parse(sessionStore.get('selected-passengers'))
+    // 返回已选择出行人的userSystemId
+    selected = _.map(selected, m => {
+      if (m['isOuter']) {
+        return m.id
+      } else {
+        return ''
+      }
+    })
+    // console.log(selected)
+    if (cacheFirst) {
+      let companyOutsideUserList = JSON.parse(sessionStore.get('companyOutsideUserList'))
+      if (companyOutsideUserList && !_.isEmpty(companyOutsideUserList)) {
+        _.forEach(companyOutsideUserList, (value, key) => {
+          if (selected.indexOf(value.id) > -1) {
+            value['selected'] = true
+          }
+        })
+        state.companyOutsideUserList = companyOutsideUserList
+        resolve(companyOutsideUserList)
+      } else {
+        reject({msg: '没有缓存数据'})
+      }
+      return false
+    }
+    if (res.flagcode === '200') {
+      state.companyOutsideUserList = res.data.outPersonnelList
+      sessionStore.set('companyOutsideUserList', res.data.outPersonnelList)
+      resolve(res.data.outPersonnelList)
+    } else {
+      reject(res)
+    }
+  },
+  [key.SEARCH_PASSENGERS_BY] (state, payload) {
+    let userList = state.USER_LIST
+    // matchedPassengers
+    let mached = []
+    let { keyword, type } = payload
+    _.forEach(userList, p => {
+      if (type === 'number') {
+        if (p.cellPhone.indexOf(keyword) > -1) {
+          mached.push(p)
+        }
+      } else if (type === 'english') {
+        keyword = keyword.toUpperCase()
+        if (p.fullPinYin && p.fullPinYin.indexOf(keyword) > -1 || p.spy && p.spy.indexOf(keyword) > -1) {
+          mached.push(p)
+        }
+      } else {
+        if (p.userName.indexOf(keyword) > -1) {
+          mached.push(p)
+        }
+      }
+    })
+    state.matchedPassengers = mached
+  },
+  [key.GET_SELECTED_PASSENGERS] (state, payload) {
+    let passengers = sessionStore.get('selected-passengers')
+    if (passengers && passengers.length) {
+      state.selectedPassengers = JSON.parse(passengers)
+    } else {
+      state.selectedPassengers = []
+    }
+  },
+  [key.SWITCH_PASSENGER] (state, payload) {
+    let { user } = payload
+    if (user['isOuter']) {
+      // 如果是外部人员
+      let outList = immutable.List(state.companyOutsideUserList)
+      outList.map(p => {
+        if (p.id === user.id) {
+          p['selected'] = true
+          state.selectedPassengers = [user]
+        } else {
+          p['selected'] = false
+        }
+      })
+      state.companyOutsideUserList = outList.toJS()
+    } else {
+      // 搜索列表渲染
+      let matched = immutable.List(state.matchedPassengers)
+      matched.every(p => {
+        if (p.userSysId === user.userSysId) {
+          p['selected'] = true
+        } else {
+          p['selected'] = false
+        }
+      })
+      state.matchedPassengers = matched.toJS()
+      // 默认列表渲染
+      let userList = immutable.List(state.USER_LIST)
+      userList.map(p => {
+        if (p.userSysId === user.userSysId) {
+          // 解决初始化的时候，根据token获取的入住人没有拼音，所以在第一次循环找到当前用户的时候就直接赋值过去
+          user['group'] = p['group']
+          p['selected'] = true
+          state.selectedPassengers = [user]
+        } else {
+          p['selected'] = false
+        }
+      })
+      state.USER_LIST = userList.toJS()
+      // 按照拼音列表渲染
+      // let companyuserlist = _.cloneDeep(state.companyuserlist)
+      let companyuserlist = immutable.Map(state.companyuserlist)
+      companyuserlist.map((list, group) => {
+        if (list.length > 0) {
+          _.forEach(list, p => {
+            if (p.userSysId === user.userSysId) {
+              p['selected'] = true
+            } else {
+              p['selected'] = false
+            }
+          })
+        }
+      })
+      state.companyuserlist = companyuserlist.toJS()
+    }
+    sessionStore.set('selected-passengers', [user])
+  },
+  [key.UPDATE_SELECTED_PASSENGERS] (state, payload) {
+    let { user, reject, init } = payload
+    let count = 4
+    let selectedPassengers = _.cloneDeep(state.selectedPassengers)
+    let userList = _.cloneDeep(state.USER_LIST)
+    let isReject = false
+    if (init || count >= state.selectedPassengers.length || user['selected']) {
+      if (init) {
+        state.selectedPassengers = [user]
+      }
+    } else {
+      reject({msg: '出行人不能超过5人'})
+      return false
+    }
+    _.forEach(userList, p => {
+      if (p.userSysId === user.userSysId) {
+        // console.log(p)
+        // 解决初始化的时候，根据token获取的入住人没有拼音，所以在第一次循环找到当前用户的时候就直接赋值过去
+        user['group'] = p['group']
+        if (p['selected']) {
+          p['selected'] = false
+          state.selectedPassengers = fun.deleteNodeFromArray(selectedPassengers, p, 'userSysId')
+        } else {
+          p['selected'] = true
+          state.selectedPassengers = fun.pushNodeToArray(selectedPassengers, p, 'userSysId')
+        }
+      }
+    })
+    if (isReject) {
+      // 添加人达到上限需要限制后续操作
+      return false
+    }
+    state.USER_LIST = userList
+    /* -------------------------出行人列表------------------------------ */
+    let companyuserlist = _.cloneDeep(state.companyuserlist)
+    let attr = user.group
+    let filterList = companyuserlist[attr]
+    _.forEach(filterList, p => {
+      if (p.userSysId === user.userSysId) {
+        if (p['selected']) {
+          p['selected'] = false
+          state.selectedPassengers = fun.deleteNodeFromArray(selectedPassengers, p, 'userSysId')
+        } else {
+          p['selected'] = true
+          state.selectedPassengers = fun.pushNodeToArray(selectedPassengers, p, 'userSysId')
+        }
+      }
+    })
+    state.companyuserlist = companyuserlist
+    let matched = immutable.List(state.matchedPassengers)
+    matched.map(p => {
+      if (p.userSysId === user.userSysId) {
+        if (p['selected']) {
+          p['selected'] = false
+        } else {
+          p['selected'] = true
+        }
+      }
+    })
+    state.matchedPassengers = matched.toJS()
+    let l = _.cloneDeep(state.selectedPassengers)
+    sessionStore.set('selected-passengers', l)
+  },
+  [key.UPDATE_SELECTED_OUTER_PASSENGERS] (state, payload) {
+    let { user, resolve, reject } = payload
+    let outerList = immutable.List(state.companyOutsideUserList)
+    let selectedPassengers = immutable.List(state.selectedPassengers)
+    let count = state.roomCount
+    outerList.map(p => {
+      if (p.id === user.id) {
+        if (p['selected']) {
+          // 从已选列表里面删除这个人
+          p['selected'] = false
+          state.selectedPassengers = fun.deleteNodeFromArray(selectedPassengers.toJS(), p, 'id')
+        } else {
+          if (2 * count - 1 >= state.selectedPassengers.length) {
+            resolve()
+          } else {
+            reject({msg: '入住人超过限制'})
+            return false
+          }
+          // 添加这个人到已选择列表
+          p['selected'] = true
+          p['isOuter'] = true
+          state.selectedPassengers = fun.pushNodeToArray(selectedPassengers.toJS(), p, 'id')
+        }
+      }
+    })
+    let l = _.cloneDeep(state.selectedPassengers)
+    sessionStore.set('selected-passengers', l)
+    state.companyOutsideUserList = outerList.toJS()
+  },
+  [key.DELETE_SELECTED_PASSENGER] (state, payload) {
+    let { user, clearAll, callback } = payload
+    // 首先删除已选队列里面的
+    let selectedPassengers = immutable.List(state.selectedPassengers).toJS()
+    if (user['isOuter']) {
+      let companyOutsideUserList = state.companyOutsideUserList
+      _.forEach(companyOutsideUserList, (value, key) => {
+        if (value.id === user.id) {
+          value['selected'] = false
+        }
+      })
+      _.remove(selectedPassengers, (item) => { return item.id === user.id })
+      state.selectedPassengers = selectedPassengers
+    } else {
+      // 找到state里面的数据，并且更新状态为非选择状态
+      let companyuserlist = state.companyuserlist
+      _.forEach(companyuserlist, (value, key) => {
+        _.forEach(value, p => {
+          if (p.userSysId === user.userSysId) {
+            p['selected'] = false
+          }
+        })
+      })
+      let USER_LIST = state.USER_LIST
+      _.forEach(USER_LIST, (value, key) => {
+        if (value.userSysId === user.userSysId) {
+          value['selected'] = false
+        }
+      })
+      let matched = state.matchedPassengers
+      _.forEach(matched, (value, key) => {
+        if (value.userSysId === user.userSysId) {
+          value['selected'] = false
+        }
+      })
+      state.companyuserlist = companyuserlist
+      state.USER_LIST = USER_LIST
+      state.matchedPassengers = matched
+      _.remove(selectedPassengers, (item) => { return item.userSysId === user.userSysId })
+      state.selectedPassengers = selectedPassengers
+    }
+    callback && typeof callback === 'function' && callback(user)
+    sessionStore.set('selected-passengers', selectedPassengers)
+    if (state.selectedPassengers.length === 0) {
+      clearAll()
+    }
   }
 }
 export default mutations

@@ -1,0 +1,143 @@
+<template>
+  <div class="id-card-content">
+    <span class="close-icon" @click="deleteIDcard"></span>
+    <div class="form-group">
+      <div class="input-item" @click="chooseIDtype">
+        <label>
+          <span>证件类型</span>
+        </label>
+        <input type="text" name="idtype" readonly="readonly" v-model="type">
+        <span class="right-icon">
+          <img width="14" :src="upDownIcon">
+        </span>
+      </div>
+      <div class="select-item" v-show="isUp">
+        <!-- //筛选顺序 身份证 7 护照 1 港澳4 台湾3 其他6 -->
+        <ul>
+          <li v-for="id in idTypes" :key="id.key" @click="pickIDType(id)">
+            <span>{{id.label}}</span>
+            <span>
+              <img v-if="id.selected" :src="chekcedIcon">
+              <img v-if="!id.selected" :src="uncheckedIcon">
+            </span>
+          </li>
+        </ul>
+      </div>
+      <template v-if="type === '护照'">
+        <div class="input-item">
+          <label>
+            <b>姓(拼音)*</b>
+            <small>Surname</small>
+          </label>
+          <input type="text" name="name" placeholder="例如：LI">
+          <span class="right-icon" @click="onOff">
+            <img :src="exclamatoryIcon">
+          </span>
+        </div>
+        <div class="input-item">
+          <label>
+            <b>名(拼音)*</b>
+            <small>Given name</small>
+          </label>
+          <input type="text" name="name" placeholder="例如：ZHUANG">
+          <span class="right-icon">
+            <!-- <img :src="exclamatoryIcon"> -->
+          </span>
+        </div>
+      </template>
+      <div class="input-item">
+        <label>证件号码*</label>
+        <input type="text" name="name" placeholder="请输入证件号码">
+        <span class="right-icon">
+        </span>
+      </div>
+      <div class="input-item">
+        <label>出生日期*</label>
+        <input type="text" name="name" placeholder="请输入" @click="handleBirthday">
+        <span class="right-icon">
+        </span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import './less/style.less'
+  const exclamatoryIcon = require('./images/gantanhao.svg')
+  const chekcedIcon = require('./images/circle-checked.svg')
+  const uncheckedIcon = require('./images/circle-unchecked.svg')
+  const _ = require('lodash')
+  export default {
+    name: 'idCard',
+    props: {
+      guid: {
+        type: Number,
+        default: 1,
+        require: true
+      },
+      isConfirm: {
+        type: Boolean,
+        default: false,
+        require: false
+      }
+    },
+    computed: {
+      upDownIcon () {
+        let upordown = this.isUp ? 'up' : 'down'
+        return require(`./images/icon-${upordown}.png`)
+      }
+    },
+    watch: {
+      isConfirm (cV, oV) {
+        // 确认以后可以直接传值过来
+        console.log(cV)
+      }
+    },
+    data () {
+      return {
+        exclamatoryIcon,
+        chekcedIcon,
+        uncheckedIcon,
+        type: '身份证',
+        isUp: false,
+        isShowNotice: false,
+        idTypes: [{label: '身份证', selected: true, key: 7}, {label: '护照', selected: false, key: 1}, {label: '港澳居民来往内地通行证', selected: false, key: 4}, {label: '台湾居民来往内地通行证', selected: false, key: 3}, {label: '其他', selected: false, key: 6}],
+        userInfo: {
+          idType: '', // 证件类型
+          lastName: '', // 姓
+          firstName: '', // 名
+          idNo: '', // 证件号码
+          birthday: '' // 出生日期
+        }
+      }
+    },
+    methods: {
+      deleteIDcard () {
+        let { guid } = this.$props
+        this.$emit('delete', {key: guid})
+      },
+      chooseIDtype () {
+        this.isUp = !this.isUp
+      },
+      onOff () {
+        this.$emit('viewpassport', {rule: 'passport'})
+      },
+      pickIDType (id) {
+        _.forEach(this.idTypes, item => {
+          if (item.key === id.key) {
+            item['selected'] = true
+            this.type = item.label
+          } else {
+            item['selected'] = false
+          }
+        })
+        this.chooseIDtype()
+      },
+      handleBirthday () {
+        let { guid } = this.$props
+        this.$emit('openDate', {key: guid})
+        // this.$refs.picker.open()
+      }
+    }
+  }
+</script>

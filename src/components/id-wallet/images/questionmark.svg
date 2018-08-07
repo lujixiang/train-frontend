@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M0.159514716,0 L14,0 C17.3137085,-6.08718376e-16 20,2.6862915 20,6 L20,19.1178776 C10.4965618,16.6718617 2.94576152,9.36193064 0.159514716,1.22390986e-12 Z" id="path-1"></path>
+    </defs>
+    <g id="随处记-copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="12" transform="translate(-345.000000, -163.000000)">
+            <g id="Group" transform="translate(345.000000, 163.000000)">
+                <g id="Group-4">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Combined-Shape" fill="#A2DDEA" xlink:href="#path-1"></use>
+                    <image id="Bitmap" mask="url(#mask-2)" x="9" y="3" width="9" height="10" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAATCAYAAAB2pebxAAAABGdBTUEAA1teXP8meAAAAPtJREFUOBHdlEsKwkAMhlPbRS3WB3qFIoi4ETyw93EjIkjxAoLgC+1Gan8hIZNaUerKbDKT+fM1yQz15ttdTjWtUTP/mf4TSMCVTHoRJXFIq8OVNqeMw44ftkMadyNKi/NloWOTSgCIAp9mg5hGnSafi0cMZ9AkBUybQFAB27TfckAAIMamtYhJO2jB9zwR6yS9XuwvpXYFAuL6eIN7CUIcANZgzybtcAAiiK1VAaArQWzyJ/sSxA6RIXbYHId3IBaAFnRrVSAZLB6SvQU9RD6Dv+e5c0NSCV4imx2iHbbWIkcqSc/Z22cPECrgZ88fhPf+61cgg9U9frt+AO8/aOcQqbl5AAAAAElFTkSuQmCC"></image>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
