@@ -339,7 +339,6 @@
         this.getSeatInfo({callback, args: {}})
       },
       handleOnPassengerChange (passengers) {
-        console.log('这里的数据变化了吗', passengers)
         // this.totalPrice = passengers.length * (this.ticketPrice + 5)
         this.totalPrice = Big(this.ticketPrice).plus(5).times(passengers.length).valueOf()
         this.passengers = passengers

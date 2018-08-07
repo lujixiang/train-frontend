@@ -205,8 +205,15 @@
         this.passengers = passengers
         this.$emit('passengerChange', passengers)
       },
-      handleDeleteFromList () {
-        console.log('handleDeleteFromList')
+      handleDeleteFromList (user) {
+        let { isOuter } = user
+        let passengers = _.cloneDeep(this.passengers)
+        if (isOuter) {
+          this.passengers = fun.deleteNodeFromArray(passengers, user, 'id')
+        } else {
+          this.passengers = fun.deleteNodeFromArray(passengers, user, 'UserKey')
+        }
+        this.handleOnSelectPassengers(this.passengers)
       },
       handleListClick (e) {
         this.addMeAsPassenger({isme: false, user: e})

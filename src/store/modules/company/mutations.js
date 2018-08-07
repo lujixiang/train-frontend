@@ -476,7 +476,7 @@ const mutations = {
     let { user, resolve, reject } = payload
     let outerList = immutable.List(state.companyOutsideUserList)
     let selectedPassengers = immutable.List(state.selectedPassengers)
-    let count = state.roomCount
+    let count = 4
     outerList.map(p => {
       if (p.id === user.id) {
         if (p['selected']) {
@@ -484,10 +484,10 @@ const mutations = {
           p['selected'] = false
           state.selectedPassengers = fun.deleteNodeFromArray(selectedPassengers.toJS(), p, 'id')
         } else {
-          if (2 * count - 1 >= state.selectedPassengers.length) {
+          if (count >= state.selectedPassengers.length) {
             resolve()
           } else {
-            reject({msg: '入住人超过限制'})
+            reject({msg: '出行人不能超过5人'})
             return false
           }
           // 添加这个人到已选择列表
@@ -546,6 +546,14 @@ const mutations = {
     sessionStore.set('selected-passengers', selectedPassengers)
     if (state.selectedPassengers.length === 0) {
       clearAll()
+    }
+  },
+  [key.SAVE_OUTSIDE_COMPANY_USER] (state, payload) {
+    let { resolve, reject, res } = payload
+    if (res && res.flgcode === '200') {
+      resolve(res)
+    } else {
+      reject(res)
     }
   }
 }

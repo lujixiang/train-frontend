@@ -36,7 +36,7 @@ module.exports = {
     // 企业外部人员列表
     outsideCompanyUserList: '/ykb_train_forward/getOutUserList',
     // 添加外部人员
-    addOutsideUser: '/ykb_train_forward/',
+    addOutsideUser: '/ykb_train_forward/saveOutUserDocumentInformation',
     // 更新外部人员
     updateOutsideUser: '/ykb_train_forward/',
     // 删除外部人员

@@ -1,6 +1,6 @@
 <template>
   <div class="outer-list-content">
-    <template v-if="data.length !== 0">
+    <template v-if="!isLoading">
       <div class="user-list-wrap">
         <div class="user-list-item" v-for="item in data">
           <div class="person-container">
@@ -13,7 +13,7 @@
                 <span class="name text-overflow">{{item.userName}}</span>
                 <span class="phone text-overflow">{{item.cellPhone}}</span>
                 <span class="edit" @click="handleUpdateUser(item)">
-                  <!-- <img :src="editIcon"> -->
+                  <img :src="editIcon">
                 </span>
               </div>
             </div>
@@ -50,6 +50,11 @@
         type: String,
         default: 'multi',
         require: false
+      },
+      isLoading: {
+        type: Boolean,
+        default: true,
+        require: false
       }
     },
     data () {
@@ -65,6 +70,7 @@
     methods: {
       ...mapActions('company', ['updateSelectedOuterPassengers', 'switchPassenger']),
       handleCheckItem (user) {
+        console.log(user)
         let { model } = this.$props
         if (model === 'single') {
           user['isOuter'] = true
@@ -83,7 +89,10 @@
             position: 'bottom'
           })
         }
-        this.updateSelectedOuterPassengers({user, reject, isOuter: true})
+        const resolve = (res) => {
+          console.log(res)
+        }
+        this.updateSelectedOuterPassengers({user, reject, resolve, isOuter: true})
       },
       handleUpdateUser () {
         console.log('编辑人员')

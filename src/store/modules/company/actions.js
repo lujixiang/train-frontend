@@ -89,8 +89,15 @@ export const updateSelectedPassengers = ({ commit }, args) => {
   commit(key.UPDATE_SELECTED_PASSENGERS, {...DEFAULT_ARGUMENTS, ...args})
 }
 export const updateSelectedOuterPassengers = ({ commit }, args) => {
-  commit(key.UPDATE_SELECTED_OUTER_PASSENGERS, {...DEFAULT_ARGUMENTS, ...args})
+  commit(key.UPDATE_SELECTED_OUTER_PASSENGERS, {...args})
 }
 export const deleteSelectedPassenger = ({ commit }, args) => {
   commit(key.DELETE_SELECTED_PASSENGER, args)
+}
+export const addOutsideUser = ({ commit }, args) => {
+  let { params } = args
+  return http.post(api.traveling.addOutsideUser, params)
+  .then(res => {
+    commit(key.SAVE_OUTSIDE_COMPANY_USER, {...args, res})
+  })
 }

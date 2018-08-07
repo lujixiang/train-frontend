@@ -28,15 +28,15 @@
           </div>
         </div>
         <div class="wallet-collections">
-          <!-- <template v-for="card in idCollections">
-            <id-card :key="card.key" :guid="card.key" v-on:delete="handleDeleteIDCard" :isConfirm="isConfirm" v-on:viewpassport="handleViewPassport" v-on:openDate="handleOnDatePicker"></id-card>
-          </template> -->
-          <!-- <div @click="addNewId" class="add-new-id">
+          <template v-for="card in idCollections">
+            <id-card ref="idcard" :key="card.key" :guid="card.key" v-on:delete="handleDeleteIDCard" v-on:viewpassport="handleViewPassport" v-on:openDate="handleOnDatePicker"></id-card>
+          </template>
+          <div @click="addNewId" class="add-new-id" v-show="isShowAddButton">
             <span>
               <img :src="addNewIcon">
               添加证件
             </span>
-          </div> -->
+          </div>
         </div>
       </div>
       <div class="wallet-footer" @click="confirmAdded">
@@ -62,6 +62,7 @@
   import './less/style.less'
   const _ = require('lodash')
   const moment = require('moment')
+  const fun = require('@/lib/fun')
   const exclamatoryIcon = require('./images/gantanhao.svg')
   const questionIcon = require('./images/questionmark.svg')
   const addNewIcon = require('./images/add.svg')
@@ -89,8 +90,8 @@
         idCollections: [],
         windowHeight: window.innerHeight,
         guid: 0,
-        isConfirm: false,
-        pickerVisible: ''
+        pickerVisible: '',
+        isShowAddButton: true
       }
     },
     methods: {
@@ -108,21 +109,21 @@
         this.isShowNotice = !this.isShowNotice
       },
       handleOnDatePicker () {
-        console.log('zopud')
         this.$refs.picker.open()
       },
       handleConfirm (d) {
         let date = moment(d).format('YYYY-MM-DD')
         console.log(date)
       },
-      addNewOutsideUser () {
+      addNewOutsideUser (args) {
+        let { infoList } = args
         let { currentUser, passengerName, contactNumber } = this
         let params = {
           chineseName: passengerName,
           linkPhone: contactNumber,
           userId: currentUser.UserId,
           outUserId: '', // 如果为空则是插入，如果有值则为修改
-          infoList: '' // 暂时不考虑这个字段
+          infoList: JSON.stringify(infoList) // 暂时不考虑这个字段
         }
         return new Promise((resolve, reject) => {
           this.addOutsideUser({resolve, reject, params})
@@ -133,8 +134,45 @@
           this.getCurrentUser({resolve, reject})
         })
       },
+      checkUserInfo (components) {
+        let testThrouth = true
+        let message = ''
+        let infoList = []
+        /*
+          documentType:"",documentNO:"",birthday:"",givenName:"",surName:""
+        */
+        _.forEach(components, component => {
+          let userInfo = component.userInfo
+          if (userInfo.key === 1) {
+            if (userInfo.firstName === '') {
+              testThrouth = false
+              message = '姓（拼音）不能为空'
+            }
+            if (userInfo.lastName === '') {
+              testThrouth = false
+              message = '名（拼音）不能为空'
+            }
+          } else if (userInfo.key === 7) {
+            if (!fun.checkID(userInfo.idNo) || userInfo.idNo === '') {
+              testThrouth = false
+              message = '身份证不正确'
+            }
+          }
+          if (userInfo.idNo === '') {
+            testThrouth = false
+            message = '证件号不能为空'
+          }
+          if (userInfo.birthday === '') {
+            testThrouth = false
+            message = '出生日期不能为空'
+          }
+          infoList.push({documentType: userInfo.key, documentNO: userInfo.idNo, birthday: userInfo.birthday, givenName: userInfo.firstName, surName: userInfo.lastName})
+        })
+        return {testThrouth, infoList, message}
+      },
       confirmAdded () {
-        this.isConfirm = true
+        let { testThrouth, infoList, message } = this.checkUserInfo(this.$refs.idcard)
+        console.log(infoList)
         if (this.passengerName === '') {
           this.Toast({
             message: '请输入正确的中文姓名',
@@ -142,18 +180,27 @@
           })
           return false
         }
-        if (this.contactNumber === '') {
+        if (!fun.checkMobile(this.contactNumber)) {
           this.Toast({
-            message: '请输入正确的11位手机号码',
+            message: '请输入正确的手机号码',
             position: 'bottom'
           })
           return false
         }
+        // 这个时候需要判定是否添加了证件
+        if (this.idCollections.length === 0) {
+          this.Toast({message: '请添加证件', position: 'bottom'})
+          return false
+        }
+        if (!testThrouth) {
+          this.Toast({message, position: 'bottom'})
+          return false
+        }
         this.Indicator.open()
-        this.addNewOutsideUser()
+        this.addNewOutsideUser({infoList})
         .then(res => {
           this.Indicator.close()
-          this.$emit('addedSuccess')
+          // this.$emit('addedSuccess')
         })
         .catch(e => {
           this.Indicator.close()
@@ -163,8 +210,12 @@
       addNewId () {
         this.guid = this.guid + 1
         this.idCollections.push({key: this.guid})
+        if (this.idCollections.length >= 4) {
+          this.isShowAddButton = false
+        }
       },
       handleDeleteIDCard (card) {
+        this.isShowAddButton = true
         let ids = _.cloneDeep(this.idCollections)
         _.remove(ids, (item, index) => { return item.key === card.key })
         this.idCollections = ids

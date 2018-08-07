@@ -30,7 +30,7 @@
             <img :src="entranceIcon" width="24" class="entrance-icon">
           </div>
           <div class="tab-content" ref="tabcontentOuter">
-            <outer-list :model="model" :data="this.$store.state.company.companyOutsideUserList"></outer-list>
+            <outer-list :model="model" :data="this.$store.state.company.companyOutsideUserList" :isLoading="isLoadingOutPassengers"></outer-list>
           </div>
         </div>
       </div>
@@ -128,7 +128,8 @@
         checkedIcon,
         uncheckedIcon,
         circleCheckedIcon,
-        circleUnCheckedIcon
+        circleUnCheckedIcon,
+        isLoadingOutPassengers: true
       }
     },
     watch: {
@@ -142,15 +143,25 @@
         if (newV) {
           // 首先从缓存里面取值，如果缓存里面不存在则再请求后台获取
           this.getCompanyUsers({cacheFirst: true})
+          .then(res => {
+          })
           .catch(e => {
             this.getCompanyUsers({cacheFirst: false, params: {businessType: '4'}})
+            .then(res => {
+            })
             .catch(e => {
               this.Toast({message: '登录过期', position: 'bottom'})
             })
           })
           this.getOutUser({cacheFirst: true})
+          .then(res => {
+            this.isLoadingOutPassengers = false
+          })
           .catch(e => {
             this.getOutUser({cacheFirst: false, params: {businessType: '4'}})
+            .then(res => {
+              this.isLoadingOutPassengers = false
+            })
             .catch({message: '登录过期', position: 'bottom'})
           })
         }
@@ -295,7 +306,13 @@
           this.isExpandPassengers = false
         }
         const callback = (user) => {
-          this.$emit('deleteFromList', user)
+          let docinfo = ''
+          try {
+            docinfo = user.documentInformationList[0].documentNO
+          } catch (e) {
+            docinfo = ''
+          }
+          this.$emit('deleteFromList', {Name: user.userName, idcardno: fun.encryptIDNo(docinfo), IdNo: docinfo, UserKey: user.userSysId, visiable: true, isOuter: false})
         }
         this.deleteSelectedPassenger({user, clearAll, callback})
       },
