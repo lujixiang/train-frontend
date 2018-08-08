@@ -44,7 +44,7 @@
         <span class="confirm" @click="confirmAdded">确定</span>
       </div>
     </mt-popup>
-    <!-- <id-notice :active="isShowNotice" :rule="rule" v-on:closeNotice="isShowNotice = !isShowNotice"></id-notice> -->
+    <order-notice :active="isShowNotice" :rule="rule" v-on:closeNotice="isShowNotice = !isShowNotice"></order-notice>
   </div>
 </template>
 <script>
