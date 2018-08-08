@@ -74,6 +74,13 @@
         type: Number,
         default: 1,
         require: true
+      },
+      card: {
+        type: Object,
+        default: _ => {
+          return {}
+        },
+        require: false
       }
     },
     computed: {
@@ -122,11 +129,27 @@
           }
         })
         this.chooseIDtype()
-      },
-      handleBirthday () {
-        let { guid } = this.$props
-        this.$emit('openDate', {key: guid})
-        // this.$refs.picker.open()
+      }
+    },
+    mounted () {
+      let card = _.cloneDeep(this.$props.card)
+      if (!_.isEmpty(card)) {
+        let { documentType, documentNO, birthday, givenName, surName } = card
+        _.forEach(this.idTypes, item => {
+          if (item.key === documentType) {
+            item['selected'] = true
+            this.userInfo = {
+              key: item.key,
+              idType: item.label,
+              birthday: birthday,
+              lastName: surName,
+              firstName: givenName,
+              idNo: documentNO
+            }
+          } else {
+            item['selected'] = false
+          }
+        })
       }
     }
   }

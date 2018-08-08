@@ -2,7 +2,7 @@
   <div class="id-wallet-content">
     <mt-popup v-model="active" position="right" :closeOnClickModal="false">
       <div class="header-wraper">
-        <mt-header class="header" :fixed="false" title="新增人员">
+        <mt-header class="header" :fixed="false" title="编辑人员">
           <mt-button slot="left" icon="back" @click="onClose">
             <!-- <span>返回</span> -->
           </mt-button>
@@ -29,7 +29,7 @@
         </div>
         <div class="wallet-collections">
           <template v-for="card in idCollections">
-            <id-card ref="idcard" :key="card.key" :guid="card.key" v-on:delete="handleDeleteIDCard" v-on:viewpassport="handleViewPassport" v-on:openDate="handleOnDatePicker"></id-card>
+            <id-card ref="idcard" :key="card.key" :guid="card.key" v-on:delete="handleDeleteIDCard" v-on:viewpassport="handleViewPassport" v-on:openDate="handleOnDatePicker" :card="card"></id-card>
           </template>
           <div @click="addNewId" class="add-new-id" v-show="isShowAddButton">
             <span>
@@ -39,46 +39,40 @@
           </div>
         </div>
       </div>
-      <div class="wallet-footer" @click="confirmAdded">
-        <span>完成</span>
+      <div class="modify-footer">
+        <span class="delete" @click="handleDeleteOutUser">删除</span>
+        <span class="confirm" @click="confirmAdded">确定</span>
       </div>
     </mt-popup>
     <!-- <id-notice :active="isShowNotice" :rule="rule" v-on:closeNotice="isShowNotice = !isShowNotice"></id-notice> -->
-    <!-- <mt-datetime-picker
-      ref="picker"
-      type="date"
-      :startDate="startDate"
-      :endDate="endDate"
-      year-format="{value} 年"
-      month-format="{value} 月"
-      date-format="{value} 日"
-      @confirm="handleConfirm"
-      v-model="pickerVisible">
-    </mt-datetime-picker> -->
   </div>
 </template>
 <script>
   import { mapActions } from 'vuex'
   import './less/style.less'
   const _ = require('lodash')
-  // const moment = require('moment')
   const fun = require('@/lib/fun')
   const exclamatoryIcon = require('./images/gantanhao.svg')
   const questionIcon = require('./images/questionmark.svg')
   const addNewIcon = require('./images/add.svg')
   export default {
-    name: 'idWallet',
+    name: 'idModify',
     props: {
       active: {
         type: Boolean,
         default: false,
         require: false
+      },
+      user: {
+        type: Object,
+        default: _ => {
+          return {}
+        },
+        require: true
       }
     },
     data () {
       return {
-        startDate: new Date(new Date().getFullYear() - 70, 0, 1),
-        endDate: new Date(new Date().getFullYear(), 0, 1),
         exclamatoryIcon,
         questionIcon,
         addNewIcon,
@@ -90,7 +84,13 @@
         idCollections: [],
         windowHeight: window.innerHeight,
         guid: 0
-        // pickerVisible: '',
+      }
+    },
+    watch: {
+      user: function (newV, oldV) {
+        if (newV) {
+          this.loaded()
+        }
       }
     },
     computed: {
@@ -100,9 +100,9 @@
     },
     methods: {
       ...mapActions(['handleGlobalPopupStack']),
-      ...mapActions('company', ['addOutsideUser', 'getCurrentUser']),
+      ...mapActions('company', ['addOutsideUser', 'getCurrentUser', 'deleteOuteUser']),
       onClose () {
-        this.$emit('closeIdWallet')
+        this.$emit('closeModify')
       },
       noticeAlert () {
         this.rule = 'chineseName'
@@ -115,23 +115,38 @@
       handleOnDatePicker () {
         this.$refs.picker.open()
       },
-      // handleConfirm (d) {
-      //   let date = moment(d).format('YYYY-MM-DD')
-      //   console.log(date)
-      // },
       addNewOutsideUser (args) {
-        let { infoList } = args
+        let { infoList, delIds } = args
         let { currentUser, passengerName, contactNumber } = this
         let params = {
           chineseName: passengerName,
           linkPhone: contactNumber,
           userId: currentUser.user_sys_key,
-          delIds: '', // 删除的userid
+          delIds, // 删除的userid
           outUserId: '', // 如果为空则是插入，如果有值则为修改
           infoList: JSON.stringify(infoList) // 暂时不考虑这个字段
         }
         return new Promise((resolve, reject) => {
           this.addOutsideUser({resolve, reject, params})
+        })
+      },
+      handleDeleteOutUser () {
+        this.Indicator.open()
+        let { id } = this.$props.user
+        let params = {outUserId: id}
+        return new Promise((resolve, reject) => {
+          this.deleteOuteUser({resolve, reject, params})
+        })
+        .then(res => {
+          this.onClose()
+          this.Indicator.close()
+          this.$emit('deleteSuccess', '删除成功')
+          console.log(res)
+        })
+        .catch(e => {
+          this.Indicator.close()
+          this.Toast({message: e.flagmsg, position: 'bottom'})
+          console.log(e)
         })
       },
       handleGetCurrentUser () {
@@ -201,31 +216,48 @@
           this.Toast({message, position: 'bottom'})
           return false
         }
+        let delIds = '' // 需要删除的用户id
         this.Indicator.open()
-        this.addNewOutsideUser({infoList})
+        this.addNewOutsideUser({infoList, delIds})
         .then(res => {
           this.Indicator.close()
           this.onClose()
-          console.log('addedSuccess')
-          this.$emit('addedSuccess')
+          this.$emit('addedSuccess', '添加成功')
         })
         .catch(e => {
           this.Indicator.close()
           this.Toast({message: e.flagmsg, position: 'bottom'})
         })
       },
-      addNewId () {
+      getGuid () {
         this.guid = this.guid + 1
-        this.idCollections.push({key: this.guid})
+        return this.guid
+      },
+      addNewId () {
+        this.idCollections.push({key: this.getGuid()})
       },
       handleDeleteIDCard (card) {
         let ids = _.cloneDeep(this.idCollections)
         _.remove(ids, (item, index) => { return item.key === card.key })
         this.idCollections = ids
+      },
+      loaded () {
+        let { cellPhone, userName, documentInformationList } = this.$props.user
+        this.contactNumber = cellPhone
+        this.passengerName = userName
+        if (documentInformationList) {
+          let ids = []
+          _.forEach(documentInformationList, item => {
+            item['key'] = this.getGuid()
+            ids.push(item)
+          })
+          this.idCollections = _.cloneDeep(ids)
+        }
       }
     },
     mounted () {
       this.$refs.idBody.style.height = this.windowHeight - 88 + 'px'
+      // this.loaded()
       this.handleGetCurrentUser()
       .then(res => {
         this.currentUser = res
