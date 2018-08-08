@@ -95,9 +95,20 @@ export const deleteSelectedPassenger = ({ commit }, args) => {
   commit(key.DELETE_SELECTED_PASSENGER, args)
 }
 export const addOutsideUser = ({ commit }, args) => {
+  let { params, cacheFirst } = args
+  if (cacheFirst) {
+    commit(key.SAVE_OUTSIDE_COMPANY_USER, {...args})
+  } else {
+    return http.post(api.traveling.addOutsideUser, params)
+    .then(res => {
+      commit(key.SAVE_OUTSIDE_COMPANY_USER, {...args, res})
+    })
+  }
+}
+export const deleteOuteUser = ({ commit }, args) => {
   let { params } = args
-  return http.post(api.traveling.addOutsideUser, params)
+  return http.post(api.traveling.deleteOutsideUser, params)
   .then(res => {
-    commit(key.SAVE_OUTSIDE_COMPANY_USER, {...args, res})
+    commit(key.DELETE_OUTER_USER, {...args, res})
   })
 }

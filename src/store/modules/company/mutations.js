@@ -556,6 +556,14 @@ const mutations = {
     } else {
       reject(res)
     }
+  },
+  [key.DELETE_OUTER_USER] (state, payload) {
+    let { resolve, reject, res } = payload
+    if (res && res.flagcode === '200') {
+      resolve(res)
+    } else {
+      reject(res)
+    }
   }
 }
 export default mutations

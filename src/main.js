@@ -74,6 +74,7 @@ import guidInstruction from './components/guid-instruction'
 import enhancePassengers from './components/enhance-passengers'
 import idWallet from './components/id-wallet'
 import idCard from './components/id-card'
+import idModify from './components/id-modify'
 import listView from './components/list-view'
 import outerList from './components/outer-list'
 const components = [
@@ -116,6 +117,7 @@ const components = [
   enhancePassengers,
   idWallet,
   idCard,
+  idModify,
   listView,
   outerList
 ]

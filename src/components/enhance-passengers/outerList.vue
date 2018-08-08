@@ -64,7 +64,7 @@
         circleCheckedIcon,
         circleUnCheckedIcon,
         editIcon,
-        windowHeight: window.screen.availHeight - 214
+        windowHeight: window.innerHeight - 214
       }
     },
     methods: {
@@ -94,8 +94,8 @@
         }
         this.updateSelectedOuterPassengers({user, reject, resolve, isOuter: true})
       },
-      handleUpdateUser () {
-        console.log('编辑人员')
+      handleUpdateUser (user) {
+        this.$emit('modify', {user})
       }
     }
   }

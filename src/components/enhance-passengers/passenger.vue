@@ -30,7 +30,7 @@
             <img :src="entranceIcon" width="24" class="entrance-icon">
           </div>
           <div class="tab-content" ref="tabcontentOuter">
-            <outer-list :model="model" :data="this.$store.state.company.companyOutsideUserList" :isLoading="isLoadingOutPassengers"></outer-list>
+            <outer-list :model="model" :data="this.$store.state.company.companyOutsideUserList" :isLoading="isLoadingOutPassengers" v-on:modify="handleOnModifyPassenger"></outer-list>
           </div>
         </div>
       </div>
@@ -83,6 +83,8 @@
       </div>
     </mt-popup>
     <id-wallet :active="isIdWalletActive" v-on:closeIdWallet="handleOnCloseWallet" v-on:addedSuccess="handleOnAddOutUserSuccess"></id-wallet>
+    <id-modify :active="isModifyActive" v-on:closeModify="handleOnCloseModify" :user="modifyUser" v-on:deleteSuccess="handleOnAddOutUserSuccess"></id-modify>
+    <!-- <id-modify :active="isModifyActive"></id-modify> -->
   </div> 
 </template>
 
@@ -119,10 +121,12 @@
         entranceIcon,
         addNewIcon,
         deleteIcon,
-        windowHeight: window.screen.availHeight,
+        windowHeight: window.innerHeight,
         tabs: [{label: '内部同事', checked: true, value: 'inner'}, {label: '外部人员', checked: false, value: 'outer'}],
         isInner: true,
         isIdWalletActive: false,
+        isModifyActive: false,
+        modifyUser: {}, // 被修改的用户
         isExpandPassengers: false,
         isSearching: false,
         checkedIcon,
@@ -153,12 +157,19 @@
               this.Toast({message: '登录过期', position: 'bottom'})
             })
           })
-          this.getOutUser({cacheFirst: false, params: {businessType: '4'}})
+          this.getOutUser({cacheFirst: true, params: {businessType: '4'}})
           .then(res => {
             this.isLoadingOutPassengers = false
           })
           .catch(e => {
-            this.Toast({message: '登录过期', position: 'bottom'})
+            this.getOutUser({cacheFirst: false, params: {businessType: '4'}})
+            .then(res => {
+              this.isLoadingOutPassengers = false
+            })
+            .catch(e => {
+              this.isLoadingOutPassengers = false
+              this.Toast({message: '登录过期', position: 'bottom'})
+            })
           })
         }
       }
@@ -195,9 +206,8 @@
           this.getOutsideCompanyUserList({resolve, reject, ...args})
         })
       },
-      handleOnAddOutUserSuccess () {
-        console.log('添加成功了吗')
-        this.Toast({message: '添加成功', position: 'bottom'})
+      handleOnAddOutUserSuccess (message = '添加成功') {
+        this.Toast({message, position: 'bottom'})
         this.handleOnCloseWallet()
         this.Indicator.open({text: '正在刷新列表'})
         this.getOutUser({params: {businessType: '4'}})
@@ -217,6 +227,14 @@
       },
       handleOnCloseWallet () {
         this.isIdWalletActive = false
+      },
+      handleOnCloseModify () {
+        this.isModifyActive = !this.isModifyActive
+      },
+      handleOnModifyPassenger (args) {
+        let { user } = args
+        this.handleOnCloseModify()
+        this.modifyUser = user
       },
       switchTab (e) {
         this.isInner = e.value === 'inner'

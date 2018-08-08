@@ -40,6 +40,6 @@ module.exports = {
     // 更新外部人员
     updateOutsideUser: '/ykb_train_forward/',
     // 删除外部人员
-    deleteOutsideUser: '/ykb_train_forward/'
+    deleteOutsideUser: '/ykb_train_forward/delOutUser'
   }
 }
