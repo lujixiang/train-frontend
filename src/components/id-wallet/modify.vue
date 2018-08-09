@@ -82,6 +82,7 @@
         rule: 'chineseName',
         currentUser: {},
         idCollections: [],
+        imuteableIdCollections: [],
         windowHeight: window.innerHeight,
         guid: 0
       }
@@ -116,14 +117,14 @@
         this.$refs.picker.open()
       },
       addNewOutsideUser (args) {
-        let { infoList, delIds } = args
+        let { infoList, delIds, outUserId } = args
         let { currentUser, passengerName, contactNumber } = this
         let params = {
           chineseName: passengerName,
           linkPhone: contactNumber,
           userId: currentUser.user_sys_key,
           delIds, // 删除的userid
-          outUserId: '', // 如果为空则是插入，如果有值则为修改
+          outUserId, // 如果为空则是插入，如果有值则为修改
           infoList: JSON.stringify(infoList) // 暂时不考虑这个字段
         }
         return new Promise((resolve, reject) => {
@@ -191,8 +192,8 @@
         return {testThrouth, infoList, message}
       },
       confirmAdded () {
+        let outUserId = ''
         let { testThrouth, infoList, message } = this.checkUserInfo(this.$refs.idcard)
-        console.log(infoList)
         if (this.passengerName === '') {
           this.Toast({
             message: '请输入正确的中文姓名',
@@ -216,13 +217,25 @@
           this.Toast({message, position: 'bottom'})
           return false
         }
-        let delIds = '' // 需要删除的用户id
+        // 需要删除的用户id
+        let delIds = _.map(this.imuteableIdCollections, id => { return id.documentId })
+        // 计算删除的用户证件信息
+        console.log('计算删除的用户证件信息', delIds)
+        delIds = _.remove(delIds, n => {
+          return !_.includes(this.idCollections, n.documentId)
+        })
+        console.log('传给后台的数据是', delIds)
+        if (delIds.length > 0) {
+          // 如果要更新用户证件信息，则需要传外部人id
+          outUserId = this.$props.user.id
+          delIds = delIds.join(',')
+        }
         this.Indicator.open()
-        this.addNewOutsideUser({infoList, delIds})
+        this.addNewOutsideUser({infoList, delIds, outUserId})
         .then(res => {
           this.Indicator.close()
           this.onClose()
-          this.$emit('addedSuccess', '添加成功')
+          this.$emit('modifySuccess', '更新成功')
         })
         .catch(e => {
           this.Indicator.close()
@@ -246,6 +259,8 @@
         this.contactNumber = cellPhone
         this.passengerName = userName
         if (documentInformationList) {
+          // 保存一份持久的证件数据
+          this.imuteableIdCollections = _.cloneDeep(documentInformationList)
           let ids = []
           _.forEach(documentInformationList, item => {
             item['key'] = this.getGuid()
@@ -257,7 +272,6 @@
     },
     mounted () {
       this.$refs.idBody.style.height = this.windowHeight - 88 + 'px'
-      // this.loaded()
       this.handleGetCurrentUser()
       .then(res => {
         this.currentUser = res

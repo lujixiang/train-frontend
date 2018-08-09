@@ -133,7 +133,7 @@
     },
     mounted () {
       let card = _.cloneDeep(this.$props.card)
-      if (!_.isEmpty(card)) {
+      if (!_.isEmpty(card) && _.has(card, 'documentType')) {
         let { documentType, documentNO, birthday, givenName, surName } = card
         _.forEach(this.idTypes, item => {
           if (item.key === documentType) {

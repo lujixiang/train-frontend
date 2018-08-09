@@ -83,8 +83,7 @@
       </div>
     </mt-popup>
     <id-wallet :active="isIdWalletActive" v-on:closeIdWallet="handleOnCloseWallet" v-on:addedSuccess="handleOnAddOutUserSuccess"></id-wallet>
-    <id-modify :active="isModifyActive" v-on:closeModify="handleOnCloseModify" :user="modifyUser" v-on:deleteSuccess="handleOnAddOutUserSuccess"></id-modify>
-    <!-- <id-modify :active="isModifyActive"></id-modify> -->
+    <id-modify :active="isModifyActive" v-on:closeModify="handleOnCloseModify" v-on:modifySuccess="handleOnAddOutUserSuccess" :user="modifyUser" v-on:deleteSuccess="handleOnAddOutUserSuccess"></id-modify>
   </div> 
 </template>
 
