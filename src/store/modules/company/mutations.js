@@ -563,6 +563,22 @@ const mutations = {
     } else {
       reject(res)
     }
+  },
+  [key.PICK_PASSENGERS_ID] (state, payload) {
+    let { userid, documentId } = payload
+    let outerList = immutable.List(state.companyOutsideUserList)
+    outerList.map(user => {
+      if (user.id === userid) {
+        user.documentInformationList.forEach(doc => {
+          if (doc.documentId === documentId) {
+            doc['checked'] = true
+          } else {
+            doc['checked'] = false
+          }
+        })
+      }
+    })
+    state.companyOutsideUserList = outerList.toJS()
   }
 }
 export default mutations

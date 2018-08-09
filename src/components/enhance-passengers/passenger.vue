@@ -268,20 +268,35 @@
           _.forEach(selectedPassengers, p => {
             // let doc = p.documentInformationList ? p.documentInformationList[0].documentNO : ''
             let docinfo = ''
-            try {
-              docinfo = p.documentInformationList[0].documentNO
-            } catch (e) {
-              docinfo = ''
+            let UserKey = p.userSysId ? p.userSysId : p.id
+            let isOuter = !p.isOuter
+            let id = ''
+            if (!isOuter) {
+              id = UserKey
+            }
+            if (p.documentInformationList && p.documentInformationList.length > 0) {
+              if (p.documentInformationList.length === 1) {
+                docinfo = p.documentInformationList[0].documentNO
+              } else {
+                p.documentInformationList.forEach(doc => {
+                  if (doc.checked) {
+                    docinfo = doc.documentNO
+                  }
+                })
+              }
             }
             passengers.push({
               Name: p.userName,
               idcardno: fun.encryptIDNo(docinfo),
               IdNo: docinfo,
-              UserKey: p.userSysId,
+              UserKey,
+              id,
+              userSysId: UserKey,
               visiable: true,
-              isOuter: false
+              isOuter: !isOuter
             })
           })
+          console.log(passengers)
           this.$emit('select', passengers)
           this.onClose()
         } else if (model === 'single') {

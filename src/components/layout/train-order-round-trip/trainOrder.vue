@@ -310,6 +310,7 @@
         this.getRoundTripSeat({callback, args: {}})
       },
       handleOnPassengerChange (passengers) {
+        console.log('添加进来了新的乘客了吗', passengers)
         // this.totalPrice = passengers.length * (this.ticketPrice + 5)
         let goPrice = 0
         let backPrice = 0

@@ -27,6 +27,15 @@
         <mt-spinner :size="40" color="#17abcb" type="triple-bounce"></mt-spinner>
       </div>
     </template>
+    <div class="fixed-background" @click="hideBackground" v-show="isShowIDPicker">
+      <ul>
+        <li v-for="id in idList" @click.stop="pickID(id.documentId)">
+          <span class="check-icon"><img :src="id.checked ? circleCheckedIcon : circleUnCheckedIcon"></span>
+          <span>{{getIDName(id.documentType)}}</span>
+          <span>{{id.documentNO}}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -36,6 +45,7 @@
   const circleCheckedIcon = require('./images/circle-checked.svg')
   const circleUnCheckedIcon = require('./images/circle-unchecked.svg')
   const editIcon = require('./images/edit.svg')
+  // const _ = require('lodash')
   export default {
     name: 'outerList',
     props: {
@@ -64,11 +74,14 @@
         circleCheckedIcon,
         circleUnCheckedIcon,
         editIcon,
-        windowHeight: window.innerHeight - 214
+        windowHeight: window.innerHeight - 214,
+        isShowIDPicker: false,
+        idList: [],
+        pickedUser: {}
       }
     },
     methods: {
-      ...mapActions('company', ['updateSelectedOuterPassengers', 'switchPassenger']),
+      ...mapActions('company', ['updateSelectedOuterPassengers', 'switchPassenger', 'pickPassengersID']),
       handleCheckItem (user) {
         console.log(user)
         let { model } = this.$props
@@ -76,7 +89,18 @@
           user['isOuter'] = true
           this.handleSingle(user)
         } else if (model === 'multi') {
-          this.handleMulti(user)
+          if (!user['selected']) {
+            if (user.documentInformationList && user.documentInformationList.length > 1) {
+              this.idList = user.documentInformationList
+              this.pickedUser = user
+              this.hideBackground()
+            } else {
+              this.handleMulti(user)
+            }
+          } else {
+            // 如果存在多证件的情况下需要让用户选择具体哪一个证件
+            this.handleMulti(user)
+          }
         }
       },
       handleSingle (user) {
@@ -96,6 +120,26 @@
       },
       handleUpdateUser (user) {
         this.$emit('modify', {user})
+      },
+      getIDName (id) {
+        if (id === 1) {
+          return '护照'
+        } else if (id === 7) {
+          return '身份证'
+        } else if (id === 3) {
+          return '台胞证'
+        } else if (id === 5) {
+          return '港澳通行证'
+        }
+      },
+      pickID (documentId = '') {
+        let userid = this.pickedUser.id
+        this.pickPassengersID({userid, documentId})
+        this.handleMulti(this.pickedUser)
+        this.hideBackground()
+      },
+      hideBackground () {
+        this.isShowIDPicker = !this.isShowIDPicker
       }
     }
   }

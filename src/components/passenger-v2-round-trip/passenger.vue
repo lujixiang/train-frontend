@@ -42,14 +42,8 @@
           <ykb-icon type="cross" :width="12" className="add-button"></ykb-icon>
           <span>添加乘车人</span>
         </div>
-        <div class="middle-line"></div>
-        <div class="right-btn" @click="addPassenger({isOuter: true})">
-          <ykb-icon type="cross" :width="12" className="add-button"></ykb-icon>
-          <span>添加外部乘车人</span>
-        </div>
       </div>
-      <add-passenger v-on:addNewMember="handleOnAddNewMember" :active="addPassengerPopupVisible" v-on:close="handleOnCloseAddPassenger"></add-passenger>
-      <index-list :isSearch="isSearch" v-on:close="handleOnClose" v-on:searching="handleOnSearching" v-on:listClick="handleListClick" :active="isActivePopup"></index-list>
+      <enhance-passengers v-on:clearAllPassengers="handleOnPassengerEmpty" :active="isActivePopup" v-on:passengerClose="handleOnClose" v-on:select="handleOnSelectPassengers" v-on:deleteFromList="handleDeleteFromList"></enhance-passengers>
     </template>
     <edit-id :active="popupVisible" v-on:closeEditIdBox="handleOnCloseEditIdBox" v-on:confirmEdit="handleConfirmEidt"></edit-id>
   </div>
@@ -99,59 +93,23 @@
         passengers: [],
         currentUser: {},
         isActivePopup: false,
-        isSearch: false,
         popupVisible: false,
-        addPassengerPopupVisible: false,
         travelStandard: [],
         currentEditUserKey: ''
       }
     },
     methods: {
-      ...mapActions('company', [
-        'getCurrentUser',
-        'getCompanyUserList',
-        'isStandardSeat',
-        'onSearchingByName',
-        'getTraveler'
-      ]),
-      ...mapActions('order', [
-        'getOrderDetailByOrderId'
-      ]),
+      ...mapActions('company', ['getCurrentUser', 'getCompanyUserList', 'isStandardSeat', 'getTraveler', 'deleteSelectedPassenger']),
+      ...mapActions('order', ['getOrderDetailByOrderId']),
       addPassenger (args) {
-        if (args.isOuter) {
-          this.addPassengerPopupVisible = !this.addPassengerPopupVisible
-        } else {
-          this.handleOnClose()
-          this.currentUser.visiable = false
-          this.isSearch = false
-          document.getElementById('search-name').value = ''
-        }
-      },
-      handleOnAddNewMember (args) {
-        // 添加外部联系人
-        if (this.$props.maxSize <= this.passengers.length) {
-          this.Toast({
-            message: '最多只能添加' + this.$props.maxSize + '个乘客',
-            position: 'bottom',
-            duration: 2000
-          })
-        } else {
-          let user = {}
-          user['isOuter'] = true
-          user['Name'] = args.username
-          user['CellPhone'] = args.phone
-          user['idname'] = args.idtypeValue
-          user['IdNo'] = args.idno
-          user['idtypeid'] = args.id
-          user['idcardno'] = args.idno
-          user['UserKey'] = 'test_user'
-          user['trip'] = 'all'
-          this.passengers.push(user)
-          this.onPassengerChange()
-        }
+        this.handleOnClose()
+        this.currentUser.visiable = false
       },
       onPassengerChange () {
         this.$emit('passengerChange', this.passengers)
+      },
+      handleOnPassengerEmpty () {
+        this.passengers = []
       },
       addMeAsPassenger (params = {isme: true}) {
         if (this.$props.maxSize <= this.passengers.length) {
@@ -197,10 +155,23 @@
         let UserKey = item.UserKey
         this.passengers.forEach((item, index) => {
           if (item.UserKey === UserKey) {
-            this.passengers.splice(index, 1)
+            // this.passengers.splice(index, 1)
+            this.handleLabelClick(item)
           }
         })
         this.onPassengerChange()
+      },
+      handleLabelClick (node) {
+        let { isOuter } = node
+        let passengers = _.cloneDeep(this.passengers)
+        if (isOuter) {
+          this.passengers = fun.deleteNodeFromArray(passengers, node, 'UserKey')
+          this.deleteSelectedPassenger({user: node, clearAll: () => {}})
+        } else {
+          this.passengers = fun.deleteNodeFromArray(passengers, node, 'UserKey')
+          // 删除完当前的入住人以后还需要把store里面的数据更新一下
+          this.deleteSelectedPassenger({user: node, clearAll: () => {}})
+        }
       },
       handleOnCloseEditIdBox () {
         this.popupVisible = !this.popupVisible
@@ -219,55 +190,38 @@
         this.handleOnCloseEditIdBox()
         this.currentEditUserKey = args.UserKey
       },
-      handleListClick (e) {
-        this.addMeAsPassenger({isme: false, user: e})
-        this.handleOnClose()
+      handleOnSelectPassengers (passengers) {
+        /*
+          Name: 乘客名称,
+          idcardno: fun.encryptIDNo(身份证号码),
+          IdNo: 身份证号码
+          UserKey: 用户systemid
+          visiable: 是否可见
+          isOuter: 是否是外部人
+        */
+        // 默认必须加上往返两程的参数，不然到下单页无法正确计算价格
+        this.passengers = _.forEach(passengers, p => { p['trip'] = 'all' })
+        this.$emit('passengerChange', passengers)
+      },
+      handleDeleteFromList (user) {
+        let { isOuter } = user
+        let passengers = _.cloneDeep(this.passengers)
+        if (isOuter) {
+          this.passengers = fun.deleteNodeFromArray(passengers, user, 'id')
+        } else {
+          this.passengers = fun.deleteNodeFromArray(passengers, user, 'UserKey')
+        }
+        this.handleOnSelectPassengers(this.passengers)
       },
       handleOnClose () {
         this.isActivePopup = !this.isActivePopup
       },
-      handleOnCloseAddPassenger () {
-        this.addPassengerPopupVisible = !this.addPassengerPopupVisible
-      },
       handleOnAddPassengerClose () {
         this.isActiveOutPassenger = !this.isActiveOutPassenger
       },
-      handleOnSearching (e) {
-        let value = e.value.trim().toUpperCase()
-        if (value === '') {
-          this.isSearch = false
-        } else {
-          this.isSearch = true
-        }
-        this.onSearchingByName({keyword: value, store: this.$store.state.company})
-      },
       requestCurrentUser () {
         return new Promise((resolve, reject) => {
-          const callback = res => {
-            let idcardno = ''
-            let IdNo = ''
-            if (res && res.user_passportseno && fun.checkID(res.user_passportseno)) {
-              idcardno = fun.encryptIDNo(res.user_passportseno)
-              IdNo = res.user_passportseno
-            }
-            this.currentUser = {Name: res.user_name, idcardno, IdNo, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'}
-            // 按照需求，获取当前用户以后要默认选择
-            if (this.$props.action !== 'endorse' && this.$props.action !== 'rebooking') {
-              this.addMeAsPassenger()
-            } else {
-              this.currentUser.visiable = false
-            }
-            resolve(res)
-          }
-          const errcallback = e => {
-            this.Toast({
-              message: e.flagmsg,
-              position: 'bottom',
-              duration: 5000
-            })
-            reject(e)
-          }
-          this.getCurrentUser({callback, errcallback})
+          this.getCurrentUser({resolve, reject})
         })
       },
       requestTraveler () {
@@ -368,7 +322,7 @@
             idcardno = fun.encryptIDNo(res.user_passportseno)
             IdNo = res.user_passportseno
           }
-          this.passengers.push({Name: res.user_name, idcardno, IdNo, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'})
+          this.passengers.push({Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'})
           this.onPassengerChange()
           return res
         })
@@ -382,6 +336,19 @@
           // 获取当前用户
           this.requestCurrentUser()
           .then(res => {
+            let idcardno = ''
+            let IdNo = ''
+            if (res && res.user_passportseno && fun.checkID(res.user_passportseno)) {
+              idcardno = fun.encryptIDNo(res.user_passportseno)
+              IdNo = res.user_passportseno
+            }
+            this.currentUser = {Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'}
+            // 按照需求，获取当前用户以后要默认选择
+            if (this.$props.action !== 'endorse' && this.$props.action !== 'rebooking') {
+              this.addMeAsPassenger()
+            } else {
+              this.currentUser.visiable = false
+            }
             // 判断是否超标
             return this.handleRoundTripStandard()
           })
@@ -390,6 +357,11 @@
           })
           .catch(e => {
             console.log(e)
+            this.Toast({
+              message: e.flagmsg,
+              position: 'bottom',
+              duration: 5000
+            })
           })
         })
       }

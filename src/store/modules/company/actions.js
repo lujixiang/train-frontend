@@ -112,3 +112,6 @@ export const deleteOuteUser = ({ commit }, args) => {
     commit(key.DELETE_OUTER_USER, {...args, res})
   })
 }
+export const pickPassengersID = ({ commit }, args) => {
+  commit(key.PICK_PASSENGERS_ID, args)
+}

@@ -86,19 +86,17 @@
         passengers: [],
         currentUser: {},
         isActivePopup: false,
-        isSearch: false,
         popupVisible: false,
         travelStandard: {},
         currentEditUserKey: ''
       }
     },
     methods: {
-      ...mapActions('company', ['getCurrentUser', 'getCompanyUserList', 'isStandardSeat', 'onSearchingByName', 'getTraveler']),
+      ...mapActions('company', ['getCurrentUser', 'getCompanyUserList', 'isStandardSeat', 'getTraveler', 'deleteSelectedPassenger']),
       ...mapActions('order', ['getOrderDetailByOrderId']),
       addPassenger (args) {
         this.handleOnClose()
         this.currentUser.visiable = false
-        this.isSearch = false
       },
       handleOnAddNewMember (args) {
         // 添加外部联系人
@@ -171,10 +169,23 @@
         let UserKey = item.UserKey
         this.passengers.forEach((item, index) => {
           if (item.UserKey === UserKey) {
-            this.passengers.splice(index, 1)
+            this.handleLabelClick(item)
+            // this.passengers.splice(index, 1)
           }
         })
         this.onPassengerChange()
+      },
+      handleLabelClick (node) {
+        let { isOuter } = node
+        let passengers = _.cloneDeep(this.passengers)
+        if (isOuter) {
+          this.passengers = fun.deleteNodeFromArray(passengers, node, 'UserKey')
+          this.deleteSelectedPassenger({user: node, clearAll: () => {}})
+        } else {
+          this.passengers = fun.deleteNodeFromArray(passengers, node, 'UserKey')
+          // 删除完当前的入住人以后还需要把store里面的数据更新一下
+          this.deleteSelectedPassenger({user: node, clearAll: () => {}})
+        }
       },
       handleOnCloseEditIdBox () {
         this.popupVisible = !this.popupVisible
@@ -215,24 +226,11 @@
         }
         this.handleOnSelectPassengers(this.passengers)
       },
-      handleListClick (e) {
-        this.addMeAsPassenger({isme: false, user: e})
-        this.handleOnClose()
-      },
       handleOnClose () {
         this.isActivePopup = !this.isActivePopup
       },
       handleOnAddPassengerClose () {
         this.isActiveOutPassenger = !this.isActiveOutPassenger
-      },
-      handleOnSearching (e) {
-        let value = e.value.trim().toUpperCase()
-        if (value === '') {
-          this.isSearch = false
-        } else {
-          this.isSearch = true
-        }
-        this.onSearchingByName({keyword: value, store: this.$store.state.company})
       },
       requestCurrentUser () {
         return new Promise((resolve, reject) => {
@@ -322,7 +320,7 @@
             idcardno = fun.encryptIDNo(res.user_passportseno)
             IdNo = res.user_passportseno
           }
-          this.passengers.push({Name: res.user_name, idcardno, IdNo, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true})
+          this.passengers.push({Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true})
           this.onPassengerChange()
           return res
         })
@@ -342,7 +340,7 @@
               idcardno = fun.encryptIDNo(res.user_passportseno)
               IdNo = res.user_passportseno
             }
-            this.currentUser = {Name: res.user_name, idcardno, IdNo, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true}
+            this.currentUser = {Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true}
             // 按照需求，获取当前用户以后要默认选择
             if (action !== 'endorse' && action !== 'rebooking') {
               this.addMeAsPassenger()

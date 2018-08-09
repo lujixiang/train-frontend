@@ -25,7 +25,8 @@ const mt = {
   GET_SELECTED_PASSENGERS: `${key}/GET_SELECTED_PASSENGERS`, // 活的已选择的出行人
   SAVE_OUTSIDE_COMPANY_USER: `${key}/SAVE_OUTSIDE_COMPANY_USER`, // 保存外部乘车人
   UPDATE_SELECTED_OUTER_PASSENGERS: `${key}/UPDATE_SELECTED_OUTER_PASSENGERS`, // 更新外部已选择人员列表
-  DELETE_OUTER_USER: `${key}/DELETE_OUTER_USER` // 删除外部联系人
+  DELETE_OUTER_USER: `${key}/DELETE_OUTER_USER`, // 删除外部联系人
+  PICK_PASSENGERS_ID: `${key}/PICK_PASSENGERS_ID` // 当外部人存在多证件的情况下，选择某个指定的证件
 }
 
 module.exports = mt
