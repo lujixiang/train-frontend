@@ -83,7 +83,6 @@
     methods: {
       ...mapActions('company', ['updateSelectedOuterPassengers', 'switchPassenger', 'pickPassengersID']),
       handleCheckItem (user) {
-        console.log(user)
         let { model } = this.$props
         if (model === 'single') {
           user['isOuter'] = true

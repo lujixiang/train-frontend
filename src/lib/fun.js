@@ -191,6 +191,19 @@ export const getIOSversion = () => {
     return 9
   }
 }
+export const idTypeTranslate = (id) => {
+  /* 后台的数据库返回 : 1: '护照', 7: '身份证', 3: '台胞证', 5: '港澳通行证' */
+  /* 真实传给供应商的参数： '1': 二代身份证，'C'：港澳通行证, 'G': 台湾通行证，'B'： 护照 */
+  if (id === 1) {
+    return 'B'
+  } else if (id === 7) {
+    return '1'
+  } else if (id === 3) {
+    return 'G'
+  } else if (id === 5) {
+    return 'C'
+  }
+}
 export const freeStyleLog = () => {
   console && console.log('%c', 'margin: 30px; padding:30px 120px;background: url("https://www.51ykb.com/Content/themes/default/images/Logon/logo_anti.svg") no-repeat;')
   console && console.log(`%c 云快报出品 %c 小样我就知道你进来偷看人家代码 - Just be free %c`, 'background:#35495e ; font-size: 20px; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff', 'background:#17abcb ; padding: 1px; border-radius: 0 3px 3px 0; font-size: 20px;  color: #fff', 'background:transparent')

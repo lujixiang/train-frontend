@@ -98,28 +98,6 @@
         this.handleOnClose()
         this.currentUser.visiable = false
       },
-      handleOnAddNewMember (args) {
-        // 添加外部联系人
-        if (this.$props.maxSize <= this.passengers.length) {
-          this.Toast({
-            message: '最多只能添加' + this.$props.maxSize + '个乘客',
-            position: 'bottom',
-            duration: 2000
-          })
-        } else {
-          let user = {}
-          user['isOuter'] = true
-          user['Name'] = args.username
-          user['CellPhone'] = args.phone
-          user['idname'] = args.idtypeValue
-          user['IdNo'] = args.idno
-          user['idtypeid'] = args.id
-          user['idcardno'] = args.idno
-          user['UserKey'] = 'test_user'
-          this.passengers.push(user)
-          this.onPassengerChange()
-        }
-      },
       onPassengerChange () {
         this.$emit('passengerChange', this.passengers)
       },
@@ -128,22 +106,14 @@
       },
       addMeAsPassenger (params = {isme: true}) {
         if (this.$props.maxSize <= this.passengers.length) {
-          this.Toast({
-            message: '最多只能添加' + this.$props.maxSize + '个乘客',
-            position: 'bottom',
-            duration: 2000
-          })
+          this.Toast({message: '最多只能添加' + this.$props.maxSize + '个乘客', position: 'bottom'})
         } else {
           if (params.isme) {
             this.passengers.push(this.currentUser)
             this.currentUser.visiable = false
           } else {
             if (this.isPassengerExist(params.user)) {
-              this.Toast({
-                message: '不能重复添加' + params.user.Name,
-                duration: 5000,
-                position: 'bottom'
-              })
+              this.Toast({message: '不能重复添加' + params.user.Name, position: 'bottom'})
             } else {
               let user = _.cloneDeep(params.user)
               if (!user.IdNo || !fun.checkID(user.IdNo)) {

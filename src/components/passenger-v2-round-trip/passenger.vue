@@ -100,7 +100,6 @@
     },
     methods: {
       ...mapActions('company', ['getCurrentUser', 'getCompanyUserList', 'isStandardSeat', 'getTraveler', 'deleteSelectedPassenger']),
-      ...mapActions('order', ['getOrderDetailByOrderId']),
       addPassenger (args) {
         this.handleOnClose()
         this.currentUser.visiable = false
@@ -113,22 +112,14 @@
       },
       addMeAsPassenger (params = {isme: true}) {
         if (this.$props.maxSize <= this.passengers.length) {
-          this.Toast({
-            message: '最多只能添加' + this.$props.maxSize + '个乘客',
-            position: 'bottom',
-            duration: 2000
-          })
+          this.Toast({message: '最多只能添加' + this.$props.maxSize + '个乘客', position: 'bottom'})
         } else {
           if (params.isme) {
             this.passengers.push(this.currentUser)
             this.currentUser.visiable = false
           } else {
             if (this.isPassengerExist(params.user)) {
-              this.Toast({
-                message: '不能重复添加' + params.user.Name,
-                duration: 5000,
-                position: 'bottom'
-              })
+              this.Toast({message: '不能重复添加' + params.user.Name, duration: 5000})
             } else {
               let user = _.cloneDeep(params.user)
               if (!user.IdNo || !fun.checkID(user.IdNo)) {
@@ -226,13 +217,7 @@
       },
       requestTraveler () {
         return new Promise((resolve, reject) => {
-          const callback = res => {
-            resolve(res)
-          }
-          const errcallback = err => {
-            reject(err)
-          }
-          this.getTraveler({callback, errcallback})
+          this.getTraveler({resolve, reject})
         })
       },
       handleIsStandard (args) {
@@ -254,52 +239,46 @@
       },
       handleRoundTripStandard () {
         return Promise.all([this.handleIsStandard('go'), this.handleIsStandard('back')])
-      },
-      getOrderDetail (action = '') {
-        let callback = res => {
-          this.Indicator.close()
-          if (action === 'endorse') {
-            _.forEach(res.train_passenger, item => {
-              if (item.endorse) {
-                this.passengers.push({
-                  Name: item.passengersename,
-                  idcardno: fun.encryptIDNo(item.passportseno),
-                  IdNo: item.passportseno,
-                  UserKey: item.userkey,
-                  visiable: true,
-                  isOuter: item.isOuter
-                })
-              }
-            })
-          } else if (action === 'rebooking') {
-            _.forEach(res.train_passenger, item => {
-              this.passengers.push({
-                Name: item.passengersename,
-                idcardno: fun.encryptIDNo(item.passportseno),
-                IdNo: item.passportseno,
-                UserKey: item.userkey,
-                visiable: true
-              })
-            })
-          }
-          this.onPassengerChange()
-        }
-        let errcallback = err => {
-          this.Indicator.close()
-          console.log(err)
-        }
-        let { orderId, userkeys } = this.$store.state.company.companySettings
-        let args = {orderid: orderId, userkeys, action}
-        this.Indicator.open()
-        this.getOrderDetailByOrderId({args, callback, errcallback})
       }
     },
     created () {
-      let { action } = this.$props
-      if (action === 'endorse' || action === 'rebooking') {
-        // 获取当前用户,处理是否超标的问题
+      // 首先获取travellers，如果有traveller则显示traveller如果没有则显示当前用户
+      this.requestTraveler()
+      .then(res => {
+        let idcardno = ''
+        let IdNo = ''
+        if (res && res.user_passportseno && fun.checkID(res.user_passportseno)) {
+          // idcardno = res.user_passportseno.replace(/^(\d{4})(\d+)(\d{4})$/, '$1**********$3')
+          idcardno = fun.encryptIDNo(res.user_passportseno)
+          IdNo = res.user_passportseno
+        }
+        this.passengers.push({Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'})
+        this.onPassengerChange()
+        return res
+      })
+      .then(res => {
+        return this.handleRoundTripStandard()
+      })
+      .then(res => {
+        this.travelStandard = res
+      })
+      .catch(_ => {
+        // 获取当前用户
         this.requestCurrentUser()
         .then(res => {
+          let idcardno = ''
+          let IdNo = ''
+          if (res && res.user_passportseno && fun.checkID(res.user_passportseno)) {
+            idcardno = fun.encryptIDNo(res.user_passportseno)
+            IdNo = res.user_passportseno
+          }
+          this.currentUser = {Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'}
+          // 按照需求，获取当前用户以后要默认选择
+          if (this.$props.action !== 'endorse' && this.$props.action !== 'rebooking') {
+            this.addMeAsPassenger()
+          } else {
+            this.currentUser.visiable = false
+          }
           // 判断是否超标
           return this.handleRoundTripStandard()
         })
@@ -308,63 +287,9 @@
         })
         .catch(e => {
           console.log(e)
+          this.Toast({message: e.flagmsg, position: 'bottom'})
         })
-        // 如果是改签或者预订失败再次预订，则需要获取原订单详情
-        this.getOrderDetail(action)
-      } else {
-        // 首先获取travellers，如果有traveller则显示traveller如果没有则显示当前用户
-        this.requestTraveler()
-        .then(res => {
-          let idcardno = ''
-          let IdNo = ''
-          if (res && res.user_passportseno && fun.checkID(res.user_passportseno)) {
-            // idcardno = res.user_passportseno.replace(/^(\d{4})(\d+)(\d{4})$/, '$1**********$3')
-            idcardno = fun.encryptIDNo(res.user_passportseno)
-            IdNo = res.user_passportseno
-          }
-          this.passengers.push({Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'})
-          this.onPassengerChange()
-          return res
-        })
-        .then(res => {
-          return this.handleRoundTripStandard()
-        })
-        .then(res => {
-          this.travelStandard = res
-        })
-        .catch(_ => {
-          // 获取当前用户
-          this.requestCurrentUser()
-          .then(res => {
-            let idcardno = ''
-            let IdNo = ''
-            if (res && res.user_passportseno && fun.checkID(res.user_passportseno)) {
-              idcardno = fun.encryptIDNo(res.user_passportseno)
-              IdNo = res.user_passportseno
-            }
-            this.currentUser = {Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'}
-            // 按照需求，获取当前用户以后要默认选择
-            if (this.$props.action !== 'endorse' && this.$props.action !== 'rebooking') {
-              this.addMeAsPassenger()
-            } else {
-              this.currentUser.visiable = false
-            }
-            // 判断是否超标
-            return this.handleRoundTripStandard()
-          })
-          .then(res => {
-            this.travelStandard = res
-          })
-          .catch(e => {
-            console.log(e)
-            this.Toast({
-              message: e.flagmsg,
-              position: 'bottom',
-              duration: 5000
-            })
-          })
-        })
-      }
+      })
     }
   }
 </script>

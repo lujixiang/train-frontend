@@ -485,7 +485,7 @@ const mutations = {
           state.selectedPassengers = fun.deleteNodeFromArray(selectedPassengers.toJS(), p, 'id')
         } else {
           if (count >= state.selectedPassengers.length) {
-            resolve()
+            resolve({msg: true})
           } else {
             reject({msg: '出行人不能超过5人'})
             return false

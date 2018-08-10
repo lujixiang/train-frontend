@@ -22,9 +22,7 @@
           </span>
         </span>
         <span class="booking">
-           <button @click="beforeBooking">
-             提交
-           </button>
+           <button @click="beforeBooking">提交</button>
         </span>
       </div>
       <mt-popup v-model="isPopupActive" class="fee" position="bottom">
@@ -48,7 +46,7 @@
     <text-alert :active="$store.state.IS_MIDNIGHT && !$store.state.IS_MIDNIGHT_NOTICED" v-on:iknow="doNotShowAgain()"></text-alert>
   </div>
 </template>
-
+<!-- 二代身份证：1；港澳通行证：C；台湾通行证：G；护照:B -->
 <script>
   import './less/style.less'
   import { mapActions, mapState } from 'vuex'
@@ -114,22 +112,10 @@
       }
     },
     methods: {
-      ...mapActions([
-        'handleMidnightNoticeStatus',
-        'handleIsMidnight'
-      ]),
-      ...mapActions('train', [
-        'bookingRoundTrip'
-      ]),
-      ...mapActions('history', [
-        'getRoundTripInfo',
-        'getRoundTripSeat'
-      ]),
-      ...mapActions('company', [
-        'getCompanySettings',
-        'clearDataFromLocalStorage',
-        'getLocalStandard'
-      ]),
+      ...mapActions(['handleMidnightNoticeStatus', 'handleIsMidnight']),
+      ...mapActions('train', ['bookingRoundTrip']),
+      ...mapActions('history', ['getRoundTripInfo', 'getRoundTripSeat']),
+      ...mapActions('company', ['getCompanySettings', 'clearDataFromLocalStorage', 'getLocalStandard']),
       handleGetTravelStandard () {
         let callback = res => {
           let s = ''
@@ -180,8 +166,7 @@
             passportseno: item.IdNo,
             piaotype: '1',
             piaotypename: '成人票',
-            passporttypeseid: item.idtypeid,
-            passporttypeseidname: item.idname,
+            passporttypeseid: item.idTypeID,
             userkey: item.UserKey,
             isOuter: item['isOuter'],
             trip: item.trip
@@ -273,6 +258,7 @@
             travel_standard: this.standard
           })
         }
+        this.Indicator.open({text: '提交中...'})
         const callback = res => {
           let result = res
           // 创建订单成功
@@ -281,9 +267,11 @@
           let url = G.Base64.decode(this.companySettings.callbackURL)
           url = url.indexOf('?') > -1 ? url : url + '?'
           let jumpto = url + '&type=train&goOrderId=' + result.goOrderid + '&returnOrderId=' + result.returnOrderid
+          this.Indicator.close()
           window.location.href = jumpto
         }
         const errcallback = e => {
+          this.Indicator.close()
           this.Toast({
             message: e.flagmsg,
             position: 'bottom'
@@ -310,8 +298,6 @@
         this.getRoundTripSeat({callback, args: {}})
       },
       handleOnPassengerChange (passengers) {
-        console.log('添加进来了新的乘客了吗', passengers)
-        // this.totalPrice = passengers.length * (this.ticketPrice + 5)
         let goPrice = 0
         let backPrice = 0
         let count = {go: [], back: []}
