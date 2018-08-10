@@ -167,13 +167,7 @@ export default {
     },
     requestTraveler () {
       return new Promise((resolve, reject) => {
-        const callback = res => {
-          resolve(res)
-        }
-        const errcallback = err => {
-          reject(err)
-        }
-        this.getTraveler({callback, errcallback})
+        this.getTraveler({resolve, reject})
       })
     }
   },

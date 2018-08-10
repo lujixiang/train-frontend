@@ -65,7 +65,7 @@ export default {
   methods: {
     ...mapActions(['handleMidnightNoticeStatus', 'handleIsMidnight']),
     ...mapActions('history', ['recordSearchHistory', 'getSearchHistory']),
-    ...mapActions('company', ['getCurrentUser', 'saveTraveler', 'getTraveler', 'getTravelStandard', 'saveTravelStandard', 'getCompanySettings', 'onSearchingByName', 'clearDataFromLocalStorage']),
+    ...mapActions('company', ['getCurrentUser', 'updateTraveler', 'getTraveler', 'getTravelStandard', 'saveTravelStandard', 'getCompanySettings', 'onSearchingByName', 'clearDataFromLocalStorage']),
     doNotShowAgain () {
       this.handleMidnightNoticeStatus({isActive: true})
     },
@@ -99,7 +99,7 @@ export default {
       this.$router.push({name: 'TrainList', query: {fromCity: this.fromCity, toCity: this.toCity, date: this.fromDate, trainType, fromStation: this.fromStation, toStation: this.toStation, backDate: this.toDate, roundTrip, trip}})
     },
     handleOnSearching (e) {
-      let value = e.value.trim().toUpperCase()
+      let value = e.trim().toUpperCase()
       if (value === '') {
         this.isSearch = false
       } else {
@@ -109,14 +109,17 @@ export default {
     },
     switchPassenger () {
       this.isSearch = false
-      document.getElementById('search-name').value = ''
       this.isShowCompanyUserList = !this.isShowCompanyUserList
     },
     handleListClick (args) {
       this.switchPassenger()
-      this.traveller = args.Name
-      this.saveTraveler({user_name: args.Name, user_passportseno: args.IdNo, user_key: args.UserKey, user_phone: args.CellPhone})
-      this.requestTravelStandard({user: {user_phone: args.CellPhone}})
+      this.traveller = args.userName
+      let idno = ''
+      if (args.documentInformationList) {
+        idno = args.documentInformationList[0].documentNO
+      }
+      this.updateTraveler({user: {user_name: args.userName, user_passportseno: idno, user_key: args.userSysId, user_phone: args.cellPhone}, type: 'update'})
+      this.requestTravelStandard({user: {user_phone: args.cellPhone}})
       .then(res => {
         this.saveTravelStandard(res)
       })
@@ -176,13 +179,7 @@ export default {
     },
     requestTraveler () {
       return new Promise((resolve, reject) => {
-        const callback = res => {
-          resolve(res)
-        }
-        const errcallback = err => {
-          reject(err)
-        }
-        this.getTraveler({callback, errcallback})
+        this.getTraveler({resolve, reject})
       })
     },
     handleOnTabSwitch (e) {
