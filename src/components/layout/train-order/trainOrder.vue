@@ -126,50 +126,26 @@
         let passengers = []
         let isTestedThrough = true
         if (this.passengers.length === 0) {
-          this.Toast({
-            message: '请选择乘车人',
-            position: 'bottom',
-            duration: 5000
-          })
+          this.Toast({message: '请选择乘车人', position: 'bottom'})
           return false
         }
         this.passengers.forEach(item => {
           if (item.IdNo === '' || !item.IdNo) {
             isTestedThrough = false
           }
-          if (item.isOuter) {
-            // 外部人员可以添加其它证件
-            passengers.push({
-              passengersename: item.Name,
-              recipientphone: item.CellPhone,
-              passportseno: item.IdNo,
-              piaotype: '1',
-              piaotypename: '成人票',
-              passporttypeseid: item.idtypeid,
-              passporttypeseidname: item.idname,
-              userkey: item.UserKey,
-              isOuter: true
-            })
-          } else {
-            // 内部默认全部为身份证类型
-            passengers.push({
-              passengersename: item.Name,
-              passportseno: item.IdNo,
-              passporttypeseid: '1',
-              passporttypeseidname: '二代身份证',
-              piaotype: '1',
-              piaotypename: '成人票',
-              recipientphone: item.CellPhone,
-              userkey: item.UserKey
-            })
-          }
+          passengers.push({
+            passengersename: item.Name,
+            recipientphone: item.CellPhone,
+            passportseno: item.IdNo,
+            piaotype: '1',
+            piaotypename: '成人票',
+            passporttypeseid: item.idTypeID,
+            userkey: item.UserKey,
+            isOuter: item['isOuter']
+          })
         })
         if (!isTestedThrough) {
-          this.Toast({
-            message: '乘客身份证不能为空',
-            duration: 5000,
-            position: 'bottom'
-          })
+          this.Toast({message: '乘客身份证不能为空', position: 'bottom'})
           return false
         }
         // create（创建普通订单）\createChange（创建改签订单）
@@ -217,9 +193,6 @@
           travel_standard: this.standard,
           ...selectedSeats
         }
-        // if (this.companySettings.action === 'rebooking') {
-        //   params['order_id'] = this.companySettings.orderId
-        // }
         const callback = res => {
           let result = res
           // 创建订单成功
@@ -300,18 +273,12 @@
       handleCancelOrderId () {
         let callback = (res) => {
           console.log(res)
-          this.Toast({
-            message: '订单已取消',
-            position: 'bottom'
-          })
+          this.Toast({message: '订单已取消', position: 'bottom'})
         }
         let errcallback = (err) => {
           // 取消失败
           console.log(err)
-          this.Toast({
-            message: err.flagmsg,
-            position: 'bottom'
-          })
+          this.Toast({message: err.flagmsg, position: 'bottom'})
         }
         let orderid = this.originalOrderId
         this.cancelOrderByOrderId({callback, errcallback, args: {orderid}})

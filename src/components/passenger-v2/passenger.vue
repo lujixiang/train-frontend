@@ -222,32 +222,29 @@
           this.isStandardSeat({label: seat, trainType: train_type, callback})
         })
       },
+      pushPassengers (item) {
+        this.passengers.push({
+          Name: item.passengersename,
+          idcardno: fun.encryptIDNo(item.passportseno),
+          IdNo: item.passportseno,
+          UserKey: item.userkey,
+          visiable: true,
+          isOuter: item.isOuter,
+          idTypeID: item.passporttypeseid
+        })
+      },
       getOrderDetail (action = '') {
         let callback = res => {
           this.Indicator.close()
           if (action === 'endorse') {
             _.forEach(res.train_passenger, item => {
               if (item.endorse) {
-                this.passengers.push({
-                  Name: item.passengersename,
-                  idcardno: fun.encryptIDNo(item.passportseno),
-                  IdNo: item.passportseno,
-                  UserKey: item.userkey,
-                  visiable: true,
-                  isOuter: item.isOuter
-                })
+                this.pushPassengers(item)
               }
             })
           } else if (action === 'rebooking') {
             _.forEach(res.train_passenger, item => {
-              this.passengers.push({
-                Name: item.passengersename,
-                idcardno: fun.encryptIDNo(item.passportseno),
-                IdNo: item.passportseno,
-                UserKey: item.userkey,
-                visiable: true,
-                isOuter: item.isOuter
-              })
+              this.pushPassengers(item)
             })
           }
           this.onPassengerChange()

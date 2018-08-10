@@ -60,9 +60,9 @@
             ..../#/redirect?token=ZWY4NjQ0OTBhZmI0MmFiZDViYTc0MzBlMGU2MmRlMjM=&action=2&date=2017-11-21&returnURL=www.baidu.com&callbackURL=www.baidu.com&fromCity=上海&toCity=苏州&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0
             改签：
             token,action,callbackURL,returnURL,companyId,cooperatorId,orderId,userkeys
-            /#/redirect?token=MjFjNTdhYTgwMjZlMDMwMjRiOGZmOTNhMzFhNTJkZTg=&action=endorse&callbackURL=aHR0cDovL2VudHdlY2hhdG1vYi41MXlrYi5jb20vRmVlQmVsb25nL0FwcGx5=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180315103907444552&userkeys=966a2fc6-191e-c7e2-cd5b-08d46436d5f0
+            /#/redirect?token=NWI4YjAzZjI4M2VmYjc2NDMyMDdmZjZmYzExMDkxYzc=&action=endorse&callbackURL=aHR0cDovL2VudHdlY2hhdG1vYi41MXlrYi5jb20vRmVlQmVsb25nL0FwcGx5=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180810134605351762&userkeys=05d3b45f-d243-c5af-f4fa-08d46436d5f7,d588aa8f-b360-4b47-a7c8-1f2d7d305afd
             重新预订
-            /#/redirect?token=ZWY3ZTg5ZGI2NDg2ODhlZTU1OTg2OGEwOTFlNzI3Mzc=&action=rebooking&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20171227155810762162&fromCity=上海&toCity=苏州&date=2017-12-29
+            /#/redirect?token=NWI4YjAzZjI4M2VmYjc2NDMyMDdmZjZmYzExMDkxYzc=&action=rebooking&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180810134605351762&fromCity=&toCity=&date=2018-08-15
         */
         let { token, callbackURL, returnURL, orderId, action, companyId, cooperatorId, userkeys } = this.$route.query
 
