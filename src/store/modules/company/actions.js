@@ -2,11 +2,6 @@ const key = require('./mutation-types')
 const http = require('@/lib/http')['default']
 const api = require('@/lib/api')
 const DEFAULT_ARGUMENTS = {callback: _ => {}, errcallback: _ => {}}
-export const getCompanyUserList = ({ commit }, args) => {
-  return http.post(api.getCompanyUserList).then(res => {
-    commit(key.GET_COMPANY_USER_LIST, {...args, res})
-  })
-}
 export const onSearchingByName = ({ commit }, args) => {
   commit(key.ON_SEARCHING_NAME, args)
 }
@@ -16,8 +11,8 @@ export const saveCurrentUser = ({ commit }, args) => {
 export const getCurrentUser = ({ commit }, args) => {
   commit(key.GET_CURRENT_USER, args)
 }
-export const saveTraveler = ({ commit }, args) => {
-  commit(key.SAVE_TRAVELER, args)
+export const updateTraveler = ({ commit }, args) => {
+  commit(key.UPDATE_TRAVELER, args)
 }
 export const getTraveler = ({ commit }, args) => {
   commit(key.GET_TRAVELER, args)

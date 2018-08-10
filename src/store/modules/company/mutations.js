@@ -6,38 +6,12 @@ const g = require('@/definition/g')
 const fun = require('@/lib/fun')
 const immutable = require('immutable')
 const mutations = {
-  [key.GET_COMPANY_USER_LIST] (state, payload) {
-    let { res, callback, errcallback } = payload
-    if (res && res.flagcode === '200') {
-      let alphabeta = {}
-      let userList = res.user_list
-      _.forEach(userList, item => {
-        let b = item['FullPinYin'].substring(0, 1).toUpperCase()
-        if (!alphabeta[b]) {
-          alphabeta[b] = []
-        }
-        item['group'] = b
-        item['visiable'] = true
-        item['py'] = item['FullPinYin'].toUpperCase()
-        item['spy'] = item['ShortPinYin'].toUpperCase()
-        item['tel'] = fun.encryptPhoneNo(item['CellPhone'])
-        item['idcardno'] = fun.encryptIDNo(item['IdNo'])
-        alphabeta[b].push(item)
-      })
-      let copyUserList = _.cloneDeep(userList) // 这里一定要深拷贝一份数据，不然后面搜索会很惊喜
-      state.companyuserlist = alphabeta
-      state.USER_LIST = copyUserList
-      callback(res)
-    } else {
-      errcallback(res)
-    }
-  },
   [key.ON_SEARCHING_NAME] (state, payload) {
     let { keyword } = payload
     // 如果输入的是中文
     if (fun.isChineseCharacters(keyword)) {
       _.forEach(state.USER_LIST, item => {
-        if (item.Name.indexOf(keyword) > -1) {
+        if (item.userName.indexOf(keyword) > -1) {
           item.visiable = true
         } else {
           item.visiable = false
@@ -46,7 +20,7 @@ const mutations = {
     } else {
       // 如果输入的是英文
       _.forEach(state.USER_LIST, item => {
-        if (item.py.indexOf(keyword) > -1 || item.spy.indexOf(keyword) > -1) {
+        if (item.py && item.py.indexOf(keyword) > -1 || item.spy && item.spy.indexOf(keyword) > -1) {
           item.visiable = true
         } else {
           item.visiable = false
@@ -58,8 +32,16 @@ const mutations = {
     sessionStore.set('auth-user', payload)
     // store.set('auth-user', payload)
   },
-  [key.SAVE_TRAVELER] (state, payload) {
-    store.set('traveler', payload)
+  [key.UPDATE_TRAVELER] (state, payload) {
+    // store.set('traveler', payload)
+    let { user, type } = payload
+    if (type === 'update') {
+      sessionStore.set('selected-passengers', [user])
+      sessionStore.set('traveler', user)
+    } else if (type === 'delete') {
+      sessionStore.clear('traveler')
+      sessionStore.clear('selected-passengers')
+    }
   },
   [key.SAVE_COMPANY_SETTINGS] (state, payload) {
     sessionStore.set('company-settings', payload)
