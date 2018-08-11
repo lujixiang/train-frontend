@@ -48,9 +48,7 @@ import banner from './components/banner'
 import enhanceHeader from '@/components/enhance-header'
 import indexList from '@/components/index-list'
 import NSR from './components/no-search-result'
-import passenger from './components/passenger'
 import passengerV2 from './components/passenger-v2'
-import addPassenger from './components/add-passenger'
 import passengerRoundTrip from './components/passenger-v2-round-trip'
 import ticketCard from './components/ticket-card'
 import orderNotice from '@/components/order-notice'
@@ -91,9 +89,7 @@ const components = [
   enhanceHeader,
   indexList,
   NSR,
-  passenger,
   passengerV2,
-  addPassenger,
   passengerRoundTrip,
   ticketCard,
   orderNotice,

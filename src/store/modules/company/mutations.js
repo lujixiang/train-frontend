@@ -69,11 +69,10 @@ const mutations = {
   },
   [key.GET_TRAVELER] (state, payload) {
     let { resolve, reject } = payload
-    let user = JSON.parse(store.get('traveler'))
+    let user = JSON.parse(sessionStore.get('traveler'))
     if (!user || user && (user['user_name'] === '' || user['user_phone'] === '')) {
       reject()
     } else {
-      console.log(user)
       sessionStore.set('selected-passengers', [user])
       resolve(user)
     }

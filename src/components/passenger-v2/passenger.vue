@@ -298,6 +298,7 @@
           this.travelStandard = res
         })
         .catch(_ => {
+          console.log('为什么会走到这里')
           // 获取当前用户
           this.requestCurrentUser()
           .then(res => {

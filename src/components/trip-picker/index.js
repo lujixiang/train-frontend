@@ -1,4 +1,4 @@
-import tripPicker from '../passenger-v2-round-trip/tripPicker'
+import tripPicker from '../passenger-v2/tripPicker'
 
 tripPicker.install = (Vue) => {
   Vue.component('tripPicker', tripPicker)

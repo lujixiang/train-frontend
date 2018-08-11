@@ -64,27 +64,18 @@
   .add-passenger{
     width: 90%;
     margin: 0 auto;
-    display: flex;
-    justify-content: space-around;
-    display: -webkit-flex;
-    -webkit-justify-content: space-around;
-    position: relative;
     border-bottom: 1px solid #efefef;
     padding: 5px 0;
-    .left-btn,.right-btn{
-      width: 50%;
+    .left-btn{
       text-align: center;
+      width: 100%;
       >span{
         font-size: 15px;
         color: @theme-color;
-        margin-left: 2px;
+        img{
+          vertical-align: middle;
+        }
       }
-    }
-    .middle-line{
-      width: 1px;
-      height: 24px;
-      margin-top: 5px;
-      background: @cell-border-color;
     }
   }
 }
