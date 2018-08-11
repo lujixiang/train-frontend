@@ -85,6 +85,7 @@
         this.handleRouter(cV)
         // 首先从缓存里面取值，如果缓存里面不存在则再请求后台获取
         if (cV) {
+          this.keywords = ''
           this.getCompanyUsers({cacheFirst: true})
           .then(res => {
           })
