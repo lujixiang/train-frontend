@@ -2,16 +2,17 @@
   <div class="index-list-content">
     <!-- closeOnClickModal禁止点击遮罩层关闭弹层 -->
     <mt-popup v-model="active" position="right" :closeOnClickModal="false">
-      <div style="height: 100px;">
-        <div style="height: 40px">
-          <mt-header class="header" :fixed="false" title="选择乘车人">
-            <mt-button slot="left" icon="back" @click="onClose">
-              <span></span>
-            </mt-button>
-          </mt-header>
-        </div>
-        <div class="search-box">
-          <input type="text" id="search-name" v-model="keywords" v-on:input="searching" placeholder="按照姓名、拼音、首字母搜索">
+      <div style="height: 40px">
+        <mt-header class="header" :fixed="false" title="选择乘车人">
+          <mt-button slot="left" icon="back" @click="onClose">
+            <span></span>
+          </mt-button>
+        </mt-header>
+      </div>
+      <div class="search-wrap">
+        <div class="search-input-box">
+          <ykb-icon type="search" :width="16" :height="16"></ykb-icon>
+          <input type="text" name="search" ref="keywords" v-model="keywords" v-on:input="searching" placeholder="按照姓名、拼音、首字母搜索">
         </div>
       </div>
       <template v-if="isSearch">
