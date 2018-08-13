@@ -92,6 +92,17 @@
         if (newV) {
           this.loaded()
         }
+      },
+      active: function (newValue, oldValue) {
+        if (newValue && _.isEmpty(this.currentUser)) {
+          this.handleGetCurrentUser()
+          .then(res => {
+            this.currentUser = res
+          })
+          .catch(e => {
+            console.log(e)
+          })
+        }
       }
     },
     computed: {
@@ -272,13 +283,6 @@
     },
     mounted () {
       this.$refs.idBody.style.height = this.windowHeight - 88 + 'px'
-      this.handleGetCurrentUser()
-      .then(res => {
-        this.currentUser = res
-      })
-      .catch(e => {
-        console.log(e)
-      })
     }
   }
 </script>

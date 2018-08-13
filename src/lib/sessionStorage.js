@@ -28,7 +28,8 @@ class SessionStorage {
         this._store.removeItem(getKey(key))
       }
     } else {
-      this._store.removeItem(getKey(arr))
+      let key = this._prefix + '@' + this._version + '@' + String(arr)
+      this._store.removeItem(getKey(key))
     }
   }
 }

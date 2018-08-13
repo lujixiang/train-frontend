@@ -44,17 +44,6 @@
       </div>
     </mt-popup>
     <!-- <id-notice :active="isShowNotice" :rule="rule" v-on:closeNotice="isShowNotice = !isShowNotice"></id-notice> -->
-    <!-- <mt-datetime-picker
-      ref="picker"
-      type="date"
-      :startDate="startDate"
-      :endDate="endDate"
-      year-format="{value} 年"
-      month-format="{value} 月"
-      date-format="{value} 日"
-      @confirm="handleConfirm"
-      v-model="pickerVisible">
-    </mt-datetime-picker> -->
   </div>
 </template>
 <script>
@@ -98,6 +87,19 @@
         return this.idCollections.length < 4
       }
     },
+    watch: {
+      active: function (newValue, oldValue) {
+        if (newValue && _.isEmpty(this.currentUser)) {
+          this.handleGetCurrentUser()
+          .then(res => {
+            this.currentUser = res
+          })
+          .catch(e => {
+            console.log(e)
+          })
+        }
+      }
+    },
     methods: {
       ...mapActions(['handleGlobalPopupStack']),
       ...mapActions('company', ['addOutsideUser', 'getCurrentUser']),
@@ -115,10 +117,6 @@
       handleOnDatePicker () {
         this.$refs.picker.open()
       },
-      // handleConfirm (d) {
-      //   let date = moment(d).format('YYYY-MM-DD')
-      //   console.log(date)
-      // },
       addNewOutsideUser (args) {
         let { infoList } = args
         let { currentUser, passengerName, contactNumber } = this
@@ -177,7 +175,6 @@
       },
       confirmAdded () {
         let { testThrouth, infoList, message } = this.checkUserInfo(this.$refs.idcard)
-        console.log(infoList)
         if (this.passengerName === '') {
           this.Toast({
             message: '请输入正确的中文姓名',
@@ -206,7 +203,6 @@
         .then(res => {
           this.Indicator.close()
           this.onClose()
-          console.log('addedSuccess')
           this.$emit('addedSuccess')
         })
         .catch(e => {
@@ -226,13 +222,6 @@
     },
     mounted () {
       this.$refs.idBody.style.height = this.windowHeight - 88 + 'px'
-      this.handleGetCurrentUser()
-      .then(res => {
-        this.currentUser = res
-      })
-      .catch(e => {
-        console.log(e)
-      })
     }
   }
 </script>

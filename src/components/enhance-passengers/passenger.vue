@@ -272,7 +272,6 @@
             let isOuter = !p.isOuter
             let id = ''
             let idTypeID = '1'
-            console.log(idTypeID)
             if (!isOuter) {
               id = UserKey
             }
@@ -303,7 +302,6 @@
               isOuter: !isOuter
             })
           })
-          console.log(passengers)
           this.$emit('select', passengers)
           this.onClose()
         } else if (model === 'single') {
@@ -372,6 +370,7 @@
       }
     },
     mounted () {
+      // 获取已选择的出行人
       this.getSelectedPassengers()
       this.$refs.tabcontent.style.height = this.windowHeight - 170 + 'px'
       this.$refs.tabcontentOuter.style.height = this.windowHeight - 210 + 'px'
