@@ -58,18 +58,26 @@ export const clearDataFromLocalStorage = ({ commit }, args) => {
 }
 // 新版出行人接口对接
 export const getInsideCompanyUserList = ({ commit }, args) => {
-  let { params } = args
-  return http.post(api.traveling.insideCompanyUserList, params)
-  .then(res => {
-    commit(key.GET_INSIDE_COMPANY_USER_LIST, {...args, res})
-  })
+  let { params, cacheFirst } = args
+  if (cacheFirst) {
+    commit(key.GET_INSIDE_COMPANY_USER_LIST, params)
+  } else {
+    return http.post(api.traveling.insideCompanyUserList, params)
+    .then(res => {
+      commit(key.GET_INSIDE_COMPANY_USER_LIST, {...args, res})
+    })
+  }
 }
 export const getOutsideCompanyUserList = ({ commit }, args) => {
-  let { params } = args
-  return http.post(api.traveling.outsideCompanyUserList, params)
-  .then(res => {
-    commit(key.GET_OUTSIDE_COMPANY_USER_LIST, {...args, res})
-  })
+  let { params, cacheFirst } = args
+  if (cacheFirst) {
+    commit(key.GET_OUTSIDE_COMPANY_USER_LIST, params)
+  } else {
+    return http.post(api.traveling.outsideCompanyUserList, params)
+    .then(res => {
+      commit(key.GET_OUTSIDE_COMPANY_USER_LIST, {...args, res})
+    })
+  }
 }
 export const searchPassengersBy = ({ commit }, args) => {
   commit(key.SEARCH_PASSENGERS_BY, args)

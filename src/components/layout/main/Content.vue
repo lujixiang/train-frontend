@@ -4,7 +4,7 @@
       <banner></banner>
       <city-select :departureCode="fromStation" :departure="fromCity" :arrivalCode="toStation" :arrival="toCity" v-on:onCityChange="onCityChange"></city-select>
       <date-selectCell v-on:onDateChange="onDateChange"></date-selectCell>
-      <div @click.stop="switchPassenger">
+      <div @click.stop="changeExcuter">
         <mt-cell title="出行人" class="passenger-cell text-left">
           <span class="traveller">{{traveller}}</span>
           <ykb-icon type="peopleChange" :width="28" :height="28"></ykb-icon>
@@ -27,7 +27,7 @@
       </div>
       <search-history :maxSize="3" v-on:onHistroyRecordClick="historyCallback"></search-history>
     </div>
-    <index-list :isSearch="isSearch" v-on:searching="handleOnSearching" v-on:listClick="handleListClick" :active="isShowCompanyUserList" v-on:close="switchPassenger"></index-list>
+    <index-list :isSearch="isSearch" v-on:searching="handleOnSearching" v-on:listClick="handleListClick" :active="isShowCompanyUserList" v-on:close="changeExcuter"></index-list>
     <text-alert :active="$store.state.IS_MIDNIGHT && !$store.state.IS_MIDNIGHT_NOTICED" v-on:iknow="doNotShowAgain()"></text-alert>
   </div>
 </template>
@@ -58,7 +58,7 @@ export default {
   methods: {
     ...mapActions(['handleMidnightNoticeStatus', 'handleIsMidnight']),
     ...mapActions('history', ['recordSearchHistory', 'getSearchHistory']),
-    ...mapActions('company', ['getCurrentUser', 'updateTraveler', 'getTraveler', 'getTravelStandard', 'saveTravelStandard', 'getCompanySettings', 'onSearchingByName', 'clearDataFromLocalStorage']),
+    ...mapActions('company', ['getCurrentUser', 'updateTraveler', 'getTraveler', 'getTravelStandard', 'saveTravelStandard', 'getCompanySettings', 'onSearchingByName', 'clearDataFromLocalStorage', 'switchPassenger']),
     doNotShowAgain () {
       this.handleMidnightNoticeStatus({isActive: true})
     },
@@ -98,17 +98,18 @@ export default {
       }
       this.onSearchingByName({keyword: value})
     },
-    switchPassenger () {
+    changeExcuter () {
       this.isSearch = false
       this.isShowCompanyUserList = !this.isShowCompanyUserList
     },
     handleListClick (args) {
-      this.switchPassenger()
+      this.changeExcuter()
       this.traveller = args.userName
       let idno = ''
       if (args.documentInformationList) {
         idno = args.documentInformationList[0].documentNO
       }
+      // this.switchPassenger({user: args})
       this.updateTraveler({user: {user_name: args.userName, user_passportseno: idno, user_key: args.userSysId, user_phone: args.cellPhone}, type: 'update'})
       this.requestTravelStandard({user: {user_phone: args.cellPhone}})
       .then(res => {

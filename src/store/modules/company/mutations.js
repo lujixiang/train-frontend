@@ -63,7 +63,7 @@ const mutations = {
       reject({flagmsg: '登录过期，请重新登录'})
     } else {
       console.log('这里获取当前用户并保存在已选择人员列表里面,这里会进行数据格式转化', user)
-      sessionStore.set('selected-passengers', [{userName: user.user_name, userSysId: user.user_sys_key, cellPhone: user.user_phone}])
+      sessionStore.set('selected-passengers', [{userName: user.user_name, userSysId: user.user_sys_key, cellPhone: user.user_phone, IdNo: user.user_passportseno}])
       resolve(user)
     }
   },
@@ -74,25 +74,25 @@ const mutations = {
       reject()
     } else {
       console.log('这里获取出行人，并且保存到已选择人员列表里面，这里数据不转化', user)
-      sessionStore.set('selected-passengers', [user])
+      sessionStore.set('selected-passengers', [{userName: user.user_name, userSysId: user.user_sys_key, cellPhone: user.user_phone, IdNo: user.user_passportseno}])
       resolve(user)
     }
   },
   [key.GET_USER_BY_TOKEN] (state, payload) {
-    let { callback, errcallback, res } = payload
+    let { resolve, reject, res } = payload
     if (res.flagcode === '200') {
       state.currentUser = payload
-      callback(res)
+      resolve(res)
     } else {
-      errcallback(res)
+      reject(res)
     }
   },
   [key.GET_STATION_CODE_BY_CITY_NAME] (state, payload) {
-    let { res, callback, errcallback } = payload
+    let { res, resolve, reject } = payload
     if (res.flagcode === '200') {
-      callback(res)
+      resolve(res)
     } else {
-      errcallback(res)
+      reject(res)
     }
   },
   [key.SAVE_TRAVEL_STANARD] (state, payload) {
@@ -190,6 +190,7 @@ const mutations = {
   [key.GET_INSIDE_COMPANY_USER_LIST] (state, payload) {
     let { resolve, reject, res, cacheFirst } = payload
     let dataList = []
+    console.log(sessionStore.get('selected-passengers'))
     let selected = JSON.parse(sessionStore.get('selected-passengers'))
     // 返回已选择出行人的userSystemId
     selected = _.map(selected, m => {
@@ -199,6 +200,7 @@ const mutations = {
         return ''
       }
     })
+    console.log('已选择的出行人', selected)
     if (cacheFirst) {
       // 有缓存的情况下直接从缓存取值
       let companyuserlist = JSON.parse(sessionStore.get('companyuserlist'))
@@ -339,6 +341,7 @@ const mutations = {
   },
   [key.SWITCH_PASSENGER] (state, payload) {
     let { user } = payload
+    console.log(user)
     if (user['isOuter']) {
       // 如果是外部人员
       let outList = immutable.List(state.companyOutsideUserList)
@@ -366,6 +369,7 @@ const mutations = {
       let userList = immutable.List(state.USER_LIST)
       userList.map(p => {
         if (p.userSysId === user.userSysId) {
+          console.log('找到了吗')
           // 解决初始化的时候，根据token获取的入住人没有拼音，所以在第一次循环找到当前用户的时候就直接赋值过去
           user['group'] = p['group']
           p['selected'] = true

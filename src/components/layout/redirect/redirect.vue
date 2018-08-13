@@ -44,7 +44,7 @@
           示例：
             1）其他 ---> 跳转 ---> 火车票
             云快报跳到火车票
-            /#/redirect?token=NWQzMDE5NmYzM2ExYmVmMjg4ZDY1YmYyOTJlMGQxZjI=&fromCity=武汉&toCity=苏州&action=booking&date=2018-4-20&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2
+            /#/redirect?token=MGY0YWJjYTJkNjg4Y2ZlZmEwYmJmMjBmMjNkMmNkZmQ=&fromCity=武汉&toCity=苏州&action=booking&date=2018-4-20&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2
 
             出差申请单跳到火车票(非重选)
             ..../#/redirect?token=ZWY4NjQ0OTBhZmI0MmFiZDViYTc0MzBlMGU2MmRlMjM=&action=2&date=2017-11-21&returnURL=www.baidu.com&callbackURL=www.baidu.com&fromCity=上海&toCity=苏州&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0
@@ -54,41 +54,17 @@
             重新预订
             /#/redirect?token=NWI4YjAzZjI4M2VmYjc2NDMyMDdmZjZmYzExMDkxYzc=&action=rebooking&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180810134605351762&fromCity=&toCity=&date=2018-08-15
         */
-        let { token, callbackURL, returnURL, orderId, action, companyId, cooperatorId, userkeys } = this.$route.query
 
+        let { token } = this.$route.query
         return new Promise((resolve, reject) => {
-          const callback = res => {
-            // Indicator.close()
-            let userInfo = res.user_info
-            this.isMidnight(res)
-            this.saveCurrentUser({token, ...userInfo})
-            this.storeCompanySettings({callbackURL, returnURL, action, orderId, companyId, cooperatorId, userkeys})
-            resolve(userInfo)
-          }
-          const errcallback = err => {
-            this.isMidnight(err)
-            this.Toast({
-              message: err.flagmsg,
-              position: 'bottom',
-              duration: 5000
-            })
-            // Indicator.close()
-            reject()
-          }
-          this.getUserByToken({token, callback, errcallback})
+          this.getUserByToken({token, resolve, reject})
         })
       },
       getCityCode () {
         // from_station_name to_station_name
         let { fromCity, toCity } = this.$route.query
         return new Promise((resolve, reject) => {
-          const callback = res => {
-            resolve(res)
-          }
-          const errcallback = err => {
-            reject(err)
-          }
-          this.getStationCodeByCityName({params: {from_station_name: fromCity, to_station_name: toCity}, callback, errcallback})
+          this.getStationCodeByCityName({params: {from_station_name: fromCity, to_station_name: toCity}, resolve, reject})
         })
       },
       requestTravelStandard (args = {}) {
@@ -106,7 +82,7 @@
         })
       },
       process () {
-        let { fromCity, toCity, action, date, userkeys, orderId, version } = this.$route.query
+        let { token, fromCity, toCity, action, date, userkeys, cooperatorId, companyId, orderId, version, callbackURL, returnURL } = this.$route.query
         if (!version || version === '') {
           version = 'v1'
         }
@@ -115,10 +91,14 @@
           date = moment().format('YYYY-MM-DD')
         }
         this.updateTraveler({type: 'delete'})
-        // if (this.isStop) {
-        //   return false
-        // }
         this.requestUserByToken()
+        .then(res => {
+          let userInfo = res.user_info
+          this.isMidnight(res)
+          this.saveCurrentUser({token, ...userInfo})
+          this.storeCompanySettings({callbackURL, returnURL, action, orderId, companyId, cooperatorId, userkeys})
+          return userInfo
+        })
         .then(res => {
           // 删除之前用户切换过的乘客
           this.clearDataFromLocalStorage(['traveler'])
@@ -157,6 +137,8 @@
         })
         .catch(err => {
           console && console.log(err)
+          this.isMidnight(err)
+          this.Toast({message: err.flagmsg, position: 'bottom'})
           // 这个时候不管遇到什么错误我都会跳到首页
           this.Indicator.close()
           if (version === 'v2') {
