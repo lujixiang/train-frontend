@@ -1,7 +1,6 @@
 const key = '@COMPANY-'
 const mt = {
   ON_SEARCHING_NAME: `${key}/ON_SEARCHING_NAME`,
-  SAVE_CURRENT_USER: `${key}/SAVE_CURRENT_USER`, // 保存当前用户到localStorage里面
   GET_CURRENT_USER: `${key}/GET_CURRENT_USER`, // 获取当前缓存的用户
   UPDATE_TRAVELER: `${key}/UPDATE_TRAVELER`, // 更新出差人员的信息到localStorage里面
   GET_TRAVELER: `${key}/GET_TRAVELER`, // 获取出差人员的信息

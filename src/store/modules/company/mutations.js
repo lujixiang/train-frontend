@@ -28,9 +28,6 @@ const mutations = {
       })
     }
   },
-  [key.SAVE_CURRENT_USER] (state, payload) {
-    sessionStore.set('auth-user', payload)
-  },
   [key.UPDATE_TRAVELER] (state, payload) {
     let { user, type } = payload
     console.log('在这里更新traveler', user)
@@ -64,6 +61,7 @@ const mutations = {
     } else {
       console.log('这里获取当前用户并保存在已选择人员列表里面,这里会进行数据格式转化', user)
       sessionStore.set('selected-passengers', [{userName: user.user_name, userSysId: user.user_sys_key, cellPhone: user.user_phone, IdNo: user.user_passportseno}])
+      // sessionStore.set('auth-user', payload)
       resolve(user)
     }
   },
@@ -79,9 +77,10 @@ const mutations = {
     }
   },
   [key.GET_USER_BY_TOKEN] (state, payload) {
-    let { resolve, reject, res } = payload
+    let { resolve, reject, res, token } = payload
     if (res.flagcode === '200') {
       state.currentUser = payload
+      sessionStore.set('auth-user', {...res.user_info, token})
       resolve(res)
     } else {
       reject(res)

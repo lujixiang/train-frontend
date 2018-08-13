@@ -14,7 +14,7 @@
     },
     methods: {
       ...mapActions(['handleIsMidnight']),
-      ...mapActions('company', ['getUserByToken', 'saveCompanySettings', 'saveCurrentUser', 'getStationCodeByCityName', 'getTravelStandard', 'saveTravelStandard', 'clearDataFromLocalStorage', 'updateTraveler']),
+      ...mapActions('company', ['getUserByToken', 'saveCompanySettings', 'getStationCodeByCityName', 'getTravelStandard', 'saveTravelStandard', 'clearDataFromLocalStorage', 'updateTraveler']),
       storeCompanySettings (args) {
         this.saveCompanySettings(args)
       },
@@ -54,7 +54,6 @@
             重新预订
             /#/redirect?token=NWI4YjAzZjI4M2VmYjc2NDMyMDdmZjZmYzExMDkxYzc=&action=rebooking&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180810134605351762&fromCity=&toCity=&date=2018-08-15
         */
-
         let { token } = this.$route.query
         return new Promise((resolve, reject) => {
           this.getUserByToken({token, resolve, reject})
@@ -82,7 +81,7 @@
         })
       },
       process () {
-        let { token, fromCity, toCity, action, date, userkeys, cooperatorId, companyId, orderId, version, callbackURL, returnURL } = this.$route.query
+        let { fromCity, toCity, action, date, userkeys, cooperatorId, companyId, orderId, version, callbackURL, returnURL } = this.$route.query
         if (!version || version === '') {
           version = 'v1'
         }
@@ -95,7 +94,6 @@
         .then(res => {
           let userInfo = res.user_info
           this.isMidnight(res)
-          this.saveCurrentUser({token, ...userInfo})
           this.storeCompanySettings({callbackURL, returnURL, action, orderId, companyId, cooperatorId, userkeys})
           return userInfo
         })

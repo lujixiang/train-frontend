@@ -5,9 +5,6 @@ const DEFAULT_ARGUMENTS = {callback: _ => {}, errcallback: _ => {}}
 export const onSearchingByName = ({ commit }, args) => {
   commit(key.ON_SEARCHING_NAME, args)
 }
-export const saveCurrentUser = ({ commit }, args) => {
-  commit(key.SAVE_CURRENT_USER, args)
-}
 export const getCurrentUser = ({ commit }, args) => {
   commit(key.GET_CURRENT_USER, args)
 }
