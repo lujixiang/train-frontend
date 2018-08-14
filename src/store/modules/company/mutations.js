@@ -309,25 +309,25 @@ const mutations = {
   [key.SEARCH_PASSENGERS_BY] (state, payload) {
     let userList = state.USER_LIST
     // matchedPassengers
-    let mached = []
+    let matched = []
     let { keyword, type } = payload
     _.forEach(userList, p => {
       if (type === 'number') {
         if (p.cellPhone.indexOf(keyword) > -1) {
-          mached.push(p)
+          matched.push(p)
         }
       } else if (type === 'english') {
         keyword = keyword.toUpperCase()
-        if (p.fullPinYin && p.fullPinYin.indexOf(keyword) > -1 || p.spy && p.spy.indexOf(keyword) > -1) {
-          mached.push(p)
+        if (p.fullPinYin && p.fullPinYin.toUpperCase().indexOf(keyword) > -1 || p.spy && p.spy.toUpperCase().indexOf(keyword) > -1) {
+          matched.push(p)
         }
       } else {
         if (p.userName.indexOf(keyword) > -1) {
-          mached.push(p)
+          matched.push(p)
         }
       }
     })
-    state.matchedPassengers = mached
+    state.matchedPassengers = matched
   },
   [key.GET_SELECTED_PASSENGERS] (state, payload) {
     let passengers = sessionStore.get('selected-passengers')

@@ -36,7 +36,7 @@
       </div>
       <div class="search-result-container" ref="searchResultContent" :class="isSearching ? '' : 'hide'">
         <ul>
-          <template v-for="passenger in this.$store.state.company.matchedPassengers">
+          <template v-for="passenger in matchedPassengers">
             <li :key="passenger.userSysId" @click="handleCheckItem(passenger)">
               <div class="person-container">
                 <span class="check">
@@ -89,7 +89,7 @@
 
 <script>
   import './less/style.less'
-  import { mapActions } from 'vuex'
+  import { mapActions, mapState } from 'vuex'
   const _ = require('lodash')
   const searchByIcon = require('./images/search-by.svg')
   const entranceIcon = require('@/assets/icons/entrance.png')
@@ -174,22 +174,21 @@
       }
     },
     computed: {
+      ...mapState('company', {
+        matchedPassengers: state => state.matchedPassengers,
+        selectedText: state => {
+          let sel = state.selectedPassengers
+          let length = sel.length
+          let text = ''
+          sel.forEach(user => {
+            text += user.userName + '、'
+          })
+          text = text.replace(/、$/, '')
+          return {text, length}
+        }
+      }),
       arrowIcon () {
         return this.isExpandPassengers ? require('./images/icon-up.png') : require('./images/icon-down.png')
-      },
-      selectedText () {
-        let { selectedPassengers } = this.$store.state.company
-        let length = selectedPassengers.length
-        let text = ''
-        _.forEach(selectedPassengers, user => {
-          text += user.userName + '、'
-        })
-        // 删除末尾的分号
-        text = text.replace(/、$/, '')
-        return {
-          text,
-          length
-        }
       }
     },
     methods: {
