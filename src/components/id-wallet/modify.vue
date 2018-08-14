@@ -84,7 +84,8 @@
         idCollections: [],
         imuteableIdCollections: [],
         windowHeight: window.innerHeight,
-        guid: 0
+        guid: 0,
+        isChanged: false
       }
     },
     watch: {
@@ -115,6 +116,9 @@
       ...mapActions('company', ['addOutsideUser', 'getCurrentUser', 'deleteOuteUser']),
       onClose () {
         this.$emit('closeModify')
+        if (this.isChanged) {
+          this.loaded()
+        }
       },
       noticeAlert () {
         this.rule = 'chineseName'
@@ -264,6 +268,7 @@
         let ids = _.cloneDeep(this.idCollections)
         _.remove(ids, (item, index) => { return item.key === card.key })
         this.idCollections = ids
+        this.isChanged = true
       },
       loaded () {
         let { cellPhone, userName, documentInformationList } = this.$props.user
@@ -271,6 +276,7 @@
         this.passengerName = userName
         if (documentInformationList) {
           // 保存一份持久的证件数据
+          console.log('走到这里了吗')
           this.imuteableIdCollections = _.cloneDeep(documentInformationList)
           let ids = []
           _.forEach(documentInformationList, item => {
