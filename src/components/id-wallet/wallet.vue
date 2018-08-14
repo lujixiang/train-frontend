@@ -141,6 +141,7 @@
         let testThrouth = true
         let message = ''
         let infoList = []
+        let keys = []
         /*
           documentType:"",documentNO:"",birthday:"",givenName:"",surName:""
         */
@@ -168,6 +169,12 @@
           if (!fun.isValidateBirthday(userInfo.birthday)) {
             testThrouth = false
             message = '出生日期格式错误'
+          }
+          if (keys.indexOf(userInfo.key) > -1) {
+            testThrouth = false
+            message = '同一证件类型只能保存一份'
+          } else {
+            keys.push(userInfo.key)
           }
           infoList.push({documentType: userInfo.key, documentNO: userInfo.idNo, birthday: userInfo.birthday, givenName: userInfo.firstName, surName: userInfo.lastName})
         })
