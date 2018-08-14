@@ -110,6 +110,7 @@
             this.$router.replace({name: 'endorse', query: {userkeys, orderId}})
             return false
           }
+          // 如果不是改签则需要获取传过来的城市去找对应的车站code
           return this.getCityCode()
         })
         .then(res => {

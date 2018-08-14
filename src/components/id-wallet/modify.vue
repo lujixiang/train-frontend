@@ -278,6 +278,8 @@
             ids.push(item)
           })
           this.idCollections = _.cloneDeep(ids)
+        } else {
+          this.idCollections = []
         }
       }
     },
