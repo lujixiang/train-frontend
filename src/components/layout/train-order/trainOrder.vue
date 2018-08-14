@@ -133,15 +133,20 @@
           if (item.IdNo === '' || !item.IdNo) {
             isTestedThrough = false
           }
+          let { isOuter } = item
+          let passporttypeseid = '1'
+          if (isOuter) {
+            passporttypeseid = item.idTypeID
+          }
           passengers.push({
             passengersename: item.Name,
             recipientphone: item.CellPhone,
             passportseno: item.IdNo,
             piaotype: '1',
             piaotypename: '成人票',
-            passporttypeseid: item.idTypeID,
+            passporttypeseid,
             userkey: item.UserKey,
-            isOuter: item['isOuter']
+            isOuter
           })
         })
         if (!isTestedThrough) {
