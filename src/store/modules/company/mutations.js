@@ -30,9 +30,12 @@ const mutations = {
   },
   [key.UPDATE_TRAVELER] (state, payload) {
     let { user, type } = payload
-    console.log('在这里更新traveler', user)
+    /*
+      [{userName: user.user_name, userSysId: user.user_sys_key, cellPhone: user.user_phone, IdNo: user.user_passportseno}]
+    */
     if (type === 'update') {
-      sessionStore.set('selected-passengers', [user])
+      let userSysId = user.user_sys_key || user.user_key
+      sessionStore.set('selected-passengers', [{userName: user.user_name, userSysId, cellPhone: user.user_phone, IdNo: user.user_passportseno}])
       sessionStore.set('traveler', user)
     } else if (type === 'delete') {
       sessionStore.clear('traveler')
@@ -59,7 +62,6 @@ const mutations = {
     if (!user || user && (user['user_name'] === '')) {
       reject({flagmsg: '登录过期，请重新登录'})
     } else {
-      console.log('这里获取当前用户并保存在已选择人员列表里面,这里会进行数据格式转化', user)
       sessionStore.set('selected-passengers', [{userName: user.user_name, userSysId: user.user_sys_key, cellPhone: user.user_phone, IdNo: user.user_passportseno}])
       // sessionStore.set('auth-user', payload)
       resolve(user)
@@ -71,8 +73,8 @@ const mutations = {
     if (!user || user && (user['user_name'] === '' || user['user_phone'] === '')) {
       reject()
     } else {
-      console.log('这里获取出行人，并且保存到已选择人员列表里面，这里数据不转化', user)
-      sessionStore.set('selected-passengers', [{userName: user.user_name, userSysId: user.user_sys_key, cellPhone: user.user_phone, IdNo: user.user_passportseno}])
+      let userSysId = user.user_sys_key || user.user_key
+      sessionStore.set('selected-passengers', [{userName: user.user_name, userSysId, cellPhone: user.user_phone, IdNo: user.user_passportseno}])
       resolve(user)
     }
   },
@@ -80,6 +82,7 @@ const mutations = {
     let { resolve, reject, res, token } = payload
     if (res.flagcode === '200') {
       state.currentUser = payload
+      // 保存当前用户
       sessionStore.set('auth-user', {...res.user_info, token})
       resolve(res)
     } else {
@@ -189,7 +192,6 @@ const mutations = {
   [key.GET_INSIDE_COMPANY_USER_LIST] (state, payload) {
     let { resolve, reject, res, cacheFirst } = payload
     let dataList = []
-    console.log(sessionStore.get('selected-passengers'))
     let selected = JSON.parse(sessionStore.get('selected-passengers'))
     // 返回已选择出行人的userSystemId
     selected = _.map(selected, m => {
@@ -199,7 +201,6 @@ const mutations = {
         return ''
       }
     })
-    console.log('已选择的出行人', selected)
     if (cacheFirst) {
       // 有缓存的情况下直接从缓存取值
       let companyuserlist = JSON.parse(sessionStore.get('companyuserlist'))
@@ -329,8 +330,6 @@ const mutations = {
     state.matchedPassengers = mached
   },
   [key.GET_SELECTED_PASSENGERS] (state, payload) {
-    console.log('走到这里了吗')
-    console.log(sessionStore.get('selected-passengers'))
     let passengers = sessionStore.get('selected-passengers')
     if (passengers && passengers.length) {
       state.selectedPassengers = JSON.parse(passengers)
@@ -340,7 +339,6 @@ const mutations = {
   },
   [key.SWITCH_PASSENGER] (state, payload) {
     let { user } = payload
-    console.log(user)
     if (user['isOuter']) {
       // 如果是外部人员
       let outList = immutable.List(state.companyOutsideUserList)
@@ -368,7 +366,6 @@ const mutations = {
       let userList = immutable.List(state.USER_LIST)
       userList.map(p => {
         if (p.userSysId === user.userSysId) {
-          console.log('找到了吗')
           // 解决初始化的时候，根据token获取的入住人没有拼音，所以在第一次循环找到当前用户的时候就直接赋值过去
           user['group'] = p['group']
           p['selected'] = true

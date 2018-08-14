@@ -58,30 +58,21 @@ export default {
   methods: {
     ...mapActions(['handleMidnightNoticeStatus', 'handleIsMidnight']),
     ...mapActions('history', ['recordSearchHistory', 'getSearchHistory']),
-    ...mapActions('company', ['getCurrentUser', 'updateTraveler', 'getTraveler', 'getTravelStandard', 'saveTravelStandard', 'getCompanySettings', 'onSearchingByName', 'clearDataFromLocalStorage', 'switchPassenger']),
+    ...mapActions('company', ['getCurrentUser', 'updateTraveler', 'getTraveler', 'getTravelStandard', 'saveTravelStandard', 'getCompanySettings', 'onSearchingByName', 'clearDataFromLocalStorage']),
     doNotShowAgain () {
       this.handleMidnightNoticeStatus({isActive: true})
     },
     searching () {
       if (this.fromCity === '出发地') {
-        this.Toast({
-          message: '出发地不能为空',
-          position: 'bottom'
-        })
+        this.Toast({message: '出发地不能为空', position: 'bottom'})
         return false
       }
       if (this.toCity === '目的地') {
-        this.Toast({
-          message: '目的地不能为空',
-          position: 'bottom'
-        })
+        this.Toast({message: '目的地不能为空', position: 'bottom'})
         return false
       }
       if (this.toCity === this.fromCity) {
-        this.Toast({
-          message: '出发地与目的地一致，请重新填写',
-          position: 'bottom'
-        })
+        this.Toast({message: '出发地与目的地一致，请重新填写', position: 'bottom'})
         return false
       }
       let trainType = this.isHighSpeedTrainOnly ? 1 : 0
@@ -109,17 +100,14 @@ export default {
       if (args.documentInformationList) {
         idno = args.documentInformationList[0].documentNO
       }
-      // this.switchPassenger({user: args})
+      console.log(args)
       this.updateTraveler({user: {user_name: args.userName, user_passportseno: idno, user_key: args.userSysId, user_phone: args.cellPhone}, type: 'update'})
       this.requestTravelStandard({user: {user_phone: args.cellPhone}})
       .then(res => {
         this.saveTravelStandard(res)
       })
       .catch(err => {
-        this.Toast({
-          message: err.flagmsg,
-          position: 'bottom'
-        })
+        this.Toast({message: err.flagmsg, position: 'bottom'})
       })
     },
     requestTravelStandard (args = {}) {
@@ -190,10 +178,7 @@ export default {
         // 当获取差旅标准为空的时候要把当前用户给清除
         this.traveller = ''
         this.clearDataFromLocalStorage(['traveler', 'auth-user'])
-        this.Toast({
-          message: err.flagmsg,
-          position: 'bottom'
-        })
+        this.Toast({message: err.flagmsg, position: 'bottom'})
       })
     })
     .catch(_ => {
@@ -208,19 +193,12 @@ export default {
         })
         .catch(err => {
           this.clearDataFromLocalStorage(['auth-user'])
-          this.Toast({
-            message: err.flagmsg,
-            position: 'bottom'
-          })
+          this.Toast({message: err.flagmsg, position: 'bottom'})
         })
       })
       .catch(err => {
         // 如果当前用户登录过期则提示用户登录未登录
-        this.Toast({
-          message: err.flagmsg,
-          position: 'bottom',
-          duration: 5000
-        })
+        this.Toast({message: err.flagmsg, position: 'bottom'})
       })
     })
   },
