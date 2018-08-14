@@ -142,6 +142,14 @@ export const isNumber = (num) => {
   num = parseInt(num)
   return /^\d{1,}$/i.test(num)
 }
+// 校验是否是拼音
+export const isPinyin = (str) => {
+  return /^[a-zA-Z]+$/.test(str)
+}
+// 校验出生年月日，格式YYYYMMDD,例如19950308
+export const isValidateBirthday = (date) => {
+  return /^\d{8}$/.test(date)
+}
 export const deleteNodeFromArray = (arr, node, key) => {
   arr.forEach((e, i) => {
     if (e && e.length) {

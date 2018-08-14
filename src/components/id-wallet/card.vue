@@ -29,7 +29,7 @@
             <b>姓(拼音)*</b>
             <small>Surname</small>
           </label>
-          <input type="text" name="name" placeholder="例如：ZHANG" v-model="userInfo.lastName">
+          <input type="text" @input="inputPinyin('lastName')" name="surname" placeholder="例如：ZHANG" v-model="userInfo.lastName">
           <span class="right-icon" @click="onOff">
             <img :src="exclamatoryIcon">
           </span>
@@ -39,7 +39,7 @@
             <b>名(拼音)*</b>
             <small>Given name</small>
           </label>
-          <input type="text" name="name" placeholder="例如：SAN" v-model="userInfo.firstName">
+          <input type="text" @input="inputPinyin('firstName')" name="givenname" placeholder="例如：SAN" v-model="userInfo.firstName">
           <span class="right-icon">
             <!-- <img :src="exclamatoryIcon"> -->
           </span>
@@ -67,6 +67,7 @@
   const chekcedIcon = require('./images/circle-checked.svg')
   const uncheckedIcon = require('./images/circle-unchecked.svg')
   const _ = require('lodash')
+  const fun = require('@/lib/fun')
   export default {
     name: 'idCard',
     props: {
@@ -129,6 +130,14 @@
           }
         })
         this.chooseIDtype()
+      },
+      inputPinyin (attr) {
+        let pinyin = this.userInfo[attr]
+        if (fun.isPinyin(pinyin)) {
+          this.userInfo[attr] = pinyin.toUpperCase()
+        } else {
+          this.userInfo[attr] = ''
+        }
       }
     },
     mounted () {

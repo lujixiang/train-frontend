@@ -165,9 +165,9 @@
             testThrouth = false
             message = '证件号不能为空'
           }
-          if (userInfo.birthday === '') {
+          if (!fun.isValidateBirthday(userInfo.birthday)) {
             testThrouth = false
-            message = '出生日期不能为空'
+            message = '出生日期格式错误'
           }
           infoList.push({documentType: userInfo.key, documentNO: userInfo.idNo, birthday: userInfo.birthday, givenName: userInfo.firstName, surName: userInfo.lastName})
         })
