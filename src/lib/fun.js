@@ -139,8 +139,18 @@ export const isChineseCharacters = (str) => {
 }
 // 判断输入的是否是数字
 export const isNumber = (num) => {
-  num = parseInt(num)
+  // num = parseInt(num)
   return /^\d{1,}$/i.test(num)
+}
+export const birthdayFromat = (birthday) => {
+  // 19950308
+  birthday = birthday.replace('-', '')
+  let length = birthday.length
+  if (length >= 4 && length <= 6) {
+    return birthday.replace(/^(\d{4})(\d{0,})$/, '$1-$2')
+  } else {
+    return birthday.replace(/^(\d{4})(\d{2})(\d{0,})$/, '$1-$2-$3')
+  }
 }
 // 校验是否是拼音
 export const isPinyin = (str) => {

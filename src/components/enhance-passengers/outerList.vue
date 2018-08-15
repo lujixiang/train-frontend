@@ -118,6 +118,10 @@
         this.updateSelectedOuterPassengers({user, reject, resolve, isOuter: true})
       },
       handleUpdateUser (user) {
+        let { selected } = user
+        if (selected) {
+          this.handleCheckItem(user)
+        }
         this.$emit('modify', {user})
       },
       getIDName (id) {
@@ -127,7 +131,7 @@
           return '身份证'
         } else if (id === 3) {
           return '台胞证'
-        } else if (id === 5) {
+        } else if (id === 4) {
           return '港澳通行证'
         }
       },

@@ -12,7 +12,6 @@
         </span>
       </div>
       <div class="select-item" v-show="isUp">
-        <!-- //筛选顺序 身份证 7 护照 1 港澳4 台湾3 其他6 -->
         <ul>
           <li v-for="id in idTypes" :key="id.key" @click="pickIDType(id)">
             <span>{{id.label}}</span>
