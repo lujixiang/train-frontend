@@ -138,12 +138,10 @@
     watch: {
       active: function (newV, oldV) {
         // 如果是newV为true的时候需要判断是否有之前的搜索数据，如果有就要清除
+        this.handleRouter(newV)
         if (newV) {
           this.isSearching = false
           this.$refs.keywords.value = ''
-        }
-        this.handleRouter(newV)
-        if (newV) {
           // 首先从缓存里面取值，如果缓存里面不存在则再请求后台获取
           this.getCompanyUsers({cacheFirst: true})
           .then(res => {
@@ -310,10 +308,7 @@
       },
       handleMulti (user) {
         const reject = (err) => {
-          this.Toast({
-            message: err.msg,
-            position: 'bottom'
-          })
+          this.Toast({message: err.msg, position: 'bottom'})
         }
         this.updateSelectedPassengers({user, reject})
       },

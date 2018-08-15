@@ -57,7 +57,7 @@ export const clearDataFromLocalStorage = ({ commit }, args) => {
 export const getInsideCompanyUserList = ({ commit }, args) => {
   let { params, cacheFirst } = args
   if (cacheFirst) {
-    commit(key.GET_INSIDE_COMPANY_USER_LIST, params)
+    commit(key.GET_INSIDE_COMPANY_USER_LIST, {...args})
   } else {
     return http.post(api.traveling.insideCompanyUserList, params)
     .then(res => {
@@ -68,7 +68,7 @@ export const getInsideCompanyUserList = ({ commit }, args) => {
 export const getOutsideCompanyUserList = ({ commit }, args) => {
   let { params, cacheFirst } = args
   if (cacheFirst) {
-    commit(key.GET_OUTSIDE_COMPANY_USER_LIST, params)
+    commit(key.GET_OUTSIDE_COMPANY_USER_LIST, {...args})
   } else {
     return http.post(api.traveling.outsideCompanyUserList, params)
     .then(res => {

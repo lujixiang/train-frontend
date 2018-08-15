@@ -97,7 +97,7 @@
         uncheckedIcon,
         isUp: false,
         isShowNotice: false,
-        idTypes: [{label: '身份证', selected: true, key: 7}, {label: '护照', selected: false, key: 1}, {label: '港澳居民来往内地通行证', selected: false, key: 5}, {label: '台湾居民来往内地通行证', selected: false, key: 3}],
+        idTypes: [{label: '身份证', selected: true, key: 7}, {label: '护照', selected: false, key: 1}, {label: '港澳居民来往内地通行证', selected: false, key: 4}, {label: '台湾居民来往内地通行证', selected: false, key: 3}],
         userInfo: {
           idType: '身份证', // 证件类型
           key: 7,

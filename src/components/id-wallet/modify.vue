@@ -174,6 +174,7 @@
         let testThrouth = true
         let message = ''
         let infoList = []
+        let keys = []
         /*
           documentType:"",documentNO:"",birthday:"",givenName:"",surName:""
         */
@@ -198,9 +199,15 @@
             testThrouth = false
             message = '证件号不能为空'
           }
-          if (userInfo.birthday === '') {
+          if (!fun.isValidateBirthday(userInfo.birthday)) {
             testThrouth = false
-            message = '出生日期不能为空'
+            message = '出生日期格式错误'
+          }
+          if (keys.indexOf(userInfo.key) > -1) {
+            testThrouth = false
+            message = '同一证件类型只能保存一份'
+          } else {
+            keys.push(userInfo.key)
           }
           infoList.push({documentType: userInfo.key, documentNO: userInfo.idNo, birthday: userInfo.birthday, givenName: userInfo.firstName, surName: userInfo.lastName})
         })
@@ -276,7 +283,6 @@
         this.passengerName = userName
         if (documentInformationList) {
           // 保存一份持久的证件数据
-          console.log('走到这里了吗')
           this.imuteableIdCollections = _.cloneDeep(documentInformationList)
           let ids = []
           _.forEach(documentInformationList, item => {

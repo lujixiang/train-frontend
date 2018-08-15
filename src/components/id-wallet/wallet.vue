@@ -43,7 +43,7 @@
         <span>完成</span>
       </div>
     </mt-popup>
-    <!-- <id-notice :active="isShowNotice" :rule="rule" v-on:closeNotice="isShowNotice = !isShowNotice"></id-notice> -->
+    <order-notice :active="isShowNotice" :rule="rule" v-on:closeNotice="isShowNotice = !isShowNotice"></order-notice>
   </div>
 </template>
 <script>
@@ -183,17 +183,11 @@
       confirmAdded () {
         let { testThrouth, infoList, message } = this.checkUserInfo(this.$refs.idcard)
         if (this.passengerName === '') {
-          this.Toast({
-            message: '请输入正确的中文姓名',
-            position: 'bottom'
-          })
+          this.Toast({message: '请输入正确的中文姓名', position: 'bottom'})
           return false
         }
         if (!fun.checkMobile(this.contactNumber)) {
-          this.Toast({
-            message: '请输入正确的手机号码',
-            position: 'bottom'
-          })
+          this.Toast({message: '请输入正确的手机号码', position: 'bottom'})
           return false
         }
         // 这个时候需要判定是否添加了证件
@@ -210,6 +204,10 @@
         .then(res => {
           this.Indicator.close()
           this.onClose()
+          // 添加人员成功，这个时候需要清除idCollections
+          this.idCollections = []
+          this.contactNumber = ''
+          this.passengerName = ''
           this.$emit('addedSuccess')
         })
         .catch(e => {

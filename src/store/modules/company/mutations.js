@@ -282,9 +282,9 @@ const mutations = {
         return ''
       }
     })
-    // console.log(selected)
     if (cacheFirst) {
       let companyOutsideUserList = JSON.parse(sessionStore.get('companyOutsideUserList'))
+      console.log(companyOutsideUserList)
       if (companyOutsideUserList && !_.isEmpty(companyOutsideUserList)) {
         _.forEach(companyOutsideUserList, (value, key) => {
           if (selected.indexOf(value.id) > -1) {
@@ -296,14 +296,14 @@ const mutations = {
       } else {
         reject({msg: '没有缓存数据'})
       }
-      return false
-    }
-    if (res.flagcode === '200') {
-      state.companyOutsideUserList = res.data.outPersonnelList
-      sessionStore.set('companyOutsideUserList', res.data.outPersonnelList)
-      resolve(res.data.outPersonnelList)
     } else {
-      reject(res)
+      if (res.flagcode === '200') {
+        state.companyOutsideUserList = res.data.outPersonnelList
+        sessionStore.set('companyOutsideUserList', res.data.outPersonnelList)
+        resolve(res.data.outPersonnelList)
+      } else {
+        reject(res)
+      }
     }
   },
   [key.SEARCH_PASSENGERS_BY] (state, payload) {
