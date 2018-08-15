@@ -147,6 +147,7 @@
         */
         _.forEach(components, component => {
           let userInfo = component.userInfo
+          let birthday = userInfo.birthday.replace(/-/g, '')
           if (userInfo.key === 1) {
             if (userInfo.firstName === '') {
               testThrouth = false
@@ -166,7 +167,7 @@
             testThrouth = false
             message = '证件号不能为空'
           }
-          if (!fun.isValidateBirthday(userInfo.birthday)) {
+          if (!fun.isValidateBirthday(birthday)) {
             testThrouth = false
             message = '出生日期格式错误'
           }
@@ -176,7 +177,7 @@
           } else {
             keys.push(userInfo.key)
           }
-          infoList.push({documentType: userInfo.key, documentNO: userInfo.idNo, birthday: userInfo.birthday, givenName: userInfo.firstName, surName: userInfo.lastName})
+          infoList.push({documentType: userInfo.key, documentNO: userInfo.idNo, birthday, givenName: userInfo.firstName, surName: userInfo.lastName})
         })
         return {testThrouth, infoList, message}
       },

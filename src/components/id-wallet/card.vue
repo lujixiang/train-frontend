@@ -149,7 +149,7 @@
             this.userInfo = {
               key: item.key,
               idType: item.label,
-              birthday: birthday,
+              birthday: fun.birthdayFromat(birthday),
               lastName: surName,
               firstName: givenName,
               idNo: documentNO
