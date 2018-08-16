@@ -20,7 +20,7 @@
             </div>
             <div class="input-item">
               <label>手机号*</label>
-              <input type="text" name="phone-number" placeholder="请输入手机号码" v-model="contactNumber">
+              <input type="number" name="phone-number" placeholder="请输入手机号码" v-model="contactNumber">
               <span class="right-icon">
                 <!-- <img :src="exclamatoryIcon"> -->
               </span>

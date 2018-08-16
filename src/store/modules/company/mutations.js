@@ -284,7 +284,6 @@ const mutations = {
     })
     if (cacheFirst) {
       let companyOutsideUserList = JSON.parse(sessionStore.get('companyOutsideUserList'))
-      console.log(companyOutsideUserList)
       if (companyOutsideUserList && !_.isEmpty(companyOutsideUserList)) {
         _.forEach(companyOutsideUserList, (value, key) => {
           if (selected.indexOf(value.id) > -1) {

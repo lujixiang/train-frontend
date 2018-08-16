@@ -20,7 +20,7 @@
             </div>
             <div class="input-item">
               <label>手机号*</label>
-              <input type="text" name="phone-number" placeholder="请输入手机号码" v-model="contactNumber">
+              <input type="number" name="phone-number" placeholder="请输入手机号码" v-model="contactNumber">
               <span class="right-icon">
                 <!-- <img :src="exclamatoryIcon"> -->
               </span>
@@ -248,11 +248,9 @@
           return !_.includes(this.idCollections, n.documentId)
         })
         console.log('传给后台的数据是', delIds)
-        if (delIds.length > 0) {
           // 如果要更新用户证件信息，则需要传外部人id
-          outUserId = this.$props.user.id
-          delIds = delIds.join(',')
-        }
+        outUserId = this.$props.user.id
+        delIds = delIds.join(',')
         this.Indicator.open()
         this.addNewOutsideUser({infoList, delIds, outUserId})
         .then(res => {

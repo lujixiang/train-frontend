@@ -146,6 +146,12 @@ export const birthdayFromat = (birthday) => {
   // 19950308
   return birthday.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')
 }
+// 校验特殊字符串
+export const evil = (str) => {
+  let regen = /[`~!@#$%^&*()_+<>?:"{},./;'[\]]/im
+  let regcn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im
+  return regcn.test(str) && regen.test(str)
+}
 // 校验是否是拼音
 export const isPinyin = (str) => {
   return /^[a-zA-Z]+$/.test(str)
