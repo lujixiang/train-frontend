@@ -268,6 +268,7 @@ const mutations = {
       }
       resolve(dataList)
     } catch (e) {
+      console.log(e)
       reject({msg: '登录过期'})
     }
   },

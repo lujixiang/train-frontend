@@ -115,6 +115,9 @@ export const encryptIDNo = (idno) => {
 }
 // 手机号码中间加星
 export const encryptPhoneNo = (no) => {
+  if (!no) {
+    return ''
+  }
   return no.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2')
 }
 // 判断是否是微信
