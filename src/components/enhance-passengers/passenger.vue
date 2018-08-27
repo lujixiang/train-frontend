@@ -268,6 +268,7 @@
             let UserKey = p.userSysId ? p.userSysId : p.id
             let isOuter = !p.isOuter
             let id = ''
+            let CellPhone = p.cellPhone
             let idTypeID = '1'
             if (!isOuter) {
               id = UserKey
@@ -301,10 +302,10 @@
               idTypeID,
               userSysId: UserKey,
               visiable: true,
+              CellPhone,
               isOuter: !isOuter
             })
           })
-          console.log('选择的出行人', passengers)
           this.$emit('select', passengers)
           this.onClose()
         } else if (model === 'single') {
