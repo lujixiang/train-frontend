@@ -287,7 +287,7 @@
             idcardno = fun.encryptIDNo(res.user_passportseno)
             IdNo = res.user_passportseno
           }
-          this.passengers.push({Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true})
+          this.passengers.push({Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_sys_key, CellPhone: res.user_phone, visiable: true})
           this.onPassengerChange()
           return res
         })
@@ -307,7 +307,7 @@
               idcardno = fun.encryptIDNo(res.user_passportseno)
               IdNo = res.user_passportseno
             }
-            this.currentUser = {Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true}
+            this.currentUser = {Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_sys_key, CellPhone: res.user_phone, visiable: true}
             // 按照需求，获取当前用户以后要默认选择
             if (action !== 'endorse' && action !== 'rebooking') {
               this.addMeAsPassenger()
