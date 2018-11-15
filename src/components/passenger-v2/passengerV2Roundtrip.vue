@@ -252,7 +252,7 @@
           idcardno = fun.encryptIDNo(res.user_passportseno)
           IdNo = res.user_passportseno
         }
-        this.passengers.push({Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_key, CellPhone: res.user_phone, visiable: true, trip: 'all'})
+        this.passengers.push({Name: res.user_name, idcardno, IdNo, userSysId: res.user_sys_key, UserKey: res.user_sys_key, CellPhone: res.user_phone, visiable: true, trip: 'all'})
         this.onPassengerChange()
         return res
       })

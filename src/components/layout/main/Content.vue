@@ -101,7 +101,7 @@ export default {
         idno = args.documentInformationList[0].documentNO
       }
       console.log(args)
-      this.updateTraveler({user: {user_name: args.userName, user_passportseno: idno, user_key: args.userSysId, user_phone: args.cellPhone}, type: 'update'})
+      this.updateTraveler({user: {user_name: args.userName, user_passportseno: idno, user_sys_key: args.userSysId, user_phone: args.cellPhone}, type: 'update'})
       this.requestTravelStandard({user: {user_phone: args.cellPhone}})
       .then(res => {
         this.saveTravelStandard(res)
