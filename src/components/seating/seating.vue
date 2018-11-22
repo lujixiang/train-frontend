@@ -12,13 +12,15 @@
                 <button class="disable">售完</button>
               </template>
               <template v-else>
-                <button @click="booking({price: info.info[item.price], left: info.info[item.left], label: item.label, code: item.code, trainType: info.info['train_type']})">购票</button>
+                <button v-if="iKnow" @click="booking({price: info.info[item.price], left: info.info[item.left], label: item.label, code: item.code, trainType: info.info['train_type']})">购票</button>
+                <button @click="notice" v-else>购票</button>
               </template>
             </span>
           </div>
         </template>
       </template>
     </template>
+    <order-notice :active="active" rule="overseas" v-on:closeNotice="handleIknow"></order-notice>
   </div>
 </template>
 
@@ -49,7 +51,9 @@
     },
     data () {
       return {
-        seats
+        seats,
+        iKnow: false,
+        active: false
       }
     },
     methods: {
@@ -61,6 +65,9 @@
       ...mapActions('company', [
         'isStandardSeat'
       ]),
+      notice () {
+        this.active = !this.active
+      },
       booking (seat) {
         let callback = res => {
           if (res.isStandard) {
@@ -86,6 +93,10 @@
         } = this.$route.query
         let { from_station_name, to_station_name } = this.info
         this.$router.push({name: 'trainOrder', query: {from_station, from_city: from_station_name, to_station, to_city: to_station_name, train_code, train_no, date: this.$props.bookingDate}})
+      },
+      handleIknow () {
+        this.active = !this.active
+        this.iKnow = true
       }
     }
   }
