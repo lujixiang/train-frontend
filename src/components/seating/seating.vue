@@ -12,14 +12,7 @@
                 <button class="disable">售完</button>
               </template>
               <template v-else>
-                <!-- 只有出发站或到达站是香港的时候才会有提示 -->
-                <template v-if="info.info.to_station_code === 'XJA' || info.info.from_station_code === 'XJA'">
-                  <button v-if="iKnow" @click="booking({price: info.info[item.price], left: info.info[item.left], label: item.label, code: item.code, trainType: info.info['train_type']})">购票</button>
-                  <button @click="notice" v-else>购票</button>
-                </template>
-                <template v-else>
-                  <button @click="booking({price: info.info[item.price], left: info.info[item.left], label: item.label, code: item.code, trainType: info.info['train_type']})">购票</button>
-                </template>
+                <button @click="booking({price: info.info[item.price], left: info.info[item.left], label: item.label, code: item.code, trainType: info.info['train_type']})">购票</button>
               </template>
             </span>
           </div>
@@ -58,8 +51,8 @@
     data () {
       return {
         seats,
-        iKnow: false,
-        active: false
+        active: false,
+        selectedSeat: null
       }
     },
     methods: {
@@ -75,13 +68,23 @@
         this.active = !this.active
       },
       booking (seat) {
+        this.selectedSeat = seat
         let callback = res => {
+          let { info } = this.$props
           if (res.isStandard) {
-            this.directlyBooking(seat)
+            if (info.info.to_station_code === 'XJA' || info.info.from_station_code === 'XJA') {
+              this.notice()
+            } else {
+              this.directlyBooking(seat)
+            }
           } else {
             this.MessageBox.confirm('不符合您的差旅标准，继续预订？', {title: '提示', confirmButtonText: '继续预订'})
             .then(action => {
-              this.directlyBooking(seat)
+              if (info.info.to_station_code === 'XJA' || info.info.from_station_code === 'XJA') {
+                this.notice()
+              } else {
+                this.directlyBooking(seat)
+              }
             }).catch(e => {
               console.log(e)
             })
@@ -102,7 +105,7 @@
       },
       handleIknow () {
         this.active = !this.active
-        this.iKnow = true
+        this.directlyBooking(this.selectedSeat)
       }
     }
   }
