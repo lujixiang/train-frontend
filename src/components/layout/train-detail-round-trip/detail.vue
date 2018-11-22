@@ -4,18 +4,9 @@
       <trip-card goback="go" :info="goInfo" v-on:selected="handleOnSelectSeat"></trip-card>
       <div class="empty-block"></div>
       <trip-card goback="back" :info="backInfo" v-on:selected="handleOnSelectSeat"></trip-card>
-      <!-- 只要选择班次中至少有一次地点为香港，均显示提示 -->
-      <template v-if="goInfo.info.to_station_code === 'XJA' || goInfo.info.from_station_code === 'XJA' || backInfo.info.to_station_code === 'XJA' || backInfo.info.from_station_code === 'XJA'">
-        <div class="next-step-button-box">
-          <span v-if="iKnow" class="next-step-button" @click="OnNextStep">下一步</span>
-          <span class="next-step-button" @click="notice" v-else>下一步</span>
-        </div>
-      </template>
-      <template v-else>
-         <div class="next-step-button-box">
-           <span class="next-step-button" @click="OnNextStep">下一步</span>
-         </div>                  
-      </template>
+      <div class="next-step-button-box">
+        <span class="next-step-button" @click="OnNextStep">下一步</span>
+      </div>
     </div>
     <order-notice :active="active" rule="overseas" v-on:closeNotice="handleIknow"></order-notice>
   </div>
@@ -32,8 +23,7 @@
         backInfo: '',
         goSeat: '',
         backSeat: '',
-        active: false,
-        iKnow: false
+        active: false
       }
     },
     methods: {
@@ -76,13 +66,19 @@
           })
           return false
         }
-        // 缓存用户选择的往返坐席
-        this.recordRoundTripSeat({goSeat, backSeat})
-        this.$router.push({name: 'trainOrderRoundTrip', query: {}})
+        if (this.goInfo.info.to_station_code === 'XJA' || this.goInfo.info.from_station_code === 'XJA' || this.backInfo.info.to_station_code === 'XJA' || this.backInfo.info.from_station_code === 'XJA') {
+          this.notice()
+        } else {
+          // 缓存用户选择的往返坐席
+          this.recordRoundTripSeat({goSeat, backSeat})
+          this.$router.push({name: 'trainOrderRoundTrip', query: {}})
+        }
       },
       handleIknow () {
         this.active = !this.active
-        this.iKnow = true
+        let { goSeat, backSeat } = this
+        this.recordRoundTripSeat({goSeat, backSeat})
+        this.$router.push({name: 'trainOrderRoundTrip', query: {}})
       }
     },
     created () {
