@@ -12,8 +12,14 @@
                 <button class="disable">售完</button>
               </template>
               <template v-else>
-                <button v-if="iKnow" @click="booking({price: info.info[item.price], left: info.info[item.left], label: item.label, code: item.code, trainType: info.info['train_type']})">购票</button>
-                <button @click="notice" v-else>购票</button>
+                <!-- 只有出发站或到达站是香港的时候才会有提示 -->
+                <template v-if="info.info.to_station_code === 'XJA' || info.info.from_station_code === 'XJA'">
+                  <button v-if="iKnow" @click="booking({price: info.info[item.price], left: info.info[item.left], label: item.label, code: item.code, trainType: info.info['train_type']})">购票</button>
+                  <button @click="notice" v-else>购票</button>
+                </template>
+                <template v-else>
+                  <button @click="booking({price: info.info[item.price], left: info.info[item.left], label: item.label, code: item.code, trainType: info.info['train_type']})">购票</button>
+                </template>
               </template>
             </span>
           </div>
