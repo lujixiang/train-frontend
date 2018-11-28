@@ -44,7 +44,7 @@
           示例：
             1）其他 ---> 跳转 ---> 火车票
             云快报跳到火车票
-            /#/redirect?token=MzRmMGE0N2QyNjg0MGI4OGFhMjhlYTA5MjFhMWZlNWE=&fromCity=武汉&toCity=苏州&action=booking&date=2018-4-20&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2
+            /#/redirect?token=Nzc0MzA2YzdkNTIyYjM3Y2E0NzU3YjliMzUwZjExNzY=&fromCity=武汉&toCity=苏州&action=booking&date=2018-4-20&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2
             http://entwechatmob.test.51ykb.com/Mine/Index?Token=ZTQzZTU3NTE2NmJiOWM1NWE4Zjg3YmI4ZTA2MzNiODM=&IsGreenHand=0&Version=20180811_2222#Bill
             企业微信
             /#/redirect?token=ZTQzZTU3NTE2NmJiOWM1NWE4Zjg3YmI4ZTA2MzNiODM%3D&action=booking&callbackURL=aHR0cDovL2VudHdlY2hhdG1vYi50ZXN0LjUxeWtiLmNvbS9GZWVCZWxvbmcvQXBwbHk%2FQXBwbHlUeXBlPTE1&returnURL=aHR0cDovL2VudHdlY2hhdG1vYi50ZXN0LjUxeWtiLmNvbS9NaW5lL0luZGV4&companyId=61802140-7ad1-ce13-3f4d-08d5db28f743&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2
@@ -53,7 +53,7 @@
             ..../#/redirect?token=ZWY4NjQ0OTBhZmI0MmFiZDViYTc0MzBlMGU2MmRlMjM=&action=2&date=2017-11-21&returnURL=www.baidu.com&callbackURL=www.baidu.com&fromCity=上海&toCity=苏州&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0
             改签：
             token,action,callbackURL,returnURL,companyId,cooperatorId,orderId,userkeys
-            /#/redirect?token=NWI4YjAzZjI4M2VmYjc2NDMyMDdmZjZmYzExMDkxYzc=&action=endorse&callbackURL=aHR0cDovL2VudHdlY2hhdG1vYi41MXlrYi5jb20vRmVlQmVsb25nL0FwcGx5=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180810134605351762&userkeys=05d3b45f-d243-c5af-f4fa-08d46436d5f7,d588aa8f-b360-4b47-a7c8-1f2d7d305afd
+            /#/redirect?token=Nzc0MzA2YzdkNTIyYjM3Y2E0NzU3YjliMzUwZjExNzY=&action=endorse&callbackURL=aHR0cDovL2VudHdlY2hhdG1vYi41MXlrYi5jb20vRmVlQmVsb25nL0FwcGx5=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180810134605351762&userkeys=05d3b45f-d243-c5af-f4fa-08d46436d5f7,d588aa8f-b360-4b47-a7c8-1f2d7d305afd
             重新预订
             /#/redirect?token=NWI4YjAzZjI4M2VmYjc2NDMyMDdmZjZmYzExMDkxYzc=&action=rebooking&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&orderId=20180810134605351762&fromCity=&toCity=&date=2018-08-15
         */

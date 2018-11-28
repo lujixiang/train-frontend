@@ -2,7 +2,7 @@
   <div>
     <div class="train-round-trip-order-content">
       <ticketCard :ticket="ticket" :seatObj="seatLevel" :priceObj="ticketPrice" trips="double"></ticketCard>
-      <notice-bar rule="1234" title="购票须知"></notice-bar>
+      <notice-bar title="购票须知" v-on:noticeClick="handleNoticeClick"></notice-bar>
       <passenger-round-trip :ticket="ticket" :goSeat="seatLevel.go" :backSeat="seatLevel.back" v-on:passengerChange="handleOnPassengerChange" :action="action"></passenger-round-trip>
       <template v-if="isAllowOnlineSeatSelect">
         <online-seat-selection trips="double" :backType="seatLevel.back" :goType="seatLevel.go" :goCountSeats="goCountSeats" :backCountSeats="backCountSeats" v-on:selectedSeats="handleOnSelectedSeats"></online-seat-selection>
@@ -13,6 +13,7 @@
         </mt-cell>
       </div>
       <p class="service-fee-instruction">服务费对应发票，将在每月通过统一开票方式开具给贵公司。</p>
+      <p class="need-to-know">点击提交标识已阅读并同意<span @click="handleNoticeClick">购票须知</span></p>
       <div class="footer">
         <span @click="priceDetail" class="total-price">
           <span>订单总额：</span>
@@ -44,6 +45,7 @@
     </div>
     <guid-instruction></guid-instruction>
     <text-alert :active="$store.state.IS_MIDNIGHT && !$store.state.IS_MIDNIGHT_NOTICED" v-on:iknow="doNotShowAgain()"></text-alert>
+    <train-rules :active="isShowTrainRules" v-on:close="handleNoticeClick"></train-rules>
   </div>
 </template>
 <!-- 二代身份证：1；港澳通行证：C；台湾通行证：G；护照:B -->
@@ -69,7 +71,8 @@
         companySettings: {},
         selectedSeats: {choose_seats: {}},
         avaliableSeat: ['商务座', '一等座', '二等座'],
-        standard: ''
+        standard: '',
+        isShowTrainRules: false
       }
     },
     computed: {
@@ -116,6 +119,9 @@
       ...mapActions('train', ['bookingRoundTrip']),
       ...mapActions('history', ['getRoundTripInfo', 'getRoundTripSeat']),
       ...mapActions('company', ['getCompanySettings', 'clearDataFromLocalStorage', 'getLocalStandard']),
+      handleNoticeClick () {
+        this.isShowTrainRules = !this.isShowTrainRules
+      },
       handleGetTravelStandard () {
         let callback = res => {
           let s = ''

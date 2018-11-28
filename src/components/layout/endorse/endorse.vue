@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="endorse-content">
-      <notice-bar title="改签或变更到站说明" rule="6789"></notice-bar>
+      <notice-bar title="改签或变更到站说明" v-on:noticeClick="handleNoticeClick"></notice-bar>
       <div class="ykb-cell-group">
         <div @click="isShowCityPicker" class="ykb-cell-list">
           <mt-cell title="修改目的地" :value="toStationName" is-link></mt-cell>
@@ -14,6 +14,7 @@
     </div>
     <city-picker v-on:listenToChildEvent="handleOnCityPick" v-on:onClickBackButton="isShowCityPicker" :isActive="isCityPickerActive"></city-picker>
     <calendar :defaultStartDate="fromDateObj" :isShowNotice="true" notice="当前车票预售期为30天" model="single" v-on:onClickBackButton="showCalendar" v-on:onDateChange="setDate" :isActive="popupVisible"></calendar>
+    <train-rules :active="isShowTrainRules" v-on:close="handleNoticeClick"></train-rules>
   </div>
 </template>
 <!--
@@ -47,13 +48,17 @@ http://www.12306.cn/mormhweb/tlcs/201505/t20150512_16631.html
         fromDate: '',
         fromDateObj: moment(),
         isCityPickerActive: false,
-        popupVisible: false
+        popupVisible: false,
+        isShowTrainRules: false
       }
     },
     methods: {
       ...mapActions('order', [
         'getOrderDetailByOrderId'
       ]),
+      handleNoticeClick () {
+        this.isShowTrainRules = !this.isShowTrainRules
+      },
       getOrderDetail () {
         let callback = res => {
           this.fromStationName = res.from_station_name

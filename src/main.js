@@ -75,6 +75,7 @@ import idCard from './components/id-card'
 import idModify from './components/id-modify'
 import listView from './components/list-view'
 import outerList from './components/outer-list'
+import trainRules from './components/train-rules'
 const components = [
   ykbIcon,
   filterBar,
@@ -115,7 +116,8 @@ const components = [
   idCard,
   idModify,
   listView,
-  outerList
+  outerList,
+  trainRules
 ]
 components.map(_components => {
   Vue.use(_components)

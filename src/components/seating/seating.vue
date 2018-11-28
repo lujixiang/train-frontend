@@ -19,7 +19,6 @@
         </template>
       </template>
     </template>
-    <order-notice :active="active" rule="overseas" v-on:closeNotice="handleIknow"></order-notice>
   </div>
 </template>
 
@@ -50,41 +49,20 @@
     },
     data () {
       return {
-        seats,
-        active: false,
-        selectedSeat: null
+        seats
       }
     },
     methods: {
-      ...mapActions('train', [
-        'recordTrainIonfo',
-        'getTrainInfo',
-        'recordSeatInfo'
-      ]),
-      ...mapActions('company', [
-        'isStandardSeat'
-      ]),
-      notice () {
-        this.active = !this.active
-      },
+      ...mapActions('train', ['recordTrainIonfo', 'getTrainInfo', 'recordSeatInfo']),
+      ...mapActions('company', ['isStandardSeat']),
       booking (seat) {
-        this.selectedSeat = seat
         let callback = res => {
-          let { info } = this.$props
           if (res.isStandard) {
-            if (info.info.to_station_code === 'XJA' || info.info.from_station_code === 'XJA') {
-              this.notice()
-            } else {
-              this.directlyBooking(seat)
-            }
+            this.directlyBooking(seat)
           } else {
             this.MessageBox.confirm('不符合您的差旅标准，继续预订？', {title: '提示', confirmButtonText: '继续预订'})
             .then(action => {
-              if (info.info.to_station_code === 'XJA' || info.info.from_station_code === 'XJA') {
-                this.notice()
-              } else {
-                this.directlyBooking(seat)
-              }
+              this.directlyBooking(seat)
             }).catch(e => {
               console.log(e)
             })
@@ -102,10 +80,6 @@
         } = this.$route.query
         let { from_station_name, to_station_name } = this.info
         this.$router.push({name: 'trainOrder', query: {from_station, from_city: from_station_name, to_station, to_city: to_station_name, train_code, train_no, date: this.$props.bookingDate}})
-      },
-      handleIknow () {
-        this.active = !this.active
-        this.directlyBooking(this.selectedSeat)
       }
     }
   }

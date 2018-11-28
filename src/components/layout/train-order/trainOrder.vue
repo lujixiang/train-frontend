@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="train-order-content">
-      <notice-bar rule="1234" title="购票须知"></notice-bar>
+      <notice-bar title="购票须知" v-on:noticeClick="handleNoticeClick"></notice-bar>
       <ticketCard :ticket="ticket" :seat="seatLevel" :price="ticketPrice"></ticketCard>
       <passenger-v2 :ticket="ticket" :seat="seatLevel" v-on:passengerChange="handleOnPassengerChange" :action="action"></passenger-v2>
       <template v-if="seatLevel === '商务座' || seatLevel === '一等座' || seatLevel === '二等座'">
@@ -13,6 +13,7 @@
         </mt-cell>
       </div>
       <p class="service-fee-instruction">服务费对应发票，将在每月通过统一开票方式开具给贵公司。</p>
+      <p class="need-to-know">点击提交标识已阅读并同意<span @click="handleNoticeClick">购票须知</span></p>
       <div class="footer">
         <span @click="priceDetail" class="total-price">
           <span>订单总额：</span>
@@ -41,6 +42,7 @@
       </mt-popup>
     </div>
     <text-alert :active="$store.state.IS_MIDNIGHT && !$store.state.IS_MIDNIGHT_NOTICED" v-on:iknow="doNotShowAgain()"></text-alert>
+    <train-rules :active="isShowTrainRules" v-on:close="handleNoticeClick"></train-rules>
   </div>
 </template>
 
@@ -68,7 +70,8 @@
         companySettings: {},
         selectedSeats: {},
         originalOrderId: '',
-        standard: ''
+        standard: '',
+        isShowTrainRules: false
       }
     },
     computed: {
@@ -92,6 +95,9 @@
       ...mapActions('train', ['getTrainInfo', 'getSeatInfo', 'bookingNow']),
       ...mapActions('company', ['getCompanySettings', 'clearDataFromLocalStorage', 'getLocalStandard']),
       ...mapActions('order', ['cancelOrderByOrderId']),
+      handleNoticeClick () {
+        this.isShowTrainRules = !this.isShowTrainRules
+      },
       handleGetTravelStandard () {
         let callback = res => {
           let s = ''
