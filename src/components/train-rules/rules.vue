@@ -2,7 +2,7 @@
   <div class="train-rules-v2-content">
     <mt-popup v-model="active" position="right" :closeOnClickModal="false">
       <div class="header-wraper">
-        <mt-header class="header" :fixed="false" title="预订须知">
+        <mt-header class="header" :fixed="false" title="购票须知">
           <mt-button slot="left" icon="back" @click="close">
           </mt-button>
         </mt-header>
@@ -62,6 +62,36 @@
             </tbody>
           </table>
           <p class="rule">注：收取手续费时，手续费不足2元按2元收取。</p>
+        </div>
+        <div class="rules-text">
+          <p class="title">退票方式说明</p>
+          <table border="1" cellspacing="0" cellpadding="0">
+            <thead>
+              <tr>
+                <th class="left-section">改签情况</th>
+                <th class="right-section">改签方式</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>6:00-23:00，未取纸质车票，距离发车时间>30分钟</td>
+                <td>云快报-我的订单中改签</td>
+              </tr>
+              <tr>
+                <td>23:00-次日6:00</td>
+                <td>人工窗口改签</td>
+              </tr>
+              <tr>
+                <td>已取纸质发票</td>
+                <td>人工窗口改签</td>
+              </tr>
+              <tr>
+                <td>距离发车时间小于等于30分钟</td>
+                <td>人工窗口改签</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="rule">注：已过发车时间无法退票，只能改签至发车当日有余票的列车出行。</p>
         </div>
         <div class="rules-text">
           <p class="title">改签说明</p>
@@ -160,7 +190,7 @@
           </table>
         </div>
         <div class="rules-text">
-          <p class="title">退票手续费说明</p>
+          <p class="title">可改签车次</p>
           <table border="1" cellspacing="0" cellpadding="0">
             <thead>
               <tr>
@@ -187,7 +217,7 @@
         <div class="rules-text">
           <p class="title">免责说明</p>
           <p class="rule block">云快报提供的是火车票代购服务，您接受本协议，意味着您同意云快报及合作商家使用您填写的乘客信息进行代购，包括但不限于授权我们使用您的乘客信息执行查询、代购、退票、改签、注册等操作，同时您必须遵守12306购票规定的服务条款(https://kyfw.12306.cn/otn/regist/rule)；</p>
-          <p class="rule block">云快报不对因<br/>
+          <p class="rule block">云快报不对因：<br/>
 （1）铁路部门调整车次、票价、坐席等信息；<br/>
 （2）铁路部门调整退票规则、改签规则、售票时间；<br/>
 （3）客户提供错误的订单信息（包括但不限于姓名、身份证号码、日期、车次、坐席）而造成的用户损失承担任何责任，因上述原因、客户自身原因或其他不可抗力发生的退款或差额以铁路部门实退或实收为准。
@@ -228,7 +258,7 @@
         </div>
         <div class="rules-text">
           <p class="title">退票方式说明</p>
-          <p class="rule block">办理退票时间应不晚于票面指定的日期、车次开车前30分钟，始发站为香港西九龙站的车票应不晚于60分钟。</p>
+          <p class="rule block">办理退票时间应不晚于票面指定的日期、车次开车前30分钟，<span class="high-light">始发站为香港西九龙站的车票应不晚于60分钟。</span></p>
           <p class="rule block">内地网站购买的车票，仅限内地办理退票。</p>
           <table border="1" cellspacing="0" cellpadding="0">
             <thead>
@@ -281,7 +311,7 @@
         </div>
         <div class="rules-text">
           <p class="title">改签说明</p>
-          <p class="rule block">办理改签时间应不晚于票面指定的日期、车次开车前30分钟，始发站为香港西九龙站的车票应不晚于60分钟。</p>
+          <p class="rule block">办理改签时间应不晚于票面指定的日期、车次开车前30分钟，<span class="high-light">始发站为香港西九龙站的车票应不晚于60分钟。</span></p>
           <p class="rule block">所购车票发站为香港西九龙站的，也可在香港西九龙站售票窗口办理改签，但使用非现金支付方式且产生票价差额的仅限在内地办理。</p>
           <p class="rule block">在车票预售期内且有运输能力的前提下，每张票仅可办理一次改签操作，改签不得办理变更到站。</p>
           <p class="rule block">改签后的车票<span class="high-light">不得退票</span>。</p>
@@ -293,7 +323,7 @@
         <div class="rules-text">
           <p class="title">免责说明</p>
           <p class="rule block">云快报提供的是火车票代购服务，您接受本协议，意味着您同意云快报及合作商家使用您填写的乘客信息进行代购，包括但不限于授权我们使用您的乘客信息执行查询、代购、退票、改签、注册等操作，同时您必须遵守12306购票规定的服务条款(https://kyfw.12306.cn/otn/regist/rule)；</p>
-          <p class="rule block">云快报不对因<br/>
+          <p class="rule block">云快报不对因：<br/>
 （1）铁路部门调整车次、票价、坐席等信息；<br/>
 （2）铁路部门调整退票规则、改签规则、售票时间；<br/>
 （3）客户提供错误的订单信息（包括但不限于姓名、身份证号码、日期、车次、坐席）而造成的用户损失承担任何责任，因上述原因、客户自身原因或其他不可抗力发生的退款或差额以铁路部门实退或实收为准。
