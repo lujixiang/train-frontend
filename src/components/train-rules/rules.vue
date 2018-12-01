@@ -3,7 +3,7 @@
     <mt-popup v-model="active" position="right" :closeOnClickModal="false">
       <div class="header-wraper">
         <mt-header class="header" :fixed="false" title="购票须知">
-          <mt-button slot="left" icon="back" @click="close">
+          <mt-button slot="left" icon="back" @click="onClose">
           </mt-button>
         </mt-header>
       </div>
@@ -373,7 +373,7 @@
           }
         })
       },
-      close () {
+      onClose () {
         this.$emit('close')
       }
     }
