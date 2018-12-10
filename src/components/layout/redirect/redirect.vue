@@ -84,7 +84,7 @@
         })
       },
       process () {
-        let { fromCity, toCity, action, date, userkeys, cooperatorId, companyId, orderId, version, callbackURL, returnURL } = this.$route.query
+        let { fromCity, toCity, action, date, userkeys, cooperatorId, companyId, orderId, version, callbackURL, returnURL, approvalFlag } = this.$route.query
         if (!version || version === '') {
           version = 'v1'
         }
@@ -97,7 +97,7 @@
         .then(res => {
           let userInfo = res.user_info
           this.isMidnight(res)
-          this.storeCompanySettings({callbackURL, returnURL, action, orderId, companyId, cooperatorId, userkeys})
+          this.storeCompanySettings({callbackURL, returnURL, action, orderId, companyId, cooperatorId, userkeys, approvalFlag})
           return userInfo
         })
         .then(res => {

@@ -162,11 +162,13 @@
         // create（创建普通订单）\createChange（创建改签订单）
         let createType
         let orderid
+        let approvalFlag
         let ticketChangeInfo = []
         if (this.action === 'endorse') {
           // 改签
           createType = 'createChange'
           orderid = this.$store.state.company.companySettings.orderId
+          approvalFlag = this.$store.state.company.companySettings.approvalFlag
           _.forEach(this.$store.state.order.orderDetail.train_passenger, p => {
             if (p.endorse) {
               ticketChangeInfo.push(p)
@@ -202,6 +204,7 @@
           is_choose_seats: false,
           choose_seats: '',
           travel_standard: this.standard,
+          approvalFlag, // 是否需要二次审批
           ...selectedSeats
         }
         const callback = res => {
