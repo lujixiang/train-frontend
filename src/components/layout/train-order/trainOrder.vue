@@ -211,7 +211,11 @@
           let result = res
           let { callbackURL } = this.companySettings
           // 创建订单成功
-          let { action } = this.companySettings
+          let { action, orderId } = this.companySettings
+          let businessType = ''
+          if (action === 'endorse') {
+            businessType = 'ticketChange'
+          }
           if (action === 'endorse' || action === 'rebooking') {
             if (result.flagcode === '200') {
               this.originalOrderId = result.orderid
@@ -246,7 +250,7 @@
                     }
                     // let url = G.Base64.decode(this.companySettings.callbackURL)
                     url = url.indexOf('?') > -1 ? url : url + '?'
-                    let jumpto = url + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
+                    let jumpto = url + '&type=train&oldOrderId=' + orderId + '&orderId=' + result.orderid + '&businessType=' + businessType + '&data=' + JSON.stringify(result)
                     window.location.href = jumpto
                   } else if (action === 'cancel') {
                     this.handleCancelOrderId()
