@@ -209,6 +209,7 @@
         }
         const callback = res => {
           let result = res
+          let { callbackURL } = this.companySettings
           // 创建订单成功
           let { action } = this.companySettings
           if (action === 'endorse' || action === 'rebooking') {
@@ -232,7 +233,18 @@
                 this.MessageBox.alert(G.NEED_APPROVAL_TEXT, {title: '提示', confirmButtonText: '提交审批', cancelButtonText: '取消订单', showCancelButton: true})
                 .then(action => {
                   if (action === 'confirm') {
-                    let url = G.Base64.decode(this.companySettings.callbackURL)
+                    /*
+                      有些跳转地址没有base64，有些base64，需要判断一下
+                    */
+                    let url
+                    if (callbackURL.indexOf('http') > -1) {
+                      // 没有经过base64转义
+                      url = callbackURL
+                    } else {
+                      // 经过base64转义
+                      url = G.Base64.decode(callbackURL)
+                    }
+                    // let url = G.Base64.decode(this.companySettings.callbackURL)
                     url = url.indexOf('?') > -1 ? url : url + '?'
                     let jumpto = url + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
                     window.location.href = jumpto
@@ -246,7 +258,13 @@
           } else {
             // 预订成功后删除traveller,防止下次进来后默认是非当前用户
             this.clearDataFromLocalStorage(['traveler'])
-            let url = G.Base64.decode(this.companySettings.callbackURL)
+            // let url = G.Base64.decode(this.companySettings.callbackURL)
+            let url
+            if (callbackURL.indexOf('http') > -1) {
+              url = callbackURL
+            } else {
+              url = G.Base64.decode(callbackURL)
+            }
             url = url.indexOf('?') > -1 ? url : url + '?'
             let jumpto = url + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
             window.location.href = jumpto
