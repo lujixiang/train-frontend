@@ -22,7 +22,7 @@ module.exports = {
   ENDORSE_TEXT: '改签/变更到站可能会产生一定的费用，具体费用将根据12306最新给出的退改政策执行。（跨境列车仅可办理一次改签，改签后不可退票）',
   ENDORSE_SUCCESS_TEXT: '已提交改签申请，成功后将在“我的订单”展示具体的车次信息。',
   REBOOKING_SUCCESS_TEXT: '已提交重新预订申请，成功后将在“我的订单”展示具体的车次信息。',
-  NEED_APPROVAL_TEXT: '您当前的订单金额超过原订单的金额，需经过审批通过后完成订单。',
+  NEED_APPROVAL_TEXT: '您当前的订单需经过审批通过后完成订单。',
   seats: [
     {price: 'wz_price', label: '无座', left: 'wz_num', code: '1'},
     {price: 'yz_price', label: '硬座', left: 'yz_num', code: '1'},
