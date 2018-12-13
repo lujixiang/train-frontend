@@ -53,6 +53,7 @@
   const moment = require('moment')
   const G = require('@/definition/g')
   const Big = require('big.js')
+  const sessionStore = require('@/lib/sessionStorage')['default']
 
   export default {
     name: 'trainOrder',
@@ -182,6 +183,7 @@
         }
         let selectedSeats = this.selectedSeats
         let params = {
+          queryKey: JSON.parse(sessionStore.get('go_queryKey') === 'undefined' || null),
           train_date: date,
           train_no,
           train_code,
@@ -195,7 +197,7 @@
           price: this.ticketPrice,
           orderamount: this.totalPrice,
           isneedinsure: false,
-          serviceprovider_flag: 'HTHY',
+          serviceprovider_flag: JSON.parse(sessionStore.get('serviceprovider_flag')), // 创旅天下 HTHY是航天华有
           passengers: JSON.stringify(passengers),
           ticket: JSON.stringify(this.ticket),
           createType,

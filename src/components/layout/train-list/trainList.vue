@@ -101,6 +101,7 @@
   import { mapActions } from 'vuex'
   import './less/style.less'
   const G = require('@/definition/g')
+  const sessionStore = require('@/lib/sessionStorage')['default']
   const seats = G.seats
   export default {
     name: 'trainList',
@@ -205,6 +206,7 @@
         })
         // 列表获取完成以后的回调函数
         let callback = (e) => {
+          sessionStore.set('go_queryKey', e.queryKey)
           this.isMidnight(e)
           this.Indicator.close()
           if (!this.filterData.type) {

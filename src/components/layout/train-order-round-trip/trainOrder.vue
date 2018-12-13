@@ -56,6 +56,7 @@
   const moment = require('moment')
   const G = require('@/definition/g')
   const Big = require('big.js')
+  const sessionStore = require('@/lib/sessionStorage')['default']
   export default {
     name: 'trainOrder',
     data () {
@@ -220,6 +221,7 @@
         let { selectedSeats, ticket } = this
         let params = {
           go: JSON.stringify({
+            queryKey: JSON.parse(sessionStore.get('go_queryKey') === 'undefined' || null),
             train_date: moment(ticket.go.date).format('YYYY-MM-DD'),
             train_no: ticket.go.info.train_no,
             train_code: ticket.go.info.train_code,
@@ -233,7 +235,7 @@
             price: this.ticketPrice.go,
             orderamount: this.totalPrice,
             isneedinsure: false,
-            serviceprovider_flag: 'HTHY',
+            serviceprovider_flag: JSON.parse(sessionStore.get('serviceprovider_flag')),
             passengers: passengers.go,
             ticket: ticket.go,
             createType: 'create',
@@ -242,6 +244,7 @@
             travel_standard: this.standard
           }),
           return: JSON.stringify({
+            queryKey: JSON.parse(sessionStore.get('return_queryKey') === 'undefined' || null),
             train_date: moment(ticket.back.date).format('YYYY-MM-DD'),
             train_no: ticket.back.info.train_no,
             train_code: ticket.back.info.train_code,
@@ -255,7 +258,7 @@
             price: this.ticketPrice.back,
             orderamount: this.totalPrice,
             isneedinsure: false,
-            serviceprovider_flag: 'HTHY',
+            serviceprovider_flag: JSON.parse(sessionStore.get('serviceprovider_flag')),
             passengers: passengers.back,
             ticket: ticket.back,
             createType: 'create',
