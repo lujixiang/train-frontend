@@ -182,8 +182,10 @@
           createType = 'create'
         }
         let selectedSeats = this.selectedSeats
+        let goQueryKey = sessionStore.get('go_queryKey')
+        goQueryKey = (goQueryKey === 'undefined' ? null : goQueryKey)
         let params = {
-          queryKey: JSON.parse(sessionStore.get('go_queryKey') === 'undefined' || null),
+          queryKey: JSON.parse(goQueryKey),
           train_date: date,
           train_no,
           train_code,

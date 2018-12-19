@@ -219,9 +219,13 @@
         }
         // create（创建普通订单）\createChange（创建改签订单）
         let { selectedSeats, ticket } = this
+        let goQueryKey = sessionStore.get('go_queryKey')
+        goQueryKey = (goQueryKey === 'undefined' ? null : goQueryKey)
+        let returnQueryKey = sessionStore.get('return_queryKey')
+        returnQueryKey = (returnQueryKey === 'undefined' ? null : returnQueryKey)
         let params = {
           go: JSON.stringify({
-            queryKey: JSON.parse(sessionStore.get('go_queryKey') === 'undefined' || null),
+            queryKey: JSON.parse(goQueryKey),
             train_date: moment(ticket.go.date).format('YYYY-MM-DD'),
             train_no: ticket.go.info.train_no,
             train_code: ticket.go.info.train_code,
@@ -244,7 +248,7 @@
             travel_standard: this.standard
           }),
           return: JSON.stringify({
-            queryKey: JSON.parse(sessionStore.get('return_queryKey') === 'undefined' || null),
+            queryKey: JSON.parse(returnQueryKey),
             train_date: moment(ticket.back.date).format('YYYY-MM-DD'),
             train_no: ticket.back.info.train_no,
             train_code: ticket.back.info.train_code,
