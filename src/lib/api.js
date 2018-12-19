@@ -1,34 +1,34 @@
 module.exports = {
   // 获取用户所在城市
-  getCurrentCity: '/ykb_train_tc/user_location',
+  getCurrentCity: '/ykb_train/user_location',
   // 获取火车票列表
-  getTrainList: '/ykb_train_tc/train_query',
+  getTrainList: '/ykb_train/train_query',
   // 获取单个列车的信息
-  getSingleTrainInfo: '/ykb_train_tc/get_train_info',
+  getSingleTrainInfo: '/ykb_train/get_train_info',
   // 根据token获取当前用户信息
-  getUserInfoByToken: '/ykb_train_tc/get_user_info_by_token',
+  getUserInfoByToken: '/ykb_train/get_user_info_by_token',
   // 创建本地订单,改签
-  createTrainOrder: '/ykb_train_tc/createdTrainOrder',
+  createTrainOrder: '/ykb_train/createdTrainOrder',
   // 创建往返订单
-  createTrainOrderForRoundTrip: '/ykb_train_tc/createdReturnTrainOrder',
+  createTrainOrderForRoundTrip: '/ykb_train/createdReturnTrainOrder',
   // 根据token获取公司人员列表
-  getCompanyUserList: '/ykb_train_tc/get_company_staffs_by_token',
+  getCompanyUserList: '/ykb_train/get_company_staffs_by_token',
   // 根据城市名称获取火车站code
-  getStationCodeByCityName: '/ykb_train_tc/get_train_station_by_station_name',
+  getStationCodeByCityName: '/ykb_train/get_train_station_by_station_name',
   // 获取差旅标准
-  getTravalStandard: '/ykb_train_tc/user_business_trip_standard',
+  getTravalStandard: '/ykb_train/user_business_trip_standard',
   // 根据orderid获取订单详情
-  getOrderDetailByOrderID: '/ykb_train_tc/get_train_order_by_id',
+  getOrderDetailByOrderID: '/ykb_train/get_train_order_by_id',
   // 根据orderid取消order
-  cancelOrderByOrderID: '/ykb_train_tc/orderBecomeInvalid',
+  cancelOrderByOrderID: '/ykb_train/orderBecomeInvalid',
   // 是否是12306停止服务时间
-  isMidnight: '/ykb_train_tc/nightOrder',
+  isMidnight: '/ykb_train/nightOrder',
   // 获取企业微信js签名
-  getWechatJSSign: '/ykb_train_tc/wxApi',
+  getWechatJSSign: '/ykb_train/wxApi',
   // 下次不在弹出引导页
-  dontShowGuidInstruction: '/ykb_train_tc/insertTrainUserGuide',
+  dontShowGuidInstruction: '/ykb_train/insertTrainUserGuide',
   // 是否显示过引导页面
-  ifShowGuidInstruction: '/ykb_train_tc/getTrainUserGuide',
+  ifShowGuidInstruction: '/ykb_train/getTrainUserGuide',
   // 新版出行人的接口
   traveling: {
     // 企业内部人员列表
