@@ -189,6 +189,8 @@
       requestTrainList (params = {}) {
         this.noSearchResult = false
         let { date, fromStation, toStation, trainType } = this.$route.query
+        // 改签查询列表的时候需要传上一个订单的订单id，改签的时候就知道到哪个供应商做退改签
+        let { orderId } = this.$store.state.company.companySettings
         if (params.type) {
           date = params.date.format('YYYY-MM-DD')
         }
@@ -198,7 +200,8 @@
           from_station: fromStation,
           needdistance: 1,
           purpose_codes: 'ADULT',
-          train_type: trainType
+          train_type: trainType,
+          orderId
         }
         this.Indicator.open({
           text: '加载中...',
