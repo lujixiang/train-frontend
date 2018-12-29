@@ -44,7 +44,7 @@
           示例：
             1）其他 ---> 跳转 ---> 火车票
             云快报跳到火车票
-            /#/redirect?token=Yjg4YmQ3NTdhYTJmOGExMzAwNzBlZDMxNDRkOTRmNmQ=&fromCity=武汉&toCity=苏州&action=booking&date=2018-4-20&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2
+            /#/redirect?token=MmJkNmY5NjM4MGU0YmM3YTliOTQxZDNhMTJjZWNhZTM=&fromCity=武汉&toCity=苏州&action=booking&date=2018-4-20&callbackURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni9GZWVCZWxvbmcvQXBwbHk=&returnURL=aHR0cDovL2xvY2FsaG9zdDo0NDE2Ni8jL3JlZGlyZWN0&companyId=f88d09e8-addb-c626-7820-08d3d16ab10c&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2
             http://entwechatmob.test.51ykb.com/Mine/Index?Token=ZTQzZTU3NTE2NmJiOWM1NWE4Zjg3YmI4ZTA2MzNiODM=&IsGreenHand=0&Version=20180811_2222#Bill
             企业微信
             /#/redirect?token=ZTQzZTU3NTE2NmJiOWM1NWE4Zjg3YmI4ZTA2MzNiODM%3D&action=booking&callbackURL=aHR0cDovL2VudHdlY2hhdG1vYi50ZXN0LjUxeWtiLmNvbS9GZWVCZWxvbmcvQXBwbHk%2FQXBwbHlUeXBlPTE1&returnURL=aHR0cDovL2VudHdlY2hhdG1vYi50ZXN0LjUxeWtiLmNvbS9NaW5lL0luZGV4&companyId=61802140-7ad1-ce13-3f4d-08d5db28f743&cooperatorId=fd6f14fa-5c79-46e3-9094-98f1785c83b0&version=v2

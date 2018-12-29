@@ -134,7 +134,7 @@ const mutations = {
   [key.IS_STANDARD_SEAT] (state, payload) {
     let { trainType, label, callback } = payload
     let trainTypeLabel
-    if (trainType === 'C' || trainType === 'G') {
+    if (trainType === 'C' || trainType === 'G' || trainType === 'GD' || trainType === 'XGZ') {
       // 高铁标准
       trainType = 'G'
       trainTypeLabel = '高铁'
