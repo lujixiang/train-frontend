@@ -270,6 +270,7 @@
             let id = ''
             let CellPhone = p.cellPhone
             let idTypeID = '1'
+            let Name = p.userName
             if (!isOuter) {
               id = UserKey
             }
@@ -279,8 +280,12 @@
             } else {
               if (p.documentInformationList && p.documentInformationList.length > 0) {
                 if (p.documentInformationList.length === 1) {
-                  docinfo = p.documentInformationList[0].documentNO
-                  idTypeID = fun.idTypeTranslate(p.documentInformationList[0].documentType)
+                  let singleInfo = p.documentInformationList[0]
+                  docinfo = singleInfo.documentNO
+                  idTypeID = fun.idTypeTranslate(singleInfo.documentType)
+                  if (singleInfo.documentType === 1) {
+                    Name = singleInfo.surName + ' ' + singleInfo.givenName
+                  }
                   /* 后台的数据库返回 : 1: '护照', 7: '身份证', 3: '台胞证', 5: '港澳通行证' */
                   /* 真实传给供应商的参数： '1': 二代身份证，'C'：港澳通行证, 'G': 台湾通行证，'B'： 护照 */
                 } else {
@@ -288,13 +293,16 @@
                     if (doc.checked) {
                       docinfo = doc.documentNO
                       idTypeID = fun.idTypeTranslate(doc.documentType)
+                      if (doc.documentType === 1) {
+                        Name = doc.surName + ' ' + doc.givenName
+                      }
                     }
                   })
                 }
               }
             }
             passengers.push({
-              Name: p.userName,
+              Name,
               idcardno: fun.encryptIDNo(docinfo),
               IdNo: docinfo,
               UserKey,

@@ -168,7 +168,7 @@
             isTestedThrough = false
           }
           let passenger = {
-            passengersename: item.Name,
+            passengersename: item.Name.replace(/ /ig, ''), // 如果是护照订票，证件名不需要空格
             recipientphone: item.CellPhone,
             passportseno: item.IdNo,
             piaotype: '1',
