@@ -8,23 +8,27 @@
               <span class="name">{{item.Name}}</span>
               <span class="tickets-type">成人票</span>
             </div>
-            <template v-if="item.idcardno === '' || item.IdNo === '' || !checkID(item.IdNo) && !item.isOuter">
-              <div class="id">
-                <span>
-                  <img :src="editIcon" width="14" height="14" alt="">
-                  <span class="text-input" @click="typeIntoIDNO(item)">请输入身份证号码</span>
-                </span>
-              </div>
-            </template>
-            <template v-else>
+            <!-- 如果是改签，不需要判断证件类型，直接显示 -->
+            <template v-if="action === 'endorse' || action === 'rebooking'">
               <div class="id">{{item.idcardno}}</div>
             </template>
+            <template v-else>
+              <template v-if="item.idcardno === '' || item.IdNo === '' || !checkID(item.IdNo) && !item.isOuter">
+                <div class="id">
+                  <span>
+                    <img :src="editIcon" width="14" height="14" alt="">
+                    <span class="text-input" @click="typeIntoIDNO(item)">请输入身份证号码</span>
+                  </span>
+                </div>
+              </template>
+              <template v-else>
+                <div class="id">{{item.idcardno}}</div>
+              </template>
+            </template>
           </div>
-          <template v-if="action !== 'endorse' && action !== 'rebooking'">
-            <div class="delete" @click="handleDeletePassenger($event, item)">
-              <ykb-icon type="delete" :width="20" :height="20"></ykb-icon>
-            </div>
-          </template>
+          <div v-if="action !== 'endorse' && action !== 'rebooking'" class="delete" @click="handleDeletePassenger($event, item)">
+            <ykb-icon type="delete" :width="20" :height="20"></ykb-icon>
+          </div>
         </div>
         <template v-if="!travelStandard.isStandard">
           <div class="is-out-of-standard">
@@ -223,6 +227,7 @@
         })
       },
       pushPassengers (item) {
+        console.log('获取到的改签人员', item)
         this.passengers.push({
           Name: item.passengersename,
           idcardno: fun.encryptIDNo(item.passportseno),
