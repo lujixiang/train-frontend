@@ -53,10 +53,12 @@
   const moment = require('moment')
   const G = require('@/definition/g')
   const Big = require('big.js')
+  import { collectUserAction } from '@/mixins/collect-data'
   const sessionStore = require('@/lib/sessionStorage')['default']
 
   export default {
     name: 'trainOrder',
+    mixins: [collectUserAction],
     data () {
       return {
         ticket: '',
@@ -279,11 +281,9 @@
           }
         }
         const errcallback = e => {
-          this.Toast({
-            message: e.flagmsg,
-            position: 'bottom'
-          })
+          this.Toast({message: e.flagmsg, position: 'bottom'})
         }
+        this.collectUserData({action: 'train-booking'}, {data: params})
         if (this.action === 'endorse') {
           // 改签需要弹框二次确认
           this.MessageBox.confirm(G.ENDORSE_TEXT, {title: '提示', confirmButtonText: '继续改签', cancelButtonText: '取消改签', showCancelButton: true})

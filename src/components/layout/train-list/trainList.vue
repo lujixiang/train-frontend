@@ -102,9 +102,11 @@
   import './less/style.less'
   const G = require('@/definition/g')
   const sessionStore = require('@/lib/sessionStorage')['default']
+  import { collectUserAction } from '@/mixins/collect-data'
   const seats = G.seats
   export default {
     name: 'trainList',
+    mixins: [collectUserAction],
     data () {
       return {
         searchingDate: '',
@@ -117,22 +119,10 @@
       }
     },
     methods: {
-      ...mapActions([
-        'handleMidnightNoticeStatus',
-        'handleIsMidnight'
-      ]),
-      ...mapActions('train', [
-        'getTrainList',
-        'filterTrainList',
-        'recordTrainIonfo',
-        'getStandardTrailList'
-      ]),
-      ...mapActions('company', [
-        'getCompanySettings'
-      ]),
-      ...mapActions('history', [
-        'recordRoundTripInfo'
-      ]),
+      ...mapActions(['handleMidnightNoticeStatus', 'handleIsMidnight']),
+      ...mapActions('train', ['getTrainList', 'filterTrainList', 'recordTrainIonfo', 'getStandardTrailList']),
+      ...mapActions('company', ['getCompanySettings']),
+      ...mapActions('history', ['recordRoundTripInfo']),
       doNotShowAgain () {
         this.handleMidnightNoticeStatus({isActive: true})
       },
@@ -203,12 +193,10 @@
           train_type: trainType,
           orderId
         }
-        this.Indicator.open({
-          text: '加载中...',
-          spinnerType: 'fading-circle'
-        })
+        this.Indicator.open({text: '加载中...', spinnerType: 'fading-circle'})
         // 列表获取完成以后的回调函数
         let callback = (e) => {
+          this.collectUserData({action: 'train-query'}, {result: e})
           sessionStore.set('go_queryKey', e.queryKey)
           this.isMidnight(e)
           this.Indicator.close()
@@ -227,11 +215,7 @@
         let errcallback = e => {
           this.isMidnight(e)
           if (e.flagcode !== '204') {
-            this.Toast({
-              message: e.flagmsg,
-              position: 'bottom',
-              duration: 5000
-            })
+            this.Toast({message: e.flagmsg, position: 'bottom'})
           }
           this.Indicator.close()
           this.noSearchResult = true

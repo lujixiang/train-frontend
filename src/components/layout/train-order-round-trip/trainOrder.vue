@@ -56,9 +56,11 @@
   const moment = require('moment')
   const G = require('@/definition/g')
   const Big = require('big.js')
+  import { collectUserAction } from '@/mixins/collect-data'
   const sessionStore = require('@/lib/sessionStorage')['default']
   export default {
-    name: 'trainOrder',
+    name: 'trainOrderRoundTrip',
+    mixins: [collectUserAction],
     data () {
       return {
         ticket: '',
@@ -156,11 +158,7 @@
         let passengers = {go: [], back: []}
         let isTestedThrough = true
         if (this.passengers.length === 0) {
-          this.Toast({
-            message: '请选择乘车人',
-            position: 'bottom',
-            duration: 5000
-          })
+          this.Toast({message: '请选择乘车人', position: 'bottom'})
           return false
         }
         this.passengers.forEach(item => {
@@ -204,17 +202,11 @@
           return false
         }
         if (passengers.back.length === 0) {
-          this.Toast({
-            message: '返程至少选择一个乘客',
-            position: 'bottom'
-          })
+          this.Toast({message: '返程至少选择一个乘客', position: 'bottom'})
           return false
         }
         if (!isTestedThrough) {
-          this.Toast({
-            message: '乘客身份证不能为空',
-            position: 'bottom'
-          })
+          this.Toast({message: '乘客身份证不能为空', position: 'bottom'})
           return false
         }
         // create（创建普通订单）\createChange（创建改签订单）
@@ -271,6 +263,7 @@
             travel_standard: this.standard
           })
         }
+        this.collectUserData({action: 'train-booking-roundTrip'}, {data: params})
         this.Indicator.open({text: '提交中...'})
         const callback = res => {
           let result = res
@@ -285,10 +278,7 @@
         }
         const errcallback = e => {
           this.Indicator.close()
-          this.Toast({
-            message: e.flagmsg,
-            position: 'bottom'
-          })
+          this.Toast({message: e.flagmsg, position: 'bottom'})
         }
         this.bookingRoundTrip({params, callback, errcallback})
       },

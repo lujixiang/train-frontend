@@ -34,9 +34,11 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { collectUserAction } from '@/mixins/collect-data'
 import './less/style.less'
 export default {
   name: 'content',
+  mixins: [collectUserAction],
   data () {
     return {
       isHighSpeedTrainOnly: false,
@@ -172,6 +174,7 @@ export default {
       this.traveller = res.user_name
       this.requestTravelStandard({user: res})
       .then(res => {
+        this.collectUserData({action: 'train-travelStandard'}, {standard: res})
         this.saveTravelStandard(res)
       })
       .catch(err => {
@@ -189,6 +192,7 @@ export default {
         // 获取差旅标准
         this.requestTravelStandard({user: res})
         .then(res => {
+          this.collectUserData({action: 'train-travelStandard'}, {standard: res})
           this.saveTravelStandard(res)
         })
         .catch(err => {

@@ -38,10 +38,12 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { collectUserAction } from '@/mixins/collect-data'
 import './less/style.less'
 const moment = require('moment')
 export default {
   name: 'ContentRoundTrip',
+  mixins: [collectUserAction],
   data () {
     return {
       isHighSpeedTrainOnly: false,
@@ -201,20 +203,19 @@ export default {
     })
     this.requestTraveler()
     .then(res => {
+      // console.log('ddd')
       // 如果获取到traveler则直接显示获取到的值
       this.traveller = res.user_name
       this.requestTravelStandard({user: res})
       .then(res => {
+        this.collectUserData({action: 'train-travelStandard'}, {standard: res})
         this.saveTravelStandard(res)
       })
       .catch(err => {
         // 当获取差旅标准为空的时候要把当前用户给清除
         this.traveller = ''
         this.clearDataFromLocalStorage(['traveler', 'auth-user'])
-        this.Toast({
-          message: err.flagmsg,
-          position: 'bottom'
-        })
+        this.Toast({message: err.flagmsg, position: 'bottom'})
       })
     })
     .catch(_ => {
@@ -225,22 +226,16 @@ export default {
         // 获取差旅标准
         this.requestTravelStandard({user: res})
         .then(res => {
+          this.collectUserData({action: 'train-travelStandard'}, {standard: res})
           this.saveTravelStandard(res)
         })
         .catch(err => {
           this.clearDataFromLocalStorage(['auth-user'])
-          this.Toast({
-            message: err.flagmsg,
-            position: 'bottom'
-          })
+          this.Toast({message: err.flagmsg, position: 'bottom'})
         })
       })
       .catch(err => {
-        this.Toast({
-          message: err.flagmsg,
-          position: 'bottom',
-          duration: 5000
-        })
+        this.Toast({message: err.flagmsg, position: 'bottom'})
       })
     })
   },

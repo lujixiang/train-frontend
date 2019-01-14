@@ -36,3 +36,10 @@ export const getWechatJSSign = ({ commit }, args) => {
     commit(key.GET_WECHAT_JSSIGN, {callback, errcallback, res})
   })
 }
+export const recordUserOpeartion = ({ commit }, args) => {
+  let { params } = args
+  return http.post(api.userOperationLog, params)
+  .then(res => {
+    commit(key.RECORD_USER_OPERATION, {res, ...args})
+  })
+}

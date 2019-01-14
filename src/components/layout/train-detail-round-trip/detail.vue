@@ -14,8 +14,10 @@
 <script>
   import './less/style.less'
   import { mapActions } from 'vuex'
+  import { collectUserAction } from '@/mixins/collect-data'
   export default {
     name: 'trainDetail',
+    mixins: [collectUserAction],
     data () {
       return {
         goInfo: '',
@@ -25,10 +27,7 @@
       }
     },
     methods: {
-      ...mapActions('history', [
-        'getRoundTripInfo',
-        'recordRoundTripSeat'
-      ]),
+      ...mapActions('history', ['getRoundTripInfo', 'recordRoundTripSeat']),
       requestTrainInfo () {
         let callback = res => {
           this.goInfo = res.go
@@ -53,6 +52,7 @@
           this.Toast({message: '请选择返程坐席', position: 'bottom'})
           return false
         }
+        this.collectUserData({action: 'train-seat-level-roundTrip'}, {goSeat, backSeat})
         // 缓存用户选择的往返坐席
         this.recordRoundTripSeat({goSeat, backSeat})
         this.$router.push({name: 'trainOrderRoundTrip', query: {}})

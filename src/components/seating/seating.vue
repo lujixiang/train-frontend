@@ -27,9 +27,11 @@
   import { mapActions } from 'vuex'
   const moment = require('moment')
   const g = require('@/definition/g')
+  import { collectUserAction } from '@/mixins/collect-data'
   const seats = g.seats // _.cloneDeep(g.seats)
   export default {
     name: 'seating',
+    mixins: [collectUserAction],
     props: {
       info: {
         type: Object,
@@ -71,6 +73,7 @@
         this.isStandardSeat({...seat, callback})
       },
       directlyBooking (seat) {
+        this.collectUserData({action: 'train-seat-level'}, {seat})
         this.recordSeatInfo(seat)
         let {
           from_station,

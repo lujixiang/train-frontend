@@ -41,5 +41,7 @@ module.exports = {
     updateOutsideUser: '/ykb_train_forward/',
     // 删除外部人员
     deleteOutsideUser: '/ykb_train_forward/delOutUser'
-  }
+  },
+  // 记录用户操作日志
+  userOperationLog: '/ykb_train_forward/dataCollection'
 }

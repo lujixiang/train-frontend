@@ -98,6 +98,14 @@ const mutations = {
     } else {
       errcallback(res.flagmsg)
     }
+  },
+  [key.RECORD_USER_OPERATION] (state, payload) {
+    let { res, resolve, reject } = payload
+    if (res.flagcode === '200') {
+      resolve(res)
+    } else {
+      reject(res)
+    }
   }
 }
 export default mutations

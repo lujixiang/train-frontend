@@ -26,11 +26,6 @@ export default new Router({
       name: 'noPageWasFound',
       component: notFound
     },
-    // {
-    //   path: '/__test__',
-    //   name: '__test__',
-    //   component: test
-    // },
     {
       path: '/',
       name: 'Content',

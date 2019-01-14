@@ -10,7 +10,9 @@ const mt = {
   RECORD_ROUND_TRIP_SEAT: `${key}/RECORD_ROUND_TRIP_SEAT`,
   GET_ROUND_TRIP_SEAT: `${key}/GET_ROUND_TRIP_SEAT`,
   // 获取微信js sign
-  GET_WECHAT_JSSIGN: `${key}/GET_WECHAT_JSSIGN`
+  GET_WECHAT_JSSIGN: `${key}/GET_WECHAT_JSSIGN`,
+  // 记录用户操作行为
+  RECORD_USER_OPERATION: `${key}/RECORD_USER_OPERATION`
 }
 
 module.exports = mt
