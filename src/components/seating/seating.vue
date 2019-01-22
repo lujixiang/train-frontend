@@ -79,10 +79,11 @@
           from_station,
           to_station,
           train_code,
-          train_no
+          train_no,
+          serviceProvider
         } = this.$route.query
         let { from_station_name, to_station_name } = this.info
-        this.$router.push({name: 'trainOrder', query: {from_station, from_city: from_station_name, to_station, to_city: to_station_name, train_code, train_no, date: this.$props.bookingDate}})
+        this.$router.push({name: 'trainOrder', query: {from_station, from_city: from_station_name, to_station, to_city: to_station_name, train_code, train_no, date: this.$props.bookingDate, serviceProvider}})
       }
     }
   }

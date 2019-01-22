@@ -131,7 +131,7 @@
         this.handleIsMidnight({callback})
       },
       booking () {
-        let { from_station, from_city, to_station, to_city, train_no, train_code, date } = this.$route.query
+        let { from_station, from_city, to_station, to_city, train_no, train_code, date, serviceProvider } = this.$route.query
         let passengers = []
         let isTestedThrough = true
         if (this.passengers.length === 0) {
@@ -201,7 +201,7 @@
           price: this.ticketPrice,
           orderamount: this.totalPrice,
           isneedinsure: false,
-          serviceprovider_flag: JSON.parse(sessionStore.get('serviceprovider_flag')), // 创旅天下 HTHY是航天华有
+          serviceprovider_flag: serviceProvider, // 创旅天下 HTHY是航天华有
           passengers: JSON.stringify(passengers),
           ticket: JSON.stringify(this.ticket),
           createType,

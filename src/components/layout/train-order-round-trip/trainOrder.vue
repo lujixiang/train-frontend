@@ -155,6 +155,7 @@
         this.handleIsMidnight({callback})
       },
       booking () {
+        let { serviceProvider } = this.$route.query
         let passengers = {go: [], back: []}
         let isTestedThrough = true
         if (this.passengers.length === 0) {
@@ -231,7 +232,7 @@
             price: this.ticketPrice.go,
             orderamount: this.totalPrice,
             isneedinsure: false,
-            serviceprovider_flag: JSON.parse(sessionStore.get('serviceprovider_flag')),
+            serviceprovider_flag: serviceProvider,
             passengers: passengers.go,
             ticket: ticket.go,
             createType: 'create',
@@ -254,7 +255,7 @@
             price: this.ticketPrice.back,
             orderamount: this.totalPrice,
             isneedinsure: false,
-            serviceprovider_flag: JSON.parse(sessionStore.get('serviceprovider_flag')),
+            serviceprovider_flag: serviceProvider,
             passengers: passengers.back,
             ticket: ticket.back,
             createType: 'create',

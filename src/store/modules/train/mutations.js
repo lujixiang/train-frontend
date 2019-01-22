@@ -1,7 +1,7 @@
 const key = require('./mutation-types')
 const _ = require('lodash')
 const store = require('@/lib/localStorage')['default']
-const sessionStore = require('@/lib/sessionStorage')['default']
+// const sessionStore = require('@/lib/sessionStorage')['default']
 const moment = require('moment')
 const fun = require('@/lib/fun')
 const g = require('@/definition/g')
@@ -10,7 +10,7 @@ const mutations = {
   [key.GET_TRAIN_LIST] (state, payload) {
     let { res, args, callback, errcallback } = payload
     if (res && res.flagcode === '200') {
-      sessionStore.set('serviceprovider_flag', res.serviceprovider_flag)
+      // sessionStore.set('serviceprovider_flag', res.serviceprovider_flag)
       _.forEach(res.data, item => {
         if (item['train_type'] === 'D') {
           item['binary'] = 2

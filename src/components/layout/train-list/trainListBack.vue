@@ -118,6 +118,7 @@
         seats,
         filterData: {},
         isStandard: true,
+        serviceProvider: '',
         windowHeight: window.innerHeight
       }
     },
@@ -136,12 +137,13 @@
       },
       jumpIntoDetail (el, item) {
         let { fromCity, toCity, date } = this.$route.query
+        let serviceProvider = this.serviceProvider
         if (this.searchingDate !== '') {
           date = this.searchingDate
         }
         item['date'] = date + ' ' + item.start_time // 在每个车次上添加日期
         const callback = _ => {
-          this.$router.push({name: 'TrainDetailRoundTrip', query: {date: date, from_station: item.from_station_code, to_station: item.to_station_code, train_no: item.train_no, train_code: item.train_code, from_city: fromCity, to_city: toCity}})
+          this.$router.push({name: 'TrainDetailRoundTrip', query: {date: date, from_station: item.from_station_code, to_station: item.to_station_code, train_no: item.train_no, train_code: item.train_code, from_city: fromCity, to_city: toCity, serviceProvider}})
         }
         this.recordRoundTripInfo({go: '', back: item, callback})
       },
@@ -185,6 +187,7 @@
         this.Indicator.open({text: '加载中...', spinnerType: 'fading-circle'})
         // 列表获取完成以后的回调函数
         let callback = (e) => {
+          this.serviceProvider = e.serviceprovider_flag
           this.collectUserData({action: 'train-query'}, {result: e})
           sessionStore.set('return_queryKey', e.queryKey)
           this.isMidnight(e)
