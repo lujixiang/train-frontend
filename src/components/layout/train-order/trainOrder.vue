@@ -221,6 +221,8 @@
           let businessType = ''
           if (action === 'endorse') {
             businessType = 'ticketChange'
+          } else if (action === 'rebooking') {
+            businessType = 'rebooking'
           }
           if (action === 'endorse' || action === 'rebooking') {
             if (result.flagcode === '200') {
@@ -256,7 +258,8 @@
                     }
                     // let url = G.Base64.decode(this.companySettings.callbackURL)
                     url = url.indexOf('?') > -1 ? url : url + '?'
-                    let jumpto = url + '&type=train&oldOrderId=' + orderId + '&orderId=' + result.orderid + '&businessType=' + businessType + '&data=' + JSON.stringify(result)
+                    let jumpto = url + '&type=train&oldOrderId=' + orderId + '&orderId=' + result.orderid + '&businessType=' + businessType
+                    // + '&data=' + JSON.stringify(result)
                     console.log('下单成功回调地址', jumpto)
                     window.location.href = jumpto
                   } else if (action === 'cancel') {
@@ -277,7 +280,8 @@
               url = G.Base64.decode(callbackURL)
             }
             url = url.indexOf('?') > -1 ? url : url + '?'
-            let jumpto = url + '&type=train&orderId=' + result.orderid + '&data=' + JSON.stringify(result)
+            let jumpto = url + '&type=train&orderId=' + result.orderid
+            // + '&data=' + JSON.stringify(result)
             window.location.href = jumpto
           }
         }
