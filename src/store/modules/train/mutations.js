@@ -120,14 +120,16 @@ const mutations = {
               if (el.value === 'g') {
                 traintypeConditionCollection.push(item => {
                   return item.train_type === 'G'
-                })
-              } else if (el.value === 'k') {
-                traintypeConditionCollection.push(item => {
-                  return item.train_type === 'K' || item.train_type === 'Z' || item.train_type === 'T' || item.train_type === '1'
+                  // return item.train_type === 'G' || item.train_type === 'GD' || item.train_type === 'XGZ' || item.train_type === 'C'
                 })
               } else if (el.value === 'd') {
                 traintypeConditionCollection.push(item => {
                   return item.train_type === 'D'
+                })
+              } else if (el.value === 'k') {
+                traintypeConditionCollection.push(item => {
+                  // return item.train_type
+                  return item.train_type === 'K' || item.train_type === 'Z' || item.train_type === 'T' || item.train_type === '1'
                 })
               }
             }

@@ -15,7 +15,7 @@
                           <time class="from-time">{{item.start_time}}</time>
                           <span class="station-name">{{item.from_station_name}}</span>
                         </div>
-                        <div class="train-number">
+                        <div class="train-number"> 
                           <div class="total-time">{{item.run_time_text}}</div>
                           <div class="arrow">
                             <ykb-icon type="ticketToE4" :solo="true" :height="9"></ykb-icon>
