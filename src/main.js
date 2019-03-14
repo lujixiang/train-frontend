@@ -35,6 +35,16 @@ Vue.prototype.Indicator = Indicator
 Vue.prototype.Toast = Toast
 Vue.prototype.MessageBox = MessageBox
 
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n)
+const i18n = new VueI18n({
+  locale: 'zh-CN',
+  messages: {
+    'zh-CN': require('@/definition/locale/zh-CN.js'),
+    en: require('@/definition/locale/en.js')
+  }
+})
+
 import train from './plugins/train'
 pluginManager.register(train)
 pluginManager.install()
@@ -71,6 +81,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 
 window.VueInstance = new Vue({
+  i18n,
   store,
   router,
   render: h => h(App)
