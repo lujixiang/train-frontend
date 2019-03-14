@@ -1,0 +1,96 @@
+@import url('../../../../less/base.less');
+.index-list-content{
+  .mint-popup-right{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    z-index: 2224 !important;
+    flex-direction:column;
+    .header{
+      width: 100%;
+      height: 40px;
+      background-color: @theme-color;
+      color:#fff;
+      line-height: 40px;
+      text-align: center;
+      .title{
+        font-size: 16px;
+        margin-right: 30px;
+      }
+      .back-icon{
+        float: left;
+        margin-left: 10px;
+        font-size: 14px;
+        img{
+          vertical-align: middle;
+        }
+      }
+    }
+    .search-wrap{
+      background: #F5F5F5;
+      height: 44px;
+      width: 100%;
+      .search-input-box{
+        display: flex;
+        justify-content: flex-start;
+        height: 28px;
+        background: #fff;
+        width: 96%;
+        margin: 8px auto;
+        >span{
+          width: 30px;
+          img{
+            margin-top: 6px;
+          }
+        }
+        >input{
+          width: 90%;
+          outline: none;
+          border: none;
+          font-size: 13px;
+          color: #2A2A2A;
+        }
+      }
+    }
+    .search-result{
+      height: 100%;
+      overflow: scroll;
+      over-flow: auto;     /* winphone8和android4+ */
+      -webkit-overflow-scrolling: touch;    /* ios5+ */
+      z-index:1;
+      >ul>li{
+        height: 48px;
+        border-bottom: 1px solid #E4E4E4;
+        line-height: 48px;
+        text-align: left;
+        span{
+          margin-left: 10px;
+        }
+      }
+    }
+    .index-list-box{
+      height: 100%;
+      over-flow: auto;     /* winphone8和android4+ */
+      -webkit-overflow-scrolling: touch;    /* ios5+ */
+      z-index:1;
+      .mint-cell-title{
+        text-align: left;
+        .mint-cell-text{
+          margin-left: 15px;
+          color: #555;
+        }
+      }
+      .mint-indexlist{
+        .mint-indexlist-content{
+          position: relative;
+          z-index: 8;
+          width: 91.99%;
+        }
+        .mint-indexlist-nav{
+          width: 7.99%;
+          z-index: 10;
+        }
+      }
+    }
+  }
+}

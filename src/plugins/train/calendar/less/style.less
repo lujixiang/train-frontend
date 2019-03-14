@@ -1,0 +1,107 @@
+@import url('../../../../less/base.less');
+.ykb-calendar{
+  .header-box{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 2; // 比滑动区域高一个层级
+    .mint-header{
+      background: @theme-color;
+    }
+    .notice{
+      background: #FFF1E5;
+      font-size: 13px;
+      color: #E0812F;
+      height: 24px;
+      line-height: 24px;
+    }
+    .week-bar{
+      display: flex;
+      justify-content:space-around;
+      display: -webkit-flex;
+      -webkit-justify-content: space-around;
+      background: #fff;
+      height: 40px;
+      line-height: 40px;
+      width: 100%;
+      border-bottom: 1px solid #E5E5E5;
+      span{
+        color: #4A4A4A;
+        font-size: 16px;
+        width: 14.28571%;
+      }
+    }
+  }
+  .calendar-container{
+    width: 100%;
+    height:100%;
+    .body{
+      margin-top: 100px;
+      height: 100%;
+      width: 100%;
+      overflow: scroll;
+      over-flow: auto;     /* winphone8和android4+ */
+      -webkit-overflow-scrolling: touch;    /* ios5+ */
+      z-index:1;
+      .monthly{
+        h2{
+          width: 100%;
+          font-size: 16px;
+          font-weight: normal;
+          color: #353535;
+          height: 45px;
+          line-height: 45px;
+        }
+        span{
+          width: 14.28571%;
+          color: #353535;
+          height: 48px;
+          line-height: 48px;
+          text-align: center;
+          display: block;
+        }
+        span.disable{
+          color: #b2b2b2;
+        }
+        // 周六周日不需要特殊处理
+        // span.weekend-mark,span.red-mark{
+        //   color: #ff5555;
+        // }
+        span.active{
+          background: @theme-color;
+          color: #fff;
+        }
+        span.active.single{
+          border-radius: 4px;
+        }
+        span.active.startdate{
+          border-radius: 4px 0 0 4px;
+        }
+        span.active.enddate{
+          border-radius: 0 4px 4px 0;
+        }
+        span.active-during{
+          background: #deeaff;
+          color: #49f;
+        }
+      }
+      .monthly.flex{
+        display: flex;
+        flex-flow: row wrap;
+        display: -webkit-flex;
+        -webkit-flex-flow: row wrap;
+      }
+      .monthly.float{
+        overflow: hidden;
+        clear: both;
+        span{
+          float: left;
+        }
+      }
+    }
+  }
+  .mint-popup-bottom{
+    width: 100%;
+    height: 100%;
+  }
+}
