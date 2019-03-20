@@ -1,0 +1,375 @@
+html {
+  background: #F2F2F2;
+}
+#app {
+  font-family: '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Segoe UI', 'Helvetica Neue', 'PingFang SC', 'Noto Sans', 'Noto Sans CJK SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
+#container {
+  position: absolute;
+  top: 44px;
+}
+hr {
+  border: 1px solid #fff;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+/*
+  header
+*/
+/*
+  button style
+*/
+/*
+  cell border-color
+*/
+.text-left {
+  text-align: left;
+}
+.pl10 {
+  padding-left: 10px;
+}
+.ml10 {
+  margin-left: 10px;
+}
+.inline-block {
+  display: inline-block;
+}
+.hide {
+  display: none !important;
+}
+.animated {
+  -webkit-animation-duration: 0.2s;
+  animation-duration: 0.2s;
+}
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@keyframes blink {
+  0%,
+  100% {
+    color: #007aff;
+  }
+  50% {
+    color: #fff;
+  }
+}
+.blink {
+  animation: blink 1s infinite steps(1, start);
+}
+.loading-spinner {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+}
+.loading-spinner .loading-text {
+  font-size: 15px;
+  color: #007aff;
+}
+.loading-spinner span {
+  display: inline-block;
+}
+.mintui {
+  font-size: 20px;
+}
+.mint-cell-wrapper {
+  background-image: none;
+  border-bottom: 1px solid #E4E4E4;
+  padding: 0;
+}
+.mint-indexsection-index {
+  background-color: #F5F5F5;
+  text-align: left;
+  color: #666;
+}
+.mint-indexlist-navitem {
+  color: #999;
+}
+.mint-switch-input:checked + .mint-switch-core {
+  background: #007aff;
+  opacity: 0.7;
+  border-color: #007aff;
+}
+.mint-switch-input:checked + .mint-switch-core:after {
+  background: #007aff;
+}
+.mint-button--primary {
+  background: #007aff;
+}
+.mint-switch .mint-switch-core {
+  height: 14px;
+  position: relative;
+  width: 45px;
+}
+.mint-switch .mint-switch-core:before {
+  height: 12px;
+  width: 41px;
+  background: #E4E4E4;
+}
+.mint-switch .mint-switch-core:after {
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  top: -7px;
+  left: -1px;
+  background: #D8D8D8;
+}
+.mint-indicator-mask {
+  z-index: 99;
+}
+.mint-msgbox-input input {
+  background: #f2f2f2;
+  height: 30px;
+  border: none !important;
+  color: #4A4A4A;
+  -user-select: text;
+}
+.mint-msgbox {
+  border-radius: 12px;
+}
+.mint-msgbox-confirm {
+  color: #007aff;
+  font-size: 16px;
+}
+.mint-msgbox-content {
+  border-color: #E4E4E4;
+}
+.mint-msgbox-cancel {
+  border-color: #E4E4E4;
+  color: #4A4A4A;
+  font-size: 16px;
+}
+.mint-msgbox-title {
+  font-size: 18px;
+  color: #2A2A2A;
+}
+.mint-msgbox-message {
+  font-size: 15px;
+  color: #4A4A4A;
+  text-align: center;
+  line-height: 21px;
+}
+.mint-header-title {
+  font-size: 16px;
+}
+.mint-toast {
+  z-index: 10000;
+}
+.router-view {
+  width: 100%;
+  background: #F2F2F2;
+}
+.ykb-out-enter-active,
+.ykb-out-leave-active,
+.ykb-in-enter-active,
+.ykb-in-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+.ykb-out-enter {
+  opacity: 0;
+  transform: translate3d(-70%, 0, 0);
+}
+.ykb-out-leave-active {
+  opacity: 0;
+  transform: translate3d(70%, 0, 0);
+}
+.ykb-in-enter {
+  opacity: 0;
+  transform: translate3d(70%, 0, 0);
+}
+.ykb-in-leave-active {
+  opacity: 0;
+  transform: translate3d(-70%, 0, 0);
+}
+.ticket-card-container {
+  overflow: hidden;
+}
+.ticket-card-container .single {
+  width: 95%;
+  margin: 0 auto;
+  height: 160px;
+  border-radius: 10px;
+  background: #007aff;
+  opacity: 0.7;
+  padding: 10px 0;
+}
+.ticket-card-container .single .title {
+  height: 40px;
+  line-height: 40px;
+  text-align: left;
+}
+.ticket-card-container .single .title span {
+  margin-left: 10px;
+  color: #DFF2F7;
+}
+.ticket-card-container .single .line-through {
+  width: 90%;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+  margin: 0 auto;
+  position: relative;
+  height: 0;
+}
+.ticket-card-container .single .line-through:before {
+  position: absolute;
+  content: '';
+  width: 13px;
+  height: 18px;
+  border-radius: 50%;
+  background: #F2F2F2;
+  left: -24px;
+  top: -8px;
+}
+.ticket-card-container .single .line-through:after {
+  position: absolute;
+  content: '';
+  width: 13px;
+  height: 18px;
+  border-radius: 50%;
+  background: #F2F2F2;
+  right: -24px;
+  top: -8px;
+}
+.ticket-card-container .single .body {
+  display: flex;
+  display: -webkit-flex;
+  color: #fff;
+  margin-top: 15px;
+}
+.ticket-card-container .single .body .from-station,
+.ticket-card-container .single .body .to-station {
+  width: 35%;
+}
+.ticket-card-container .single .body .from-station strong,
+.ticket-card-container .single .body .to-station strong {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  font-size: 19px;
+  text-align: left;
+  margin-left: 10px;
+  font-weight: normal;
+}
+.ticket-card-container .single .body .from-station time,
+.ticket-card-container .single .body .to-station time {
+  text-align: left;
+  margin-left: 10px;
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+.ticket-card-container .single .body .from-station span,
+.ticket-card-container .single .body .to-station span {
+  display: block;
+  text-align: left;
+  margin-left: 10px;
+  color: #92CDF7;
+}
+.ticket-card-container .single .body .from-station span.price,
+.ticket-card-container .single .body .to-station span.price {
+  font-size: 19px;
+}
+.ticket-card-container .single .body .to {
+  width: 30%;
+}
+.ticket-card-container .single .body .to .train-no {
+  height: 40px;
+  line-height: 40px;
+  background: url('../images/arrow.png') bottom center no-repeat;
+  background-size: 80%;
+}
+.ticket-card-container .single .body .to .time {
+  margin-top: 5px;
+}
+.ticket-card-container .single .body .to .time > span {
+  font-size: 12px;
+  vertical-align: top;
+  display: inline-block;
+  width: 100%;
+}
+.ticket-card-container .single .body .to .time > span img,
+.ticket-card-container .single .body .to .time > span span {
+  vertical-align: middle;
+  font-size: 11px;
+}
+.ticket-card-container .single .body .to-station strong {
+  text-align: right;
+  margin-right: 10px;
+}
+.ticket-card-container .single .body .to-station time {
+  text-align: right;
+  margin-right: 10px;
+}
+.ticket-card-container .single .body .to-station span {
+  text-align: right;
+  margin-right: 10px;
+  color: #fff;
+  font-weight: bold;
+}
+.ticket-card-container .double {
+  height: 192px;
+  background-image: linear-gradient(-180deg, #007aff 0%, #BFE3EF 100%);
+}
+.ticket-card-container .double .trip-box {
+  height: 152px;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+  top: 20px;
+}
+.ticket-card-container .double .trip-box .go,
+.ticket-card-container .double .trip-box .return {
+  height: 56px;
+  padding: 10px;
+}
+.ticket-card-container .double .trip-box .go .top,
+.ticket-card-container .double .trip-box .return .top {
+  height: 26px;
+  text-align: left;
+}
+.ticket-card-container .double .trip-box .go .top span,
+.ticket-card-container .double .trip-box .return .top span {
+  font-size: 13px;
+  color: #4A4A4A;
+}
+.ticket-card-container .double .trip-box .go .top span img,
+.ticket-card-container .double .trip-box .return .top span img {
+  vertical-align: middle;
+}
+.ticket-card-container .double .trip-box .go .bottom,
+.ticket-card-container .double .trip-box .return .bottom {
+  height: 30px;
+  line-height: 30px;
+  text-align: left;
+  font-size: 15px;
+}
+.ticket-card-container .double .trip-box .go .bottom b,
+.ticket-card-container .double .trip-box .return .bottom b {
+  color: #2A2A2A;
+  font-weight: normal;
+}
+.ticket-card-container .double .trip-box .go .bottom .seat-type,
+.ticket-card-container .double .trip-box .return .bottom .seat-type {
+  color: #888888;
+  float: right;
+}
+.ticket-card-container .double .trip-box .line-through {
+  border-bottom: 1px dashed #BBBBBB;
+  width: 95%;
+  margin: 0 auto;
+}

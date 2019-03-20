@@ -23,7 +23,7 @@ ul{
 */
 @header-height:44px;
 @font-size:12px;
-@theme-color:#17abcb;
+@theme-color:#007aff;
 // 企业微信的主题色
 // @theme-color:#5176AB;
 @price-color:#F9A100;
@@ -114,8 +114,10 @@ ul{
 // 修改switch的默认颜色
 .mint-switch-input:checked + .mint-switch-core{
   // background-color: @theme-color;
-  background:#A2DDEA;
-  border-color: #A2DDEA;
+  background:@theme-color;
+  opacity: 0.7;
+  border-color:@theme-color;
+  // border-color: #A2DDEA;
 }
 .mint-switch-input:checked + .mint-switch-core:after{
   background: @theme-color;

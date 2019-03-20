@@ -7,14 +7,14 @@
     <g id="火车票" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="app" transform="translate(-223.000000, -569.000000)">
             <g id="Group-18-Copy-13" transform="translate(223.000000, 569.000000)">
-                <polygon id="Page-1-Copy-12" fill="#A2DDEA" points="0 29 0 24 28 24 28 29"></polygon>
-                <polygon id="Page-1-Copy-15" fill="#84C8D6" points="3 32 3 29 25 29 25 32"></polygon>
-                <path d="M24,24 L4,24 L4,4.84507042 C4,3.56807031 4.40498243,2.44131696 5.21495327,1.46478873 C6.02492411,0.488260507 6.95949757,0 8.01869159,0 L19.9813084,0 C21.0405024,0 21.9750759,0.488260507 22.7850467,1.46478873 C23.5950176,2.44131696 24,3.56807031 24,4.84507042 L24,24 Z" id="Page-1-Copy-11" fill="#17ABCB"></path>
+                <polygon id="Page-1-Copy-12" fill="#007aff" points="0 29 0 24 28 24 28 29"></polygon>
+                <polygon id="Page-1-Copy-15" fill="#007aff" points="3 32 3 29 25 29 25 32"></polygon>
+                <path d="M24,24 L4,24 L4,4.84507042 C4,3.56807031 4.40498243,2.44131696 5.21495327,1.46478873 C6.02492411,0.488260507 6.95949757,0 8.01869159,0 L19.9813084,0 C21.0405024,0 21.9750759,0.488260507 22.7850467,1.46478873 C23.5950176,2.44131696 24,3.56807031 24,4.84507042 L24,24 Z" id="Page-1-Copy-11" fill="#007aff"></path>
                 <text id="F" font-family="PingFangSC-Semibold, PingFang SC" font-size="11.9000008" font-weight="500" letter-spacing="-0.287000017" fill="#FFFFFF">
                     <tspan x="10.6805998" y="17">F</tspan>
                 </text>
-                <polygon id="Page-1-Copy-13" fill="#A2DDEA" points="0 13 4 13 4 25 0 25"></polygon>
-                <polygon id="Page-1-Copy-14" fill="#A2DDEA" points="24 13 28 13 28 25 24 25"></polygon>
+                <polygon id="Page-1-Copy-13" fill="#007aff" points="0 13 4 13 4 25 0 25"></polygon>
+                <polygon id="Page-1-Copy-14" fill="#007aff" points="24 13 28 13 28 25 24 25"></polygon>
             </g>
         </g>
     </g>
