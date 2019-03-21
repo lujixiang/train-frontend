@@ -1,8 +1,9 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import Router from 'vue-router'
 import App from './App'
-import router from './router'
+// import router from './router'
 import 'normalize.css/normalize.css'
 import 'animate.css/animate.min.css'
 import '@/less/base.less'
@@ -11,6 +12,8 @@ const FastClick = require('fastclick')
 FastClick.attach(document.body)
 const sessionStore = require('@/lib/sessionStorage')['default']
 const G = require('@/definition/g')
+const PluginManager = require('@/definition/pluginManager')['default']
+const pluginManager = new PluginManager(Vue, Router)
 /*
   ----------------------------------------第三方UI库------------------------------------------
 */
@@ -31,97 +34,22 @@ Vue.component(Spinner.name, Spinner)
 Vue.prototype.Indicator = Indicator
 Vue.prototype.Toast = Toast
 Vue.prototype.MessageBox = MessageBox
-/*
-  ---------------------------------------自定义UI库----------------------------------------
-*/
-import ykbIcon from './components/icon'
-import filterBar from './components/filter-bar'
-import calendar from './components/calendar'
-import actionSheetHeader from './components/action-sheet-header'
-import datePickerPreviousNext from './components/datepicker-next-previous'
-import dateSelectCell from './components/date-select-cell'
-import citySelect from './components/city-station-cell'
-import searchHistory from './components/search-history'
-import bottom from './components/bottom'
-import banner from './components/banner'
-// 引入加强版的header
-import enhanceHeader from '@/components/enhance-header'
-import indexList from '@/components/index-list'
-import NSR from './components/no-search-result'
-import passengerV2 from './components/passenger-v2'
-import passengerRoundTrip from './components/passenger-v2-round-trip'
-import ticketCard from './components/ticket-card'
-import orderNotice from '@/components/order-notice'
-import timeList from './components/time-list'
-import stationInfo from './components/station-info'
-import seating from './components/seating'
-import cityPicker from './components/city-picker'
-import ykbCell from './components/cell'
-import search from './components/search'
-import noticeBar from './components/notice-bar'
-import keyboard from './components/keyboard'
-import editId from './components/edit-id'
-import onlineSeatSelection from './components/online-seat-selection'
-import onlineSeat from './components/online-seat'
-import textAlert from './components/text-alert'
-import tripCard from './components/trip-card'
-import navBar from './components/nav-bar'
-import tripTip from './components/trip-tips'
-import tripPicker from './components/trip-picker'
-import guidInstruction from './components/guid-instruction'
-import enhancePassengers from './components/enhance-passengers'
-import idWallet from './components/id-wallet'
-import idCard from './components/id-card'
-import idModify from './components/id-modify'
-import listView from './components/list-view'
-import outerList from './components/outer-list'
-import trainRules from './components/train-rules'
-const components = [
-  ykbIcon,
-  filterBar,
-  calendar,
-  actionSheetHeader,
-  datePickerPreviousNext,
-  dateSelectCell,
-  citySelect,
-  searchHistory,
-  bottom,
-  banner,
-  enhanceHeader,
-  indexList,
-  NSR,
-  passengerV2,
-  passengerRoundTrip,
-  ticketCard,
-  orderNotice,
-  timeList,
-  stationInfo,
-  seating,
-  cityPicker,
-  ykbCell,
-  search,
-  noticeBar,
-  keyboard,
-  editId,
-  onlineSeatSelection,
-  onlineSeat,
-  textAlert,
-  tripCard,
-  navBar,
-  tripTip,
-  tripPicker,
-  guidInstruction,
-  enhancePassengers,
-  idWallet,
-  idCard,
-  idModify,
-  listView,
-  outerList,
-  trainRules
-]
-components.map(_components => {
-  Vue.use(_components)
+
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n)
+const i18n = new VueI18n({
+  locale: 'zh-CN',
+  messages: {
+    'zh-CN': require('@/definition/locale/zh-CN.js'),
+    en: require('@/definition/locale/en.js')
+  }
 })
+
+import train from './plugins/train'
+pluginManager.register(train)
+pluginManager.install()
+const router = pluginManager.getRouterInstance()
+
 // 为iOS添加返回事件，防止出现空白页
 
 Vue.prototype.IOSonBack = _ => {
@@ -153,6 +81,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 
 window.VueInstance = new Vue({
+  i18n,
   store,
   router,
   render: h => h(App)

@@ -1,0 +1,77 @@
+@import url('../../../../less/base.less');
+.ykb-time-list{
+  .mint-popup-bottom{
+    width: 100%;
+    height: 100%;
+    .list-container{
+      height: 100%;
+      .list-header{
+        height: 40px;
+        line-height: 40px;
+        background: @theme-color;
+        color: #fff;
+        span{
+          font-size: 16px;
+        }
+      }
+      .list-title{
+        display: flex;
+        justify-content: space-around;
+        display: -webkit-flex;
+        -webkit-justify-content: space-around;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #E4E4E4;
+        padding: 8px 0;
+        span{
+          color: #A0A0A0;
+          font-size: 13px;
+        }
+      }
+      .list-data{
+        height: 75%;
+        overflow: auto;
+        over-flow: auto;     /* winphone8和android4+ */
+        -webkit-overflow-scrolling: touch;    /* ios5+ */
+        z-index:1;
+        .data-contain{
+          .station{
+            height: 35px;
+            line-height: 35px;
+            display: flex;
+            justify-content:space-around;
+            span{
+              color: #2A2A2A;
+              font-size: 14px;
+            }
+            span:nth-of-type(1){
+              width: 15%;
+            }
+            span:nth-of-type(2){
+              width: 25%;
+            }
+            span:nth-of-type(3),span:nth-of-type(4){
+              width: 20%;
+            }
+            span:nth-of-type(5){
+              width: 17%;
+            }
+          }
+          .station.active{
+            span{
+              color: @theme-color;
+            }
+          }
+        }
+      }
+      .list-bottom{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        min-height: 40px;
+        span{
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
