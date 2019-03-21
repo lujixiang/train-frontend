@@ -26,28 +26,28 @@
                             <rect id="Rectangle-path" stroke="#FFFFFF" stroke-width="1.77999997" x="200.399333" y="52.4455555" width="21.6666392" height="8.40495863"></rect>
                             <rect id="Rectangle-path-Copy" stroke="#FFFFFF" stroke-width="1.77999997" x="103.316667" y="52.4455555" width="21.6666392" height="8.40495863"></rect>
                             <g id="Oval">
-                                <use fill="#17ABCB" fill-rule="evenodd" xlink:href="#path-3"></use>
+                                <use fill="#007aff" fill-rule="evenodd" xlink:href="#path-3"></use>
                                 <ellipse stroke="#FFFFFF" stroke-width="1.77999997" cx="199.083208" cy="58.3456606" rx="5.80920801" ry="5.90010503"></ellipse>
                             </g>
                             <g id="Oval-Copy">
-                                <use fill="#17ABCB" fill-rule="evenodd" xlink:href="#path-4"></use>
+                                <use fill="#007aff" fill-rule="evenodd" xlink:href="#path-4"></use>
                                 <ellipse stroke="#FFFFFF" stroke-width="1.77999997" cx="102.891208" cy="58.3456606" rx="5.80920801" ry="5.90010503"></ellipse>
                             </g>
                             <g id="Oval">
-                                <use fill="#17ABCB" fill-rule="evenodd" xlink:href="#path-5"></use>
+                                <use fill="#007aff" fill-rule="evenodd" xlink:href="#path-5"></use>
                                 <ellipse stroke="#FFFFFF" stroke-width="1.77999997" cx="222.240541" cy="58.3456606" rx="5.80920801" ry="5.90010503"></ellipse>
                             </g>
                             <g id="Oval-Copy-2">
-                                <use fill="#17ABCB" fill-rule="evenodd" xlink:href="#path-6"></use>
+                                <use fill="#007aff" fill-rule="evenodd" xlink:href="#path-6"></use>
                                 <ellipse stroke="#FFFFFF" stroke-width="1.77999997" cx="126.048541" cy="58.3456606" rx="5.80920801" ry="5.90010503"></ellipse>
                             </g>
                             <rect id="Rectangle-path" stroke="#FFFFFF" stroke-width="1.77999997" x="297.18385" y="52.185987" width="21.6666392" height="8.40495863"></rect>
                             <g id="Oval">
-                                <use fill="#17ABCB" fill-rule="evenodd" xlink:href="#path-7"></use>
+                                <use fill="#007aff" fill-rule="evenodd" xlink:href="#path-7"></use>
                                 <ellipse stroke="#FFFFFF" stroke-width="1.77999997" cx="296.29385" cy="58.086092" rx="5.80920801" ry="5.90010503"></ellipse>
                             </g>
                             <g id="Oval">
-                                <use fill="#17ABCB" fill-rule="evenodd" xlink:href="#path-8"></use>
+                                <use fill="#007aff" fill-rule="evenodd" xlink:href="#path-8"></use>
                                 <ellipse stroke="#FFFFFF" stroke-width="1.77999997" cx="319.740489" cy="58.086092" rx="5.80920801" ry="5.90010503"></ellipse>
                             </g>
                             <path d="M287.860606,60.4085253 L291.788454,52.4455555 L227.660722,52.4455555 L231.58852,60.4084244 C231.722866,60.6805728 231.994279,60.8505142 232.288727,60.8505142 L287.160842,60.8505142 C287.455107,60.8505142 287.726179,60.6807453 287.860606,60.4085253 Z" id="Shape" stroke="#FFFFFF" stroke-width="1.77999997"></path>

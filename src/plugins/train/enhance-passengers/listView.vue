@@ -31,7 +31,7 @@
     <template v-else>
       <div class="loading-spinner">
         <span class="loading-text">努力加载中</span>
-        <mt-spinner :size="40" color="#17abcb" type="triple-bounce"></mt-spinner>
+        <mt-spinner :size="40" color="#007aff" type="triple-bounce"></mt-spinner>
       </div>
     </template>
   </div>
