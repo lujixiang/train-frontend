@@ -59,11 +59,8 @@ http://www.12306.cn/mormhweb/tlcs/201505/t20150512_16631.html
       },
       getOrderDetail () {
         let { userkeys, orderId } = this.$route.query
-        let params = {orderid: orderId, userkeys}
-        return new Promise((resolve, reject) => {
-          this.getOrderDetailByOrderId({resolve, reject, params})
-        })
-        .then(res => {
+        let args = {orderid: orderId, userkeys, action: 'endorse'}
+        const callback = (res) => {
           this.fromStationName = res.from_station_name
           this.fromStationCode = res.from_station_code
           this.toStationName = res.to_station_name
@@ -71,10 +68,11 @@ http://www.12306.cn/mormhweb/tlcs/201505/t20150512_16631.html
           this.fromTime = res.start_date + ' ' + res.start_week
           this.fromDate = moment(res.traintime).format('YYYY-MM-DD')
           this.fromDateObj = moment(res.traintime)
-        })
-        .catch(err => {
+        }
+        const errcallback = (err) => {
           console.log(err)
-        })
+        }
+        this.getOrderDetailByOrderId({callback, errcallback, args})
       },
       handleOnendorse () {
         this.$router.push({name: 'TrainList', query: {fromCity: this.fromStationName, toCity: this.toStationName, date: this.fromDate, trainType: 0, fromStation: this.fromStationCode, toStation: this.toStationCode}})
